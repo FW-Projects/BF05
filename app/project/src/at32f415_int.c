@@ -1,0 +1,1081 @@
+/* add user code begin Header */
+/**
+  **************************************************************************
+  * @file     at32f415_int.c
+  * @brief    main interrupt service routines.
+  **************************************************************************
+  *                       Copyright notice & Disclaimer
+  *
+  * The software Board Support Package (BSP) that is made available to
+  * download from Artery official website is the copyrighted work of Artery.
+  * Artery authorizes customers to use, copy, and distribute the BSP
+  * software and its related documentation for the purpose of design and
+  * development in conjunction with Artery microcontrollers. Use of the
+  * software is governed by this copyright notice and the following disclaimer.
+  *
+  * THIS SOFTWARE IS PROVIDED ON "AS IS" BASIS WITHOUT WARRANTIES,
+  * GUARANTEES OR REPRESENTATIONS OF ANY KIND. ARTERY EXPRESSLY DISCLAIMS,
+  * TO THE FULLEST EXTENT PERMITTED BY LAW, ALL EXPRESS, IMPLIED OR
+  * STATUTORY OR OTHER WARRANTIES, GUARANTEES OR REPRESENTATIONS,
+  * INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY,
+  * FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
+  *
+  **************************************************************************
+  */
+/* add user code end Header */
+
+/* includes ------------------------------------------------------------------*/
+#include "at32f415_int.h"
+#include "wk_system.h"
+
+/* private includes ----------------------------------------------------------*/
+/* add user code begin private includes */
+#include <math.h>
+#include "iap_usart.h"
+#include "tmt.h"
+#include "FWG2_handle.h"
+#include "output_handle.h"
+#include "beep_handle.h"
+#include "at32_Usart.h"
+#include "EventRecorder.h"
+#include "PID_operation.h"
+/* add user code end private includes */
+
+/* private typedef -----------------------------------------------------------*/
+/* add user code begin private typedef */
+
+/* add user code end private typedef */
+
+/* private define ------------------------------------------------------------*/
+/* add user code begin private define */
+#define    TIME_1S        1000
+#define    TIME_500MS     500
+#define    TIME_1MS       1
+
+
+float direct_handle_pid_out;
+
+/* add user code end private define */
+
+/* private macro -------------------------------------------------------------*/
+/* add user code begin private macro */
+
+/* add user code end private macro */
+
+/* private variables ---------------------------------------------------------*/
+/* add user code begin private variables */
+__IO uint32_t tmr4_ch1_freq = 0;
+__IO uint32_t tmr4_ch1_readvalue = 0;
+
+__IO uint32_t tmr4_ch2_freq = 0;
+__IO uint32_t tmr4_ch2_readvalue;
+/* add user code end private variables */
+
+/* private function prototypes --------------------------------------------*/
+/* add user code begin function prototypes */
+static void Direct_Handle_PWM_Out(void);
+static void code_mode_time(void);
+/* add user code end function prototypes */
+
+/* private user code ---------------------------------------------------------*/
+/* add user code begin 0 */
+
+/* add user code end 0 */
+
+/* external variables ---------------------------------------------------------*/
+/* add user code begin external variables */
+
+/* add user code end external variables */
+
+/**
+  * @brief  this function handles nmi exception.
+  * @param  none
+  * @retval none
+  */
+void NMI_Handler(void)
+{
+  /* add user code begin NonMaskableInt_IRQ 0 */
+    /* add user code end NonMaskableInt_IRQ 0 */
+
+  /* add user code begin NonMaskableInt_IRQ 1 */
+    /* add user code end NonMaskableInt_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles hard fault exception.
+  * @param  none
+  * @retval none
+  */
+void HardFault_Handler(void)
+{
+  /* add user code begin HardFault_IRQ 0 */
+
+    /* add user code end HardFault_IRQ 0 */
+  /* go to infinite loop when hard fault exception occurs */
+  while (1)
+  {
+    /* add user code begin W1_HardFault_IRQ 0 */
+        /* add user code end W1_HardFault_IRQ 0 */
+  }
+}
+
+/**
+  * @brief  this function handles memory manage exception.
+  * @param  none
+  * @retval none
+  */
+void MemManage_Handler(void)
+{
+  /* add user code begin MemoryManagement_IRQ 0 */
+
+    /* add user code end MemoryManagement_IRQ 0 */
+  /* go to infinite loop when memory manage exception occurs */
+  while (1)
+  {
+    /* add user code begin W1_MemoryManagement_IRQ 0 */
+        /* add user code end W1_MemoryManagement_IRQ 0 */
+  }
+}
+
+/**
+  * @brief  this function handles bus fault exception.
+  * @param  none
+  * @retval none
+  */
+void BusFault_Handler(void)
+{
+  /* add user code begin BusFault_IRQ 0 */
+
+    /* add user code end BusFault_IRQ 0 */
+  /* go to infinite loop when bus fault exception occurs */
+  while (1)
+  {
+    /* add user code begin W1_BusFault_IRQ 0 */
+        /* add user code end W1_BusFault_IRQ 0 */
+  }
+}
+
+/**
+  * @brief  this function handles usage fault exception.
+  * @param  none
+  * @retval none
+  */
+void UsageFault_Handler(void)
+{
+  /* add user code begin UsageFault_IRQ 0 */
+
+    /* add user code end UsageFault_IRQ 0 */
+  /* go to infinite loop when usage fault exception occurs */
+  while (1)
+  {
+    /* add user code begin W1_UsageFault_IRQ 0 */
+        /* add user code end W1_UsageFault_IRQ 0 */
+  }
+}
+
+/**
+  * @brief  this function handles svcall exception.
+  * @param  none
+  * @retval none
+  */
+void SVC_Handler(void)
+{
+  /* add user code begin SVCall_IRQ 0 */
+    /* add user code end SVCall_IRQ 0 */
+  /* add user code begin SVCall_IRQ 1 */
+    /* add user code end SVCall_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles debug monitor exception.
+  * @param  none
+  * @retval none
+  */
+void DebugMon_Handler(void)
+{
+  /* add user code begin DebugMonitor_IRQ 0 */
+    /* add user code end DebugMonitor_IRQ 0 */
+  /* add user code begin DebugMonitor_IRQ 1 */
+    /* add user code end DebugMonitor_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles pendsv_handler exception.
+  * @param  none
+  * @retval none
+  */
+void PendSV_Handler(void)
+{
+  /* add user code begin PendSV_IRQ 0 */
+    /* add user code end PendSV_IRQ 0 */
+  /* add user code begin PendSV_IRQ 1 */
+    /* add user code end PendSV_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles systick handler.
+  * @param  none
+  * @retval none
+  */
+void SysTick_Handler(void)
+{
+  /* add user code begin SysTick_IRQ 0 */
+    static uint16_t time_out = TIME_1S;
+    static uint16_t countdown_time = TIME_1S;
+    static uint16_t direct_handle_enhance_countdown_time = TIME_1S;
+    time_out--;
+
+    /*start the get fan speed of*/
+    if (!time_out)
+    {
+
+        sFWG2_t.Direct_handle_parameter.actual_wind = tmr4_ch1_readvalue;
+        //printf("Direct actual_wind  = %d\r\n", sFWG2_t.Direct_handle_parameter.actual_wind);
+        tmr4_ch1_readvalue = 0;
+        time_out = 1000;
+    }
+
+    /*end the get fan speed of*/
+#if 1
+
+    /* start of countdown */
+    if (sFWG2_t.general_parameter.countdown_flag)
+    {
+        countdown_time--;
+
+        if (!countdown_time)
+        {
+            sFWG2_t.general_parameter.countdown_time_display--;
+
+            if (sFWG2_t.general_parameter.countdown_time_display <= -1)
+            {
+                sFWG2_t.general_parameter.countdown_time_display = sFWG2_t.general_parameter.countdown_time;
+                sFWG2_t.general_parameter.countdown_flag = false;
+                sbeep.status = BEEP_LONG;
+            }
+
+            countdown_time = TIME_1S;
+        }
+    }
+    else
+    {
+        if (sFWG2_t.general_parameter.fn_key_set == SELECT_COUNTDOWN_MODE)
+        {
+            sFWG2_t.Direct_handle_work_mode  = NORMAL_MODE;
+           
+        }
+
+        sFWG2_t.general_parameter.countdown_time_display =  sFWG2_t.general_parameter.countdown_time;
+    }/* end of countdown */
+
+#endif
+#if 1
+
+    /* start of direct handle's enhance mode countdown */
+    if (sFWG2_t.Direct_handle_work_mode == EN_WORKING_MODE)
+    {
+        direct_handle_enhance_countdown_time--;
+
+        if (!direct_handle_enhance_countdown_time)
+        {
+            direct_handle_enhance_countdown_time = TIME_1S;
+            sFWG2_t.Direct_handle_parameter.quick_work_time_display --;
+
+            if (sFWG2_t.Direct_handle_parameter.quick_work_time_display <= -1)
+            {
+                sFWG2_t.Direct_handle_work_mode = NORMAL_MODE;
+                sbeep.status = BEEP_LONG;
+            }
+        }
+    }
+    else
+    {
+        if (sFWG2_t.general_parameter.fn_key_set == SELECT_QUICK_MODE)
+        {
+            sFWG2_t.Direct_handle_work_mode = NORMAL_MODE;
+        }
+
+        sFWG2_t.Direct_handle_parameter.quick_work_time_display =  sFWG2_t.Direct_handle_parameter.quick_work_time;
+    }
+
+    /* end of direct handle's enhance mode countdown */
+#endif
+
+    code_mode_time();
+    tmt.tick();
+    USART2_TimeOutCounter();
+    /* add user code end SysTick_IRQ 0 */
+
+  wk_timebase_handler();
+
+  /* add user code begin SysTick_IRQ 1 */
+    /* add user code end SysTick_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles TMR3 handler.
+  * @param  none
+  * @retval none
+  */
+void TMR3_GLOBAL_IRQHandler(void)
+{
+  /* add user code begin TMR3_GLOBAL_IRQ 0 */
+
+  /* add user code end TMR3_GLOBAL_IRQ 0 */
+
+
+  /* add user code begin TMR3_GLOBAL_IRQ 1 */
+
+  /* add user code end TMR3_GLOBAL_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles USART1 handler.
+  * @param  none
+  * @retval none
+  */
+void USART1_IRQHandler(void)
+{
+  /* add user code begin USART1_IRQ 0 */
+    uint16_t reval;
+
+    if (usart_interrupt_flag_get(USART1, USART_RDBF_FLAG) != RESET)
+    {
+        reval = usart_data_receive(USART1);
+
+        if ((reval == 0x5A) && (iap_flag == IAP_REV_FLAG_NO))
+        {
+            iap_flag = IAP_REV_FLAG_5A;
+        }
+        else if ((reval == 0xA5) && (iap_flag == IAP_REV_FLAG_5A))
+        {
+            iap_flag = IAP_REV_FLAG_DONE;
+        }
+        else
+        {
+            iap_flag = IAP_REV_FLAG_NO;
+        }
+    }
+
+    /* add user code end USART1_IRQ 0 */
+  /* add user code begin USART1_IRQ 1 */
+    /* add user code end USART1_IRQ 1 */
+}
+
+
+/**
+  * @brief  this function handles USART3 handler.
+  * @param  none
+  * @retval none
+  */
+void USART3_IRQHandler(void)
+{
+  /* add user code begin USART3_IRQ 0 */
+
+  /* add user code end USART3_IRQ 0 */
+  /* add user code begin USART3_IRQ 1 */
+
+  /* add user code end USART3_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles EXINT Line [15:10] handler.
+  * @param  none
+  * @retval none
+  */
+void EXINT15_10_IRQHandler(void)
+{
+  /* add user code begin EXINT15_10_IRQ 0 */
+    if (exint_flag_get(EXINT_LINE_13) != RESET)
+    {
+        exint_flag_clear(EXINT_LINE_13);
+        Direct_Handle_PWM_Out();
+    }
+
+    /* add user code end EXINT15_10_IRQ 0 */
+  /* add user code begin EXINT15_10_IRQ 1 */
+    /* add user code end EXINT15_10_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles UART4 handler.
+  * @param  none
+  * @retval none
+  */
+void UART4_IRQHandler(void)
+{
+  /* add user code begin UART4_IRQ 0 */
+
+  /* add user code end UART4_IRQ 0 */
+  /* add user code begin UART4_IRQ 1 */
+
+  /* add user code end UART4_IRQ 1 */
+}
+
+/**
+  * @brief  this function handles UART5 handler.
+  * @param  none
+  * @retval none
+  */
+void UART5_IRQHandler(void)
+{
+  /* add user code begin UART5_IRQ 0 */
+
+  /* add user code end UART5_IRQ 0 */
+  /* add user code begin UART5_IRQ 1 */
+
+  /* add user code end UART5_IRQ 1 */
+}
+
+/* add user code begin 1 */
+static void Direct_Handle_PWM_Out(void)
+{
+    static bool direct_handle_run_flag = false;
+    static uint16_t Direct_handle_last_set_temp = 0;
+    static uint16_t delta = 0;
+
+    /* normal mode pid control */
+    if (sFWG2_t.general_parameter.work_mode == NORMAL)
+    {
+        /* direct handle pid contorl began */
+        if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
+        {
+            if (sFWG2_t.Direct_handle_position == NOT_IN_POSSITION)
+            {
+                if (sFWG2_t.general_parameter.relay_open_flag == true)
+                {
+                    if (direct_handle_run_flag == false)
+                    {
+                        direct_handle_run_flag = true;
+                    }
+
+                    /* get Direct handle actual temp */
+                    // sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_11) +
+                    //    sFWG2_t.general_parameter.mcu_temp;//效果好
+                    sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2)  + sFWG2_t.general_parameter.mcu_temp;
+
+                    /* when the set temp change over 30 will clea I val */
+                    if (Direct_handle_last_set_temp != sFWG2_t.Direct_handle_parameter.set_temp)
+                    {
+                        delta = fabs((float)sFWG2_t.Direct_handle_parameter.set_temp - (float)Direct_handle_last_set_temp);
+
+                        if ((Direct_handle_last_set_temp - sFWG2_t.Direct_handle_parameter.set_temp) >= 30)
+                        {
+                            PID_Clear(&direct_pid);
+                            printf("direct_pid clearr\n");
+                        }
+
+                        Direct_handle_last_set_temp = sFWG2_t.Direct_handle_parameter.set_temp;
+                    }
+					
+
+//                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.Direct_handle_parameter.set_temp + 30))
+//                    {
+//                        direct_handle_pid_out = 0;
+//                    }
+//                    else 
+					if ((sFWG2_t.Direct_handle_parameter.actual_temp - sFWG2_t.Direct_handle_parameter.set_calibration_temp < (sFWG2_t.Direct_handle_parameter.set_temp - 80)))
+                    {
+                        direct_handle_pid_out = 59999;
+                    }
+                    /*  when the actual temp was betwen the set temp ±50 will run pid funtion*/
+                    else
+                    {
+                        /* run pid funtion */
+						if(sFWG2_t.general_parameter.enhance_state == ENHANCE_OPEN)
+						{
+						    direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.Direct_handle_parameter.set_temp ,
+                                                (sFWG2_t.Direct_handle_parameter.actual_temp - sFWG2_t.Direct_handle_parameter.set_calibration_temp - ENHANCE_TEMP));
+							
+						}
+						else if(sFWG2_t.general_parameter.enhance_state == ENHANCE_CLOSE)
+						{
+						    //linear_cal = linear_correction(set_temp+ set_calibration_temp);
+                        direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.Direct_handle_parameter.set_temp,
+                                                (sFWG2_t.Direct_handle_parameter.actual_temp - sFWG2_t.Direct_handle_parameter.set_calibration_temp));
+						
+						}
+                        
+                    }
+
+                    if (direct_handle_pid_out <= 0)
+                    {
+                        direct_handle_pid_out = 0;
+                    }
+
+                    /* open Direct handle pwm output */
+                    tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, direct_handle_pid_out);
+                    tmr_counter_enable(TMR3, TRUE);
+                }
+            }
+            else if (sFWG2_t.Direct_handle_position == IN_POSSITION)
+            {
+                sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2) + sFWG2_t.general_parameter.mcu_temp;
+                direct_handle_run_flag = false;
+                direct_handle_pid_out = 0;
+                tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, 0);
+                //PID_Clear(&direct_pid);
+            }
+        }
+        else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
+        {
+            sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2) + sFWG2_t.general_parameter.mcu_temp;
+            direct_handle_run_flag = false;
+            direct_handle_pid_out = 0;
+            tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, 0);
+            //PID_Clear(&direct_pid);
+        }
+        else if (sFWG2_t.Direct_handle_work_mode == EN_WORKING_MODE)
+        {
+            if (sFWG2_t.Direct_handle_position == NOT_IN_POSSITION)
+            {
+                if (sFWG2_t.general_parameter.relay_open_flag == true)
+                {
+                    if (direct_handle_run_flag == false)
+                    {
+                        direct_handle_run_flag = true;
+                    }
+
+                    /* get Direct handle actual temp */
+                    // sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_11) +
+                    //    sFWG2_t.general_parameter.mcu_temp;//效果好
+                    sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2)  + sFWG2_t.general_parameter.mcu_temp ;
+
+                    /* when the set temp change over 30 will clea I val */
+                    if (Direct_handle_last_set_temp != sFWG2_t.Direct_handle_parameter.set_temp)
+                    {
+                        delta = fabs((float)sFWG2_t.Direct_handle_parameter.set_temp - (float)Direct_handle_last_set_temp);
+
+                        if ((Direct_handle_last_set_temp - sFWG2_t.Direct_handle_parameter.set_temp) >= 30)
+                        {
+                            PID_Clear(&direct_pid);
+                            printf("direct_pid clearr\n");
+                        }
+
+                        Direct_handle_last_set_temp = sFWG2_t.Direct_handle_parameter.set_temp;
+                    }
+
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > ((sFWG2_t.Direct_handle_parameter.set_temp + 30) +
+                            sFWG2_t.Direct_handle_parameter.quick_work_temp))
+                    {
+                        direct_handle_pid_out = 0;
+                    }
+                    else if (sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.Direct_handle_parameter.set_temp - 80))
+                    {
+                        direct_handle_pid_out = 59999;
+                    }
+                    /*  when the actual temp was betwen the set temp ±50 will run pid funtion*/
+                    else
+                    {
+                        /* run pid funtion */
+                        //linear_cal = linear_correction(set_temp+ set_calibration_temp);
+						
+						direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.Direct_handle_parameter.set_temp + sFWG2_t.Direct_handle_parameter.quick_work_temp,
+                                                (sFWG2_t.Direct_handle_parameter.actual_temp - sFWG2_t.Direct_handle_parameter.set_calibration_temp));
+						
+                       
+                    }
+
+                    if (direct_handle_pid_out <= 0)
+                    {
+                        direct_handle_pid_out = 0;
+                    }
+
+                    /* open Direct handle pwm output */
+                    tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, direct_handle_pid_out);
+                    tmr_counter_enable(TMR3, TRUE);
+                }
+            }
+            else if (sFWG2_t.Direct_handle_position == IN_POSSITION)
+            {
+                sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2) + sFWG2_t.general_parameter.mcu_temp;
+                direct_handle_run_flag = false;
+                direct_handle_pid_out = 0;
+                tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, 0);
+                //PID_Clear(&direct_pid);
+            }
+        }
+    }
+    /* code mode control pid */
+    else if (sFWG2_t.general_parameter.work_mode == CODE)
+    {
+        /* direct handle control begin */
+        if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+        {
+            if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_START)
+            {
+                if (sFWG2_t.general_parameter.relay_open_flag == true)
+                {
+                    /* get Direct handle actual temp */
+                    //sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_11) +
+                    //    sFWG2_t.general_parameter.mcu_temp;//效果好
+                    sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2)  + sFWG2_t.general_parameter.mcu_temp;
+
+                    /* run pid funtion */
+                    //linear_cal = linear_correction(set_temp+ set_calibration_temp);
+                    if (sFWG2_t.general_parameter.code_ch == 0)
+                    {
+                        if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_pre_temp,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_temp_1,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_temp_2,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_temp_3,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_END)
+                        {
+                            sFWG2_t.general_parameter.code_mode_state = CODE_MODE_STOP;
+                            sFWG2_t.general_parameter.code_mode_step = CODE_WAIT;
+                        }
+                    }
+                    else if (sFWG2_t.general_parameter.code_ch == 1)
+                    {
+                        if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_pre_temp,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_temp_1,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_temp_2,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_temp_3,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_END)
+                        {
+                            sFWG2_t.general_parameter.code_mode_state = CODE_MODE_STOP;
+                            sFWG2_t.general_parameter.code_mode_step = CODE_WAIT;
+                        }
+                    }
+                    else if (sFWG2_t.general_parameter.code_ch == 2)
+                    {
+                        if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_pre_temp,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_temp_1,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_temp_2,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_temp_3,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_END)
+                        {
+                            sFWG2_t.general_parameter.code_mode_state = CODE_MODE_STOP;
+                            sFWG2_t.general_parameter.code_mode_step = CODE_WAIT;
+                        }
+                    }
+                    else if (sFWG2_t.general_parameter.code_ch == 3)
+                    {
+                        if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_pre_temp,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_temp_1,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_temp_2,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                        {
+                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_temp_3,
+                                                    sFWG2_t.Direct_handle_parameter.actual_temp);
+                        }
+                        else if (sFWG2_t.general_parameter.code_mode_step == CODE_END)
+                        {
+                            sFWG2_t.general_parameter.code_mode_state = CODE_MODE_STOP;
+                            sFWG2_t.general_parameter.code_mode_step = CODE_WAIT;
+                        }
+                    }
+
+                    if (direct_handle_pid_out <= 0)
+                    {
+                        direct_handle_pid_out = 0;
+                    }
+
+                    /* open Direct handle pwm output */
+                    tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, direct_handle_pid_out);
+                    tmr_counter_enable(TMR3, TRUE);
+                }
+            }
+            else if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_STOP)
+            {
+                sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2) + sFWG2_t.general_parameter.mcu_temp;
+                direct_handle_pid_out = 0;
+                tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, 0);
+            }
+        }
+        
+
+        /* direct handle control end */
+    }
+}
+
+
+
+static void code_mode_time(void)
+{
+    static bool first_in = false;
+    static uint16_t code_mode_countdown_time = TIME_1S;
+
+    /* start of code mode countdown */
+    if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_START)
+    {
+        if (first_in == false)
+        {
+            first_in = true;
+
+            if (sFWG2_t.general_parameter.code_ch == 0)
+            {
+                if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code0_pre_time;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code0_time_1;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code0_time_2;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code0_time_3;
+                }
+            }
+            else if (sFWG2_t.general_parameter.code_ch == 1)
+            {
+                if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code1_pre_time;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code1_time_1;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code1_time_2;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code1_time_3;
+                }
+            }
+            else if (sFWG2_t.general_parameter.code_ch == 2)
+            {
+                if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code2_pre_time;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code2_time_1;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code2_time_2;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code2_time_3;
+                }
+            }
+            else if (sFWG2_t.general_parameter.code_ch == 3)
+            {
+                if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code3_pre_time;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code3_time_1;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code3_time_2;
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = sFWG2_t.general_parameter.code3_time_3;
+                }
+            }
+        }
+
+        /* start counting time */
+        if (sFWG2_t.general_parameter.code_ch == 0)
+        {
+            if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_pre_temp - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_pre_temp + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+               
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_temp_1 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_temp_1 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+               
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_temp_2 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_temp_2 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_temp_3 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_temp_3 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+        }
+        else if (sFWG2_t.general_parameter.code_ch == 1)
+        {
+            if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_pre_temp - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_pre_temp + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_temp_1 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_temp_1 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_temp_2 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_temp_2 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+               
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_temp_3 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_temp_3 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+        }
+        else if (sFWG2_t.general_parameter.code_ch == 2)
+        {
+            if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_pre_temp - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_pre_temp + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_temp_1 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_temp_1 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_temp_2 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_temp_2 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_temp_3 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_temp_3 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+        }
+        else if (sFWG2_t.general_parameter.code_ch == 3)
+        {
+            if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_pre_temp - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_pre_temp + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_temp_1 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_temp_1 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_temp_2 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_temp_2 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+            else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+            {
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                {
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_temp_3 - 5) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_temp_3 + 5))
+                    {
+                        code_mode_countdown_time--;
+                    }
+                }
+                
+            }
+        }
+
+       
+        if (!code_mode_countdown_time)
+        {
+            code_mode_countdown_time = TIME_1S;
+            sFWG2_t.general_parameter.code_mode_countdown_time_display--;
+
+            if (sFWG2_t.general_parameter.code_mode_countdown_time_display <= -1)
+            {
+                first_in = false;
+                sFWG2_t.general_parameter.code_mode_step ++;
+
+                if (sFWG2_t.general_parameter.code_mode_step >= CODE_END)
+                {
+                    sFWG2_t.general_parameter.code_mode_countdown_time_display = 0;
+                    sFWG2_t.general_parameter.code_mode_step = CODE_WAIT;
+                    sFWG2_t.general_parameter.code_mode_state = CODE_MODE_STOP;
+                }
+            }
+        }
+    }
+    else if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_STOP)
+    {
+        first_in = false;
+        code_mode_countdown_time = TIME_1S;
+        sFWG2_t.general_parameter.code_mode_countdown_time_display = 0;
+		
+    }
+
+    /* end of code mode countdown */
+}
+
+/* add user code end 1 */

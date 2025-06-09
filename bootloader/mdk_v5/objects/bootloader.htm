@@ -1,0 +1,823 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html><head>
+<title>Static Call Graph - [.\objects\bootloader.axf]</title></head>
+<body><HR>
+<H1>Static Call Graph for image .\objects\bootloader.axf</H1><HR>
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri May 23 17:41:16 2025
+<BR><P>
+<H3>Maximum Stack Usage =        160 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+Call chain for Maximum Stack Depth:</H3>
+main &rArr; uart_init &rArr; usart_init &rArr; crm_clocks_freq_get &rArr; __aeabi_uldivmod
+<P>
+<H3>
+Mutually Recursive functions
+</H3> <LI><a href="#[1c]">ADC1_IRQHandler</a>&nbsp;&nbsp;&nbsp;&rArr;&nbsp;&nbsp;&nbsp;<a href="#[1c]">ADC1_IRQHandler</a><BR>
+</UL>
+<P>
+<H3>
+Function Pointers
+</H3><UL>
+ <LI><a href="#[1c]">ADC1_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[4]">BusFault_Handler</a> from at32f415_int.o(i.BusFault_Handler) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[1e]">CAN1_RX0_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[1f]">CAN1_RX1_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[20]">CAN1_SE_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[1d]">CAN1_TX_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[3e]">CMP1_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[3f]">CMP2_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[f]">CRM_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[15]">DMA1_Channel1_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[16]">DMA1_Channel2_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[17]">DMA1_Channel3_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[18]">DMA1_Channel4_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[19]">DMA1_Channel5_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[1a]">DMA1_Channel6_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[1b]">DMA1_Channel7_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[39]">DMA2_Channel1_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[3a]">DMA2_Channel2_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[3b]">DMA2_Channel3_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[3c]">DMA2_Channel4_5_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[40]">DMA2_Channel6_7_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[7]">DebugMon_Handler</a> from at32f415_int.o(i.DebugMon_Handler) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[33]">ERTCAlarm_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[d]">ERTC_WKUP_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[10]">EXINT0_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[32]">EXINT15_10_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[11]">EXINT1_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[12]">EXINT2_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[13]">EXINT3_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[14]">EXINT4_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[21]">EXINT9_5_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[e]">FLASH_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[2]">HardFault_Handler</a> from at32f415_int.o(i.HardFault_Handler) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[2a]">I2C1_ERR_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[29]">I2C1_EVT_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[2c]">I2C2_ERR_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[2b]">I2C2_EVT_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[3]">MemManage_Handler</a> from at32f415_int.o(i.MemManage_Handler) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[1]">NMI_Handler</a> from at32f415_int.o(i.NMI_Handler) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[3d]">OTGFS1_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[34]">OTGFS1_WKUP_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[b]">PVM_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[8]">PendSV_Handler</a> from at32f415_int.o(i.PendSV_Handler) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[0]">Reset_Handler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[35]">SDIO1_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[2d]">SPI1_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[2e]">SPI2_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[6]">SVC_Handler</a> from at32f415_int.o(i.SVC_Handler) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[9]">SysTick_Handler</a> from at32f415_int.o(i.SysTick_Handler) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[42]">SystemInit</a> from system_at32f415.o(i.SystemInit) referenced from startup_at32f415.o(.text)
+ <LI><a href="#[c]">TAMP_STAMP_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[22]">TMR1_BRK_TMR9_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[25]">TMR1_CH_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[23]">TMR1_OVF_TMR10_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[24]">TMR1_TRG_HALL_TMR11_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[26]">TMR2_GLOBAL_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[27]">TMR3_GLOBAL_IRQHandler</a> from tmr.o(i.TMR3_GLOBAL_IRQHandler) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[28]">TMR4_GLOBAL_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[36]">TMR5_GLOBAL_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[37]">UART4_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[38]">UART5_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[2f]">USART1_IRQHandler</a> from usart.o(i.USART1_IRQHandler) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[30]">USART2_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[31]">USART3_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[5]">UsageFault_Handler</a> from at32f415_int.o(i.UsageFault_Handler) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[a]">WWDT_IRQHandler</a> from startup_at32f415.o(.text) referenced from startup_at32f415.o(RESET)
+ <LI><a href="#[43]">__main</a> from entry.o(.ARM.Collect$$$$00000000) referenced from startup_at32f415.o(.text)
+ <LI><a href="#[41]">main</a> from main.o(i.main) referenced from entry9a.o(.ARM.Collect$$$$0000000B)
+</UL>
+<P>
+<H3>
+Global Symbols
+</H3>
+<P><STRONG><a name="[43]"></a>__main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry.o(.ARM.Collect$$$$00000000))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(.text)
+</UL>
+<P><STRONG><a name="[8a]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
+
+<P><STRONG><a name="[44]"></a>_main_scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry5.o(.ARM.Collect$$$$00000004))
+<BR><BR>[Calls]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
+</UL>
+
+<P><STRONG><a name="[4c]"></a>__main_after_scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry5.o(.ARM.Collect$$$$00000004))
+<BR><BR>[Called By]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
+</UL>
+
+<P><STRONG><a name="[8b]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
+
+<P><STRONG><a name="[8c]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
+
+<P><STRONG><a name="[8d]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
+
+<P><STRONG><a name="[8e]"></a>__rt_lib_shutdown_fini</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry12b.o(.ARM.Collect$$$$0000000E))
+
+<P><STRONG><a name="[8f]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000F))
+
+<P><STRONG><a name="[90]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$00000011))
+
+<P><STRONG><a name="[0]"></a>Reset_Handler</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[1c]"></a>ADC1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC1_IRQHandler
+</UL>
+<BR>[Called By]<UL><LI><a href="#[1c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC1_IRQHandler
+</UL>
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[1e]"></a>CAN1_RX0_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[1f]"></a>CAN1_RX1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[20]"></a>CAN1_SE_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[1d]"></a>CAN1_TX_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[3e]"></a>CMP1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[3f]"></a>CMP2_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[f]"></a>CRM_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[15]"></a>DMA1_Channel1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[16]"></a>DMA1_Channel2_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[17]"></a>DMA1_Channel3_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[18]"></a>DMA1_Channel4_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[19]"></a>DMA1_Channel5_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[1a]"></a>DMA1_Channel6_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[1b]"></a>DMA1_Channel7_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[39]"></a>DMA2_Channel1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[3a]"></a>DMA2_Channel2_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[3b]"></a>DMA2_Channel3_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[3c]"></a>DMA2_Channel4_5_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[40]"></a>DMA2_Channel6_7_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[33]"></a>ERTCAlarm_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[d]"></a>ERTC_WKUP_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[10]"></a>EXINT0_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[32]"></a>EXINT15_10_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[11]"></a>EXINT1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[12]"></a>EXINT2_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[13]"></a>EXINT3_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[14]"></a>EXINT4_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[21]"></a>EXINT9_5_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[e]"></a>FLASH_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[2a]"></a>I2C1_ERR_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[29]"></a>I2C1_EVT_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[2c]"></a>I2C2_ERR_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[2b]"></a>I2C2_EVT_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[3d]"></a>OTGFS1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[34]"></a>OTGFS1_WKUP_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[b]"></a>PVM_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[35]"></a>SDIO1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[2d]"></a>SPI1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[2e]"></a>SPI2_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[c]"></a>TAMP_STAMP_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[22]"></a>TMR1_BRK_TMR9_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[25]"></a>TMR1_CH_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[23]"></a>TMR1_OVF_TMR10_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[24]"></a>TMR1_TRG_HALL_TMR11_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[26]"></a>TMR2_GLOBAL_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[28]"></a>TMR4_GLOBAL_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[36]"></a>TMR5_GLOBAL_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[37]"></a>UART4_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[38]"></a>UART5_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[30]"></a>USART2_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[31]"></a>USART3_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[a]"></a>WWDT_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_at32f415.o(.text))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[46]"></a>__aeabi_uldivmod</STRONG> (Thumb, 98 bytes, Stack size 40 bytes, uldiv.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = __aeabi_uldivmod
+</UL>
+<BR>[Calls]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsr
+<LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsl
+</UL>
+<BR>[Called By]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_clocks_freq_get
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_core_clock_update
+</UL>
+
+<P><STRONG><a name="[4a]"></a>__aeabi_memset</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+<BR><BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_memset$wrapper
+<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
+</UL>
+
+<P><STRONG><a name="[91]"></a>__aeabi_memset4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+
+<P><STRONG><a name="[92]"></a>__aeabi_memset8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+
+<P><STRONG><a name="[49]"></a>__aeabi_memclr</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
+</UL>
+
+<P><STRONG><a name="[80]"></a>__aeabi_memclr4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_init
+</UL>
+
+<P><STRONG><a name="[93]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+
+<P><STRONG><a name="[4b]"></a>_memset$wrapper</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, memseta.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
+</UL>
+
+<P><STRONG><a name="[48]"></a>__aeabi_llsl</STRONG> (Thumb, 30 bytes, Stack size 0 bytes, llshl.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
+</UL>
+
+<P><STRONG><a name="[94]"></a>_ll_shift_l</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, llshl.o(.text), UNUSED)
+
+<P><STRONG><a name="[47]"></a>__aeabi_llsr</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, llushr.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
+</UL>
+
+<P><STRONG><a name="[95]"></a>_ll_ushift_r</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, llushr.o(.text), UNUSED)
+
+<P><STRONG><a name="[45]"></a>__scatterload</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, init.o(.text))
+<BR><BR>[Calls]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main_after_scatterload
+</UL>
+<BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_main_scatterload
+</UL>
+
+<P><STRONG><a name="[96]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
+
+<P><STRONG><a name="[4]"></a>BusFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, at32f415_int.o(i.BusFault_Handler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[7]"></a>DebugMon_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, at32f415_int.o(i.DebugMon_Handler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[2]"></a>HardFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, at32f415_int.o(i.HardFault_Handler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[3]"></a>MemManage_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, at32f415_int.o(i.MemManage_Handler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[1]"></a>NMI_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, at32f415_int.o(i.NMI_Handler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[8]"></a>PendSV_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, at32f415_int.o(i.PendSV_Handler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[6]"></a>SVC_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, at32f415_int.o(i.SVC_Handler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, at32f415_int.o(i.SysTick_Handler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[42]"></a>SystemInit</STRONG> (Thumb, 138 bytes, Stack size 0 bytes, system_at32f415.o(i.SystemInit))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(.text)
+</UL>
+<P><STRONG><a name="[27]"></a>TMR3_GLOBAL_IRQHandler</STRONG> (Thumb, 82 bytes, Stack size 8 bytes, tmr.o(i.TMR3_GLOBAL_IRQHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = TMR3_GLOBAL_IRQHandler &rArr; crm_periph_clock_enable
+</UL>
+<BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_interrupt_flag_get
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_flag_clear
+<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_led_toggle
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_periph_clock_enable
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;back_err
+</UL>
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[2f]"></a>USART1_IRQHandler</STRONG> (Thumb, 114 bytes, Stack size 8 bytes, usart.o(i.USART1_IRQHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART1_IRQHandler
+</UL>
+<BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_interrupt_flag_get
+<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_data_receive
+</UL>
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[5]"></a>UsageFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, at32f415_int.o(i.UsageFault_Handler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_at32f415.o(RESET)
+</UL>
+<P><STRONG><a name="[97]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+
+<P><STRONG><a name="[98]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+
+<P><STRONG><a name="[99]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+
+<P><STRONG><a name="[54]"></a>app_load</STRONG> (Thumb, 258 bytes, Stack size 8 bytes, iap.o(i.app_load))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = app_load &rArr; nvic_irq_disable
+</UL>
+<BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nvic_irq_disable
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_periph_clock_enable
+<LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
+</UL>
+<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_update_handle
+</UL>
+
+<P><STRONG><a name="[57]"></a>app_update_handle</STRONG> (Thumb, 294 bytes, Stack size 8 bytes, iap.o(i.app_update_handle))
+<BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = app_update_handle &rArr; flash_2kb_write &rArr; flash_halfword_program &rArr; flash_operation_wait_for
+</UL>
+<BR>[Calls]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;back_ok
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;back_err
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_load
+<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_2kb_write
+<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_reset
+</UL>
+<BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;iap_upgrade_app_handle
+</UL>
+
+<P><STRONG><a name="[5b]"></a>at32_board_init</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, at32f415_board.o(i.at32_board_init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = at32_board_init &rArr; at32_led_init &rArr; gpio_init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_init
+<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_led_off
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_led_init
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_button_init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[5f]"></a>at32_button_init</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, at32f415_board.o(i.at32_button_init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = at32_button_init &rArr; gpio_init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_init
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_default_para_init
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_periph_clock_enable
+</UL>
+<BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_board_init
+</UL>
+
+<P><STRONG><a name="[5d]"></a>at32_led_init</STRONG> (Thumb, 68 bytes, Stack size 16 bytes, at32f415_board.o(i.at32_led_init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = at32_led_init &rArr; gpio_init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_init
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_default_para_init
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_periph_clock_enable
+</UL>
+<BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_board_init
+</UL>
+
+<P><STRONG><a name="[5e]"></a>at32_led_off</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, at32f415_board.o(i.at32_led_off))
+<BR><BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_board_init
+</UL>
+
+<P><STRONG><a name="[4f]"></a>at32_led_toggle</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, at32f415_board.o(i.at32_led_toggle))
+<BR><BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TMR3_GLOBAL_IRQHandler
+</UL>
+
+<P><STRONG><a name="[50]"></a>back_err</STRONG> (Thumb, 78 bytes, Stack size 8 bytes, iap.o(i.back_err))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = back_err
+</UL>
+<BR>[Calls]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_flag_get
+<LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_data_transmit
+</UL>
+<BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TMR3_GLOBAL_IRQHandler
+<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_update_handle
+</UL>
+
+<P><STRONG><a name="[58]"></a>back_ok</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, iap.o(i.back_ok))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = back_ok
+</UL>
+<BR>[Calls]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_flag_get
+<LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_data_transmit
+</UL>
+<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_update_handle
+</UL>
+
+<P><STRONG><a name="[64]"></a>command_handle</STRONG> (Thumb, 362 bytes, Stack size 16 bytes, iap.o(i.command_handle))
+<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = command_handle &rArr; data_take &rArr; usart_interrupt_enable
+</UL>
+<BR>[Calls]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;data_take
+</UL>
+<BR>[Called By]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;iap_upgrade_app_handle
+</UL>
+
+<P><STRONG><a name="[7a]"></a>crm_ahb_div_set</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, at32f415_crm.o(i.crm_ahb_div_set))
+<BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[7c]"></a>crm_apb1_div_set</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, at32f415_crm.o(i.crm_apb1_div_set))
+<BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[7b]"></a>crm_apb2_div_set</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, at32f415_crm.o(i.crm_apb2_div_set))
+<BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[7d]"></a>crm_auto_step_mode_enable</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, at32f415_crm.o(i.crm_auto_step_mode_enable))
+<BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[78]"></a>crm_clock_source_enable</STRONG> (Thumb, 90 bytes, Stack size 0 bytes, at32f415_crm.o(i.crm_clock_source_enable))
+<BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[66]"></a>crm_clocks_freq_get</STRONG> (Thumb, 396 bytes, Stack size 56 bytes, at32f415_crm.o(i.crm_clocks_freq_get))
+<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = crm_clocks_freq_get &rArr; __aeabi_uldivmod
+</UL>
+<BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_sysclk_switch_status_get
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
+</UL>
+<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_init
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_init
+</UL>
+
+<P><STRONG><a name="[69]"></a>crm_flag_get</STRONG> (Thumb, 42 bytes, Stack size 8 bytes, at32f415_crm.o(i.crm_flag_get))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = crm_flag_get
+</UL>
+<BR>[Called By]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_hext_stable_wait
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[68]"></a>crm_hext_stable_wait</STRONG> (Thumb, 46 bytes, Stack size 12 bytes, at32f415_crm.o(i.crm_hext_stable_wait))
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = crm_hext_stable_wait &rArr; crm_flag_get
+</UL>
+<BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_flag_get
+</UL>
+<BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[51]"></a>crm_periph_clock_enable</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, at32f415_crm.o(i.crm_periph_clock_enable))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = crm_periph_clock_enable
+</UL>
+<BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_led_init
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_button_init
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_init
+<LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TMR3_GLOBAL_IRQHandler
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_load
+</UL>
+
+<P><STRONG><a name="[79]"></a>crm_pll_config</STRONG> (Thumb, 224 bytes, Stack size 12 bytes, at32f415_crm.o(i.crm_pll_config))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = crm_pll_config
+</UL>
+<BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[5a]"></a>crm_reset</STRONG> (Thumb, 90 bytes, Stack size 0 bytes, at32f415_crm.o(i.crm_reset))
+<BR><BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_update_handle
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[7e]"></a>crm_sysclk_switch</STRONG> (Thumb, 54 bytes, Stack size 0 bytes, at32f415_crm.o(i.crm_sysclk_switch))
+<BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[67]"></a>crm_sysclk_switch_status_get</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, at32f415_crm.o(i.crm_sysclk_switch_status_get))
+<BR><BR>[Called By]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_clocks_freq_get
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_core_clock_update
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[65]"></a>data_take</STRONG> (Thumb, 82 bytes, Stack size 8 bytes, iap.o(i.data_take))
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = data_take &rArr; usart_interrupt_enable
+</UL>
+<BR>[Calls]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_interrupt_enable
+</UL>
+<BR>[Called By]<UL><LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command_handle
+</UL>
+
+<P><STRONG><a name="[5c]"></a>delay_init</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, at32f415_board.o(i.delay_init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = delay_init
+</UL>
+<BR>[Calls]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;systick_clock_source_config
+</UL>
+<BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_board_init
+</UL>
+
+<P><STRONG><a name="[59]"></a>flash_2kb_write</STRONG> (Thumb, 78 bytes, Stack size 24 bytes, flash.o(i.flash_2kb_write))
+<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = flash_2kb_write &rArr; flash_halfword_program &rArr; flash_operation_wait_for
+</UL>
+<BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_unlock
+<LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_sector_erase
+<LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_lock
+<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_halfword_program
+</UL>
+<BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_update_handle
+</UL>
+
+<P><STRONG><a name="[6e]"></a>flash_halfword_program</STRONG> (Thumb, 50 bytes, Stack size 16 bytes, at32f415_flash.o(i.flash_halfword_program))
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = flash_halfword_program &rArr; flash_operation_wait_for
+</UL>
+<BR>[Calls]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_operation_wait_for
+</UL>
+<BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_2kb_write
+</UL>
+
+<P><STRONG><a name="[6f]"></a>flash_lock</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, at32f415_flash.o(i.flash_lock))
+<BR><BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_2kb_write
+</UL>
+
+<P><STRONG><a name="[71]"></a>flash_operation_status_get</STRONG> (Thumb, 48 bytes, Stack size 0 bytes, at32f415_flash.o(i.flash_operation_status_get))
+<BR><BR>[Called By]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_operation_wait_for
+</UL>
+
+<P><STRONG><a name="[70]"></a>flash_operation_wait_for</STRONG> (Thumb, 36 bytes, Stack size 4 bytes, at32f415_flash.o(i.flash_operation_wait_for))
+<BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = flash_operation_wait_for
+</UL>
+<BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_operation_status_get
+</UL>
+<BR>[Called By]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_sector_erase
+<LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_halfword_program
+</UL>
+
+<P><STRONG><a name="[6d]"></a>flash_sector_erase</STRONG> (Thumb, 58 bytes, Stack size 12 bytes, at32f415_flash.o(i.flash_sector_erase))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = flash_sector_erase &rArr; flash_operation_wait_for
+</UL>
+<BR>[Calls]<UL><LI><a href="#[70]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_operation_wait_for
+</UL>
+<BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_2kb_write
+</UL>
+
+<P><STRONG><a name="[6c]"></a>flash_unlock</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, at32f415_flash.o(i.flash_unlock))
+<BR><BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_2kb_write
+</UL>
+
+<P><STRONG><a name="[75]"></a>flash_upgrade_flag_read</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, flash.o(i.flash_upgrade_flag_read))
+<BR><BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[60]"></a>gpio_default_para_init</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, at32f415_gpio.o(i.gpio_default_para_init))
+<BR><BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_led_init
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_button_init
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
+</UL>
+
+<P><STRONG><a name="[61]"></a>gpio_init</STRONG> (Thumb, 168 bytes, Stack size 20 bytes, at32f415_gpio.o(i.gpio_init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = gpio_init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_led_init
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_button_init
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
+</UL>
+
+<P><STRONG><a name="[72]"></a>iap_upgrade_app_handle</STRONG> (Thumb, 12 bytes, Stack size 8 bytes, iap.o(i.iap_upgrade_app_handle))
+<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = iap_upgrade_app_handle &rArr; app_update_handle &rArr; flash_2kb_write &rArr; flash_halfword_program &rArr; flash_operation_wait_for
+</UL>
+<BR>[Calls]<UL><LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;command_handle
+<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_update_handle
+</UL>
+<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[41]"></a>main</STRONG> (Thumb, 70 bytes, Stack size 0 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = main &rArr; uart_init &rArr; usart_init &rArr; crm_clocks_freq_get &rArr; __aeabi_uldivmod
+</UL>
+<BR>[Calls]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nvic_priority_group_config
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;at32_board_init
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_init
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
+<LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;iap_upgrade_app_handle
+<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;back_ok
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_load
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_upgrade_flag_read
+<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+<BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
+</UL>
+<P><STRONG><a name="[55]"></a>nvic_irq_disable</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, at32f415_misc.o(i.nvic_irq_disable))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = nvic_irq_disable
+</UL>
+<BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_load
+</UL>
+
+<P><STRONG><a name="[81]"></a>nvic_irq_enable</STRONG> (Thumb, 190 bytes, Stack size 32 bytes, at32f415_misc.o(i.nvic_irq_enable))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = nvic_irq_enable
+</UL>
+<BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_init
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
+</UL>
+
+<P><STRONG><a name="[74]"></a>nvic_priority_group_config</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, at32f415_misc.o(i.nvic_priority_group_config))
+<BR><BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[73]"></a>system_clock_config</STRONG> (Thumb, 110 bytes, Stack size 8 bytes, at32f415_clock.o(i.system_clock_config))
+<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = system_clock_config &rArr; system_core_clock_update &rArr; __aeabi_uldivmod
+</UL>
+<BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_core_clock_update
+<LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_sysclk_switch_status_get
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_sysclk_switch
+<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_reset
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_pll_config
+<LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_hext_stable_wait
+<LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_flag_get
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_clock_source_enable
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_auto_step_mode_enable
+<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_apb2_div_set
+<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_apb1_div_set
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_ahb_div_set
+</UL>
+<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[7f]"></a>system_core_clock_update</STRONG> (Thumb, 316 bytes, Stack size 56 bytes, system_at32f415.o(i.system_core_clock_update))
+<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = system_core_clock_update &rArr; __aeabi_uldivmod
+</UL>
+<BR>[Calls]<UL><LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_sysclk_switch_status_get
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uldivmod
+</UL>
+<BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;system_clock_config
+</UL>
+
+<P><STRONG><a name="[6b]"></a>systick_clock_source_config</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, at32f415_misc.o(i.systick_clock_source_config))
+<BR><BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_init
+</UL>
+
+<P><STRONG><a name="[82]"></a>tmr_base_init</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, at32f415_tmr.o(i.tmr_base_init))
+<BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_init
+</UL>
+
+<P><STRONG><a name="[83]"></a>tmr_cnt_dir_set</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, at32f415_tmr.o(i.tmr_cnt_dir_set))
+<BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_init
+</UL>
+
+<P><STRONG><a name="[85]"></a>tmr_counter_enable</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, at32f415_tmr.o(i.tmr_counter_enable))
+<BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_init
+</UL>
+
+<P><STRONG><a name="[4e]"></a>tmr_flag_clear</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, at32f415_tmr.o(i.tmr_flag_clear))
+<BR><BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TMR3_GLOBAL_IRQHandler
+</UL>
+
+<P><STRONG><a name="[77]"></a>tmr_init</STRONG> (Thumb, 84 bytes, Stack size 32 bytes, tmr.o(i.tmr_init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = tmr_init &rArr; crm_clocks_freq_get &rArr; __aeabi_uldivmod
+</UL>
+<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_interrupt_enable
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_counter_enable
+<LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_cnt_dir_set
+<LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_base_init
+<LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_clocks_freq_get
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nvic_irq_enable
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_periph_clock_enable
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
+</UL>
+<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[84]"></a>tmr_interrupt_enable</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, at32f415_tmr.o(i.tmr_interrupt_enable))
+<BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tmr_init
+</UL>
+
+<P><STRONG><a name="[4d]"></a>tmr_interrupt_flag_get</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, at32f415_tmr.o(i.tmr_interrupt_flag_get))
+<BR><BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TMR3_GLOBAL_IRQHandler
+</UL>
+
+<P><STRONG><a name="[76]"></a>uart_init</STRONG> (Thumb, 158 bytes, Stack size 16 bytes, usart.o(i.uart_init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = uart_init &rArr; usart_init &rArr; crm_clocks_freq_get &rArr; __aeabi_uldivmod
+</UL>
+<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_transmitter_enable
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_receiver_enable
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_init
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_enable
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;nvic_irq_enable
+<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_init
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_default_para_init
+<LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_interrupt_enable
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_periph_clock_enable
+</UL>
+<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[53]"></a>usart_data_receive</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, at32f415_usart.o(i.usart_data_receive))
+<BR><BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
+</UL>
+
+<P><STRONG><a name="[62]"></a>usart_data_transmit</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, at32f415_usart.o(i.usart_data_transmit))
+<BR><BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;back_ok
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;back_err
+</UL>
+
+<P><STRONG><a name="[89]"></a>usart_enable</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, at32f415_usart.o(i.usart_enable))
+<BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
+</UL>
+
+<P><STRONG><a name="[63]"></a>usart_flag_get</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, at32f415_usart.o(i.usart_flag_get))
+<BR><BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;back_ok
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;back_err
+</UL>
+
+<P><STRONG><a name="[86]"></a>usart_init</STRONG> (Thumb, 102 bytes, Stack size 48 bytes, at32f415_usart.o(i.usart_init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = usart_init &rArr; crm_clocks_freq_get &rArr; __aeabi_uldivmod
+</UL>
+<BR>[Calls]<UL><LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crm_clocks_freq_get
+</UL>
+<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
+</UL>
+
+<P><STRONG><a name="[6a]"></a>usart_interrupt_enable</STRONG> (Thumb, 54 bytes, Stack size 12 bytes, at32f415_usart.o(i.usart_interrupt_enable))
+<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = usart_interrupt_enable
+</UL>
+<BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
+<LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;data_take
+</UL>
+
+<P><STRONG><a name="[52]"></a>usart_interrupt_flag_get</STRONG> (Thumb, 176 bytes, Stack size 0 bytes, at32f415_usart.o(i.usart_interrupt_flag_get))
+<BR><BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
+</UL>
+
+<P><STRONG><a name="[88]"></a>usart_receiver_enable</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, at32f415_usart.o(i.usart_receiver_enable))
+<BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
+</UL>
+
+<P><STRONG><a name="[87]"></a>usart_transmitter_enable</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, at32f415_usart.o(i.usart_transmitter_enable))
+<BR><BR>[Called By]<UL><LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uart_init
+</UL>
+<P>
+<H3>
+Local Symbols
+</H3>
+<P><STRONG><a name="[56]"></a>__NVIC_ClearPendingIRQ</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, iap.o(i.__NVIC_ClearPendingIRQ))
+<BR><BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_load
+</UL>
+<P>
+<H3>
+Undefined Global Symbols
+</H3><HR></body></html>

@@ -1,0 +1,21 @@
+--cpu=Cortex-M4 --fpu=SoftVFP
+".\objects\at32f415_clock.o"
+".\objects\at32f415_int.o"
+".\objects\flash.o"
+".\objects\iap.o"
+".\objects\usart.o"
+".\objects\tmr.o"
+".\objects\main.o"
+".\objects\at32f415_board.o"
+".\objects\at32f415_crm.o"
+".\objects\at32f415_flash.o"
+".\objects\at32f415_gpio.o"
+".\objects\at32f415_usart.o"
+".\objects\at32f415_tmr.o"
+".\objects\at32f415_misc.o"
+".\objects\system_at32f415.o"
+".\objects\startup_at32f415.o"
+--library_type=microlib --strict --scatter ".\objects\bootloader.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\listings\bootloader.map" -o .\objects\bootloader.axf

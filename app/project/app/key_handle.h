@@ -1,0 +1,26 @@
+#ifndef _KEY_HANDLE_H
+#define _KEY_HANDLE_H
+#include "key.h"
+#define KEY_HANDLE_TIME          30
+#define HEL_TIME                 90
+
+typedef enum
+{
+    DIRECT_TEMP_ADD_EVENT = 0,
+    DIRECT_TEMP_ADD_FIVE_EVENT,
+    DIRECT_TEMP_REDUCE_EVENT,
+    DIRECT_TEMP_REDUCE_FIVE_EVENT,
+    DIRECT_WIND_ADD_EVENT,
+    DIRECT_WIND_ADD_FIVE_EVENT,
+    DIRECT_WIND_REDUCE_EVENT,
+    DIRECT_WIND_REDUCE_FIVE_EVENT,
+	
+    TIME_COUNTDOWN_EVENT,
+    SET_CH_EVENT,
+    VALUE_RESET_EVENT,
+    END_EVENT,
+
+} handle_event;
+
+void key_handle(void);
+#endif

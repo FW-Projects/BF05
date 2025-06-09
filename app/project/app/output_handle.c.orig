@@ -1,0 +1,612 @@
+#include "output_handle.h"
+#include "work_handle.h"
+#include "FWG2_handle.h"
+uint8_t off_set_buff[41] = {22, 21, 21, 21, 21, 21, 21, 21, 20, 20,
+                            21, 21, 21, 20, 19, 19, 19, 19, 18, 17,
+                            17, 16, 16, 15, 14, 13, 12, 11, 11, 10,
+                            9,  9,  8,  8,  7,  6,  5,  4,  3,  1, 0
+                           };
+
+/*
+    Direct  handle FAN: TMR2 CH1
+	Cyclone handle FAN:	TMR2 CH2
+
+	Direct  handle HOT: TMR3 CH1
+	Cyclone handle HOT:	TMR3 CH2
+*/
+
+
+
+void fan_control(void)
+{
+    /* start the Cyclone handle fan output of  */
+    /* fan control with normal mode */
+    if (sFWG2_t.general_parameter.work_mode == NORMAL)
+    {
+        if (sFWG2_t.Cyclone_handle_work_mode == NORMAL_MODE || sFWG2_t.Cyclone_handle_work_mode == EN_WORKING_MODE)
+        {
+            if (sFWG2_t.Cyclone_handle_state == HANDLE_SLEEP)
+            {
+                /* keep fan output until the temp below 60 */
+                if (sFWG2_t.Cyclone_handle_parameter.actual_temp >= 60)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 10 * 1.13 + 30);
+                }
+                else
+                {
+                    /* close fan output */
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 0);
+                }
+            }
+            else if (sFWG2_t.Cyclone_handle_state == HANDLE_WORKING && sFWG2_t.Cyclone_handle_position == IN_POSSITION)
+            {
+                if (sFWG2_t.Cyclone_handle_parameter.actual_temp >= 250)
+                {
+                    /* open fan output with a half of max set val*/
+                    sFWG2_t.Cyclone_handle_parameter.stop_set_wind = 100;
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, MAX_SET_WIND_VAL / 2 * 1.13 + 30);
+                }
+                else if (sFWG2_t.Cyclone_handle_parameter.actual_temp >= 70 && sFWG2_t.Cyclone_handle_parameter.actual_temp < 250)
+                {
+                    /* open fan output with actual temp change*/
+                    sFWG2_t.Cyclone_handle_parameter.stop_set_wind = sFWG2_t.Cyclone_handle_parameter.actual_temp * 0.4;
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.Cyclone_handle_parameter.stop_set_wind * 1.13 + 30);
+                }
+                else
+                {
+                    /* close fan output */
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 0);
+                }
+            }
+            else if (sFWG2_t.Cyclone_handle_state == HANDLE_WORKING && sFWG2_t.Cyclone_handle_position == NOT_IN_POSSITION)
+            {
+                /* open fan output with user set val */
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.Cyclone_handle_parameter.set_wind * 1.13 + 30);
+            }
+            else if (sFWG2_t.Cyclone_handle_error_state != HANDLE_OK)
+            {
+                /* open fan output with max set val */
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, MAX_SET_WIND_VAL * 1.13 + 30);
+            }
+        }
+        else if (sFWG2_t.Cyclone_handle_work_mode == COLD_WIND_MODE)
+        {
+            /* open fan output with user set val */
+            tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.Cyclone_handle_parameter.cold_mode_set_wind * 1.13 + 30);
+        }
+    }
+    else if (sFWG2_t.general_parameter.work_mode == CODE)
+    {
+		if(sFWG2_t.general_parameter.code_mode_handle_select == SELECT_CYCLONE_HANDLE)
+		{
+		            if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_START)
+        {
+            if (sFWG2_t.general_parameter.code_ch == 0)
+            {
+                if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code0_pre_wind * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code0_wind_1 * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code0_wind_2 * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code0_wind_3 * 1.13 + 30);
+                }
+            }
+            else if (sFWG2_t.general_parameter.code_ch == 1)
+            {
+                if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code1_pre_wind * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code1_wind_1 * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code1_wind_2 * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code1_wind_3 * 1.13 + 30);
+                }
+            }
+            else if (sFWG2_t.general_parameter.code_ch == 2)
+            {
+                if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code2_pre_wind * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code2_wind_1 * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code2_wind_2 * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code2_wind_3 * 1.13 + 30);
+                }
+            }
+            else if (sFWG2_t.general_parameter.code_ch == 3)
+            {
+                if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code3_pre_wind * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code3_wind_1 * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code3_wind_2 * 1.13 + 30);
+                }
+                else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.general_parameter.code3_wind_3 * 1.13 + 30);
+                }
+            }
+        }
+        else if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_STOP)
+        {
+            if (sFWG2_t.Cyclone_handle_parameter.actual_temp >= 250)
+            {
+                /* open fan output with a half of max set val*/
+                sFWG2_t.Cyclone_handle_parameter.stop_set_wind = 100;
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, MAX_SET_WIND_VAL / 2 * 1.13 + 30);
+            }
+            else if (sFWG2_t.Cyclone_handle_parameter.actual_temp >= 70 && sFWG2_t.Cyclone_handle_parameter.actual_temp < 250)
+            {
+                /* open fan output with actual temp change*/
+                sFWG2_t.Cyclone_handle_parameter.stop_set_wind = sFWG2_t.Cyclone_handle_parameter.actual_temp * 0.4;
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.Cyclone_handle_parameter.stop_set_wind * 1.13 + 30);
+            }
+            else
+            {
+                /* close fan output */
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 0);
+            }
+        }
+		}
+		else 
+		{
+		    if (sFWG2_t.Cyclone_handle_parameter.actual_temp >= 250)
+            {
+                /* open fan output with a half of max set val*/
+                sFWG2_t.Cyclone_handle_parameter.stop_set_wind = 100;
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, MAX_SET_WIND_VAL / 2 * 1.13 + 30);
+            }
+            else if (sFWG2_t.Cyclone_handle_parameter.actual_temp >= 70 && sFWG2_t.Cyclone_handle_parameter.actual_temp < 250)
+            {
+                /* open fan output with actual temp change*/
+                sFWG2_t.Cyclone_handle_parameter.stop_set_wind = sFWG2_t.Cyclone_handle_parameter.actual_temp * 0.4;
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, sFWG2_t.Cyclone_handle_parameter.stop_set_wind * 1.13 + 30);
+            }
+            else
+            {
+                /* close fan output */
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 0);
+            }
+		}
+		
+
+    }
+
+    /* end the Cyclone handle fan output of  */
+
+    /* start the Direct handle fan output of  */
+    if (sFWG2_t.general_parameter.work_mode == NORMAL)
+    {
+        /* fan control with normal mode */
+        if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
+        {
+            if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
+            {
+                /* keep fan output until the temp below 60 */
+                if (sFWG2_t.Direct_handle_parameter.actual_temp >= 60)
+                {
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, 10 * 1.13 + 30);
+                }
+                else
+                {
+                    /* close fan output */
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, 0);
+                }
+            }
+            else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING && sFWG2_t.Direct_handle_position == IN_POSSITION)
+            {
+                if (sFWG2_t.Direct_handle_parameter.actual_temp >= 250)
+                {
+                    sFWG2_t.Direct_handle_parameter.stop_set_wind = 100;
+                    /* open fan output with a half of max set val*/
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, MAX_SET_WIND_VAL / 2 * 1.13 + 30);
+                }
+                else if (sFWG2_t.Direct_handle_parameter.actual_temp >= 70 && sFWG2_t.Direct_handle_parameter.actual_temp < 250)
+                {
+                    /* open fan output with actual temp change*/
+                    sFWG2_t.Direct_handle_parameter.stop_set_wind = sFWG2_t.Direct_handle_parameter.actual_temp * 0.4;
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.Direct_handle_parameter.stop_set_wind * 1.13 + 30);
+                }
+                else
+                {
+                    /* close fan output */
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, 0);
+                }
+            }
+            else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING && sFWG2_t.Direct_handle_position == NOT_IN_POSSITION)
+            {
+                /* open fan output with user set val */
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.Direct_handle_parameter.set_wind * 1.13 + 30);
+            }
+            else if (sFWG2_t.Direct_handle_error_state != HANDLE_OK)
+            {
+                /* open fan output with max set val */
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, MAX_SET_WIND_VAL * 1.13 + 30);
+            }
+        }
+        else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
+        {
+            tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.Direct_handle_parameter.cold_mode_set_wind * 1.13 + 30);
+        }
+    }
+    else if (sFWG2_t.general_parameter.work_mode == CODE)
+    {
+        if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+        {
+            if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_START)
+            {
+                if (sFWG2_t.general_parameter.code_ch == 0)
+                {
+                    if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code0_pre_wind * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code0_wind_1 * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code0_wind_2 * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code0_wind_3 * 1.13 + 30);
+                    }
+                }
+                else if (sFWG2_t.general_parameter.code_ch == 1)
+                {
+                    if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code1_pre_wind * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code1_wind_1 * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code1_wind_2 * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code1_wind_3 * 1.13 + 30);
+                    }
+                }
+                else if (sFWG2_t.general_parameter.code_ch == 2)
+                {
+                    if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code2_pre_wind * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code2_wind_1 * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code2_wind_2 * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code2_wind_3 * 1.13 + 30);
+                    }
+                }
+                else if (sFWG2_t.general_parameter.code_ch == 3)
+                {
+                    if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code3_pre_wind * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code3_wind_1 * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code3_wind_2 * 1.13 + 30);
+                    }
+                    else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
+                    {
+                        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.general_parameter.code3_wind_3 * 1.13 + 30);
+                    }
+                }
+            }
+            else if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_STOP)
+            {
+                if (sFWG2_t.Direct_handle_parameter.actual_temp >= 250)
+                {
+                    sFWG2_t.Direct_handle_parameter.stop_set_wind = 100;
+                    /* open fan output with a half of max set val*/
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, MAX_SET_WIND_VAL / 2 * 1.13 + 30);
+                }
+                else if (sFWG2_t.Direct_handle_parameter.actual_temp >= 70 && sFWG2_t.Direct_handle_parameter.actual_temp < 250)
+                {
+                    /* open fan output with actual temp change*/
+                    sFWG2_t.Direct_handle_parameter.stop_set_wind = sFWG2_t.Direct_handle_parameter.actual_temp * 0.4;
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.Direct_handle_parameter.stop_set_wind * 1.13 + 30);
+                }
+                else
+                {
+                    /* close fan output */
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, 0);
+                }
+            }
+        }
+        else
+        {
+            if (sFWG2_t.Direct_handle_parameter.actual_temp >= 250)
+            {
+                sFWG2_t.Direct_handle_parameter.stop_set_wind = 100;
+                /* open fan output with a half of max set val*/
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, MAX_SET_WIND_VAL / 2 * 1.13 + 30);
+            }
+            else if (sFWG2_t.Direct_handle_parameter.actual_temp >= 70 && sFWG2_t.Direct_handle_parameter.actual_temp < 250)
+            {
+                /* open fan output with actual temp change*/
+                sFWG2_t.Direct_handle_parameter.stop_set_wind = sFWG2_t.Direct_handle_parameter.actual_temp * 0.4;
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, sFWG2_t.Direct_handle_parameter.stop_set_wind * 1.13 + 30);
+            }
+            else
+            {
+                /* close fan output */
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_2, 0);
+            }
+        }
+    }
+
+    /* end the Direct handle fan output of  */
+}
+
+
+
+
+void hot_control(void)
+{
+    static  uint16_t relay_open_delay = RELAY_OPEN_TIME;
+
+	if(sFWG2_t.general_parameter.work_mode == NORMAL)
+	{
+	        /* heating control with normal mode  */
+    if (sFWG2_t.Cyclone_handle_work_mode == NORMAL_MODE || sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
+    {
+        if ((sFWG2_t.Cyclone_handle_state == HANDLE_SLEEP && sFWG2_t.Direct_handle_state == HANDLE_SLEEP) || \
+                sFWG2_t.Cyclone_handle_error_state != HANDLE_OK || \
+                sFWG2_t.Direct_handle_error_state != HANDLE_OK)
+        {
+            /* close relay */
+            gpio_bits_reset(GPIOC, GPIO_PINS_14);
+            /* close Direct handle pwm output */
+            tmr_counter_enable(TMR3, FALSE);
+            tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, 0);
+            /* close Cyclone handle pwm output */
+            tmr_counter_enable(TMR3, FALSE);
+            tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_2, 0);
+            /* reset relay open flag */
+            sFWG2_t.general_parameter.relay_open_flag = false;
+            relay_open_delay = RELAY_OPEN_TIME;
+        }
+        else if ((sFWG2_t.Cyclone_handle_state == HANDLE_WORKING   || \
+                  sFWG2_t.Direct_handle_state == HANDLE_WORKING)         && \
+                 (sFWG2_t.Direct_handle_error_state == HANDLE_OK        || \
+                  sFWG2_t.Cyclone_handle_error_state == HANDLE_OK)       && \
+                 (sFWG2_t.Cyclone_handle_position == NOT_IN_POSSITION   ||
+                  sFWG2_t.Direct_handle_position == NOT_IN_POSSITION))
+        {
+            /* open relay */
+            gpio_bits_set(GPIOC, GPIO_PINS_14);
+
+            /* wait 300ms*/
+            if (sFWG2_t.general_parameter.relay_open_flag == FALSE)
+            {
+                relay_open_delay --;
+            }
+
+            /* 继电器开启完成标志位置1 */
+            if (!relay_open_delay)
+            {
+                relay_open_delay = 0;
+                sFWG2_t.general_parameter.relay_open_flag = true;
+            }
+        }
+    }
+    /* heating control with wind cold  mode  */
+    else if ((sFWG2_t.Cyclone_handle_work_mode == COLD_WIND_MODE && sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE) || \
+             (sFWG2_t.Cyclone_handle_state == HANDLE_SLEEP && sFWG2_t.Direct_handle_work_mode == HANDLE_SLEEP))
+    {
+        /* close relay */
+        gpio_bits_reset(GPIOC, GPIO_PINS_14);
+        /* close Direct handle pwm output */
+        tmr_counter_enable(TMR3, FALSE);
+        tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, 0);
+        /* close Cyclone handle pwm output */
+        tmr_counter_enable(TMR3, FALSE);
+        tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_2, 0);
+        /* reset relay open flag */
+        sFWG2_t.general_parameter.relay_open_flag = false;
+        relay_open_delay = RELAY_OPEN_TIME;
+    }
+	}
+	else if(sFWG2_t.general_parameter.work_mode == CODE)
+	{
+	    if(sFWG2_t.general_parameter.code_mode_state == CODE_MODE_START)
+		{
+		    
+			if (sFWG2_t.Direct_handle_error_state == HANDLE_OK    || \
+                sFWG2_t.Cyclone_handle_error_state == HANDLE_OK)      
+        {
+            /* open relay */
+            gpio_bits_set(GPIOC, GPIO_PINS_14);
+
+            /* wait 300ms*/
+            if (sFWG2_t.general_parameter.relay_open_flag == FALSE)
+            {
+                relay_open_delay --;
+            }
+
+            /* 继电器开启完成标志位置1 */
+            if (!relay_open_delay)
+            {
+                relay_open_delay = 0;
+                sFWG2_t.general_parameter.relay_open_flag = true;
+            }
+        }
+		else if(sFWG2_t.Cyclone_handle_error_state != HANDLE_OK || \
+                sFWG2_t.Direct_handle_error_state != HANDLE_OK)
+		{
+		                /* close relay */
+            gpio_bits_reset(GPIOC, GPIO_PINS_14);
+            /* close Direct handle pwm output */
+            tmr_counter_enable(TMR3, FALSE);
+            tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, 0);
+            /* close Cyclone handle pwm output */
+            tmr_counter_enable(TMR3, FALSE);
+            tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_2, 0);
+            /* reset relay open flag */
+            sFWG2_t.general_parameter.relay_open_flag = false;
+            relay_open_delay = RELAY_OPEN_TIME;
+		}
+			
+			
+		}
+		else if(sFWG2_t.general_parameter.code_mode_state == CODE_MODE_STOP)
+		{
+		    
+		}
+	}
+	
+
+}
+
+uint8_t linear_correction(uint16_t user_set_temp)
+{
+    static uint8_t n = 0;
+    static uint16_t check_start = 0;
+    static uint8_t check_value = 0;
+
+    if (user_set_temp < 300)
+    {
+        check_value = 0;
+        check_start = 100;
+
+        for (n = 0; n < 20; n++)
+        {
+            if (user_set_temp <= (check_start + check_value))
+            {
+                return (off_set_buff[n]);
+            }
+            else
+            {
+                check_start += 10;
+            }
+        }
+    }
+    else
+    {
+        check_value = 0;
+        check_start = 300;
+
+        for (n = 20; n < 42; n++)
+        {
+            if (user_set_temp <= (check_start + check_value))
+            {
+                return (off_set_buff[n]);
+            }
+            else
+            {
+                check_start += 10;
+            }
+        }
+    }
+
+    return (off_set_buff[n]);
+}
+
+uint16_t temp_get(void)
+{
+    static uint16_t temp;
+    temp = get_adcval(ADC_CHANNEL) >> 2;
+    return temp;
+}
+
+uint16_t temp_get_filter_average(void)
+{
+    static uint16_t temp;
+    temp = (get_adcval_average(ADC_CHANNEL, 80) >> 2);
+    return temp;
+}
+
+uint16_t temp_get_filter_middleValue(void)
+{
+    static uint16_t temp;
+    temp =  middleValueFilter() >> 2;
+    return temp;
+}
+
+uint16_t temp_get_filter_move_average(adc_channel_select_type adc_channel)
+{
+    static uint16_t temp;
+    temp =  moveAverageFilter(adc_channel) >> 2;
+
+    if (temp >= 1023)
+    {
+        temp = 1023;
+    }
+
+    return temp;
+}
+
+uint16_t temp_get_filter_mode(void)
+{
+    static uint16_t temp;
+    temp = modeFilter() >> 2;
+    return temp;
+}
+
+uint16_t temp_get_filter_max_count(void)
+{
+    static uint16_t temp;
+    temp = max_count_filter() >> 2;
+    return temp;
+}
+
+uint16_t temp_get_average(void)
+{
+    static uint16_t temp;
+    temp = average(10) >> 2;
+    return temp;
+}
+
+
+
