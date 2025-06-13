@@ -62,7 +62,7 @@ void wk_exint_config(void)
   exint_init_struct.line_enable = TRUE;
   exint_init_struct.line_mode = EXINT_LINE_INTERRUPUT;
   exint_init_struct.line_select = EXINT_LINE_13;
-  exint_init_struct.line_polarity = EXINT_TRIGGER_FALLING_EDGE;
+  exint_init_struct.line_polarity = EXINT_TRIGGER_BOTH_EDGE;
   exint_init(&exint_init_struct);
 
   /**

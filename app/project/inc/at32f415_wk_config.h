@@ -116,8 +116,6 @@ extern "C" {
 /* add user code end dma define */
 
 /* Private defines -------------------------------------------------------------*/
-#define HOT_K_PIN    GPIO_PINS_14
-#define HOT_K_GPIO_PORT    GPIOC
 #define HOT_ADC1_PIN    GPIO_PINS_0
 #define HOT_ADC1_GPIO_PORT    GPIOC
 #define PWMHOT_1_PIN    GPIO_PINS_0

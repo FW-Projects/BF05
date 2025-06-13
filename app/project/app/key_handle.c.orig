@@ -56,14 +56,14 @@ static KEY_VALUE get_key_touch()
 
 static KEY keys[] =
 {
-	{KS_RELEASE, 0, KEY_CYCLE_TIME, get_key_ch},// function
+    {KS_RELEASE, 0, KEY_CYCLE_TIME, get_key_ch},// function
     {KS_RELEASE, 0, KEY_CYCLE_TIME, get_key_up},// add
     {KS_RELEASE, 0, KEY_CYCLE_TIME, get_key_down},//reduce
     {KS_RELEASE, 0, KEY_CYCLE_TIME, get_key_touch},//touch
 
 };
 
-static KEY_EVENT key_up, key_down, key_fn, key_touch;
+static KEY_EVENT key_up, key_down, key_ch, key_touch;
 
 
 void KeyProc(void)
@@ -83,9 +83,9 @@ void KeyProc(void)
     }
 
     /* scan key begin */
-      key_fn  = key_event_check(&keys[0], LONG_PRESS_TIME);
-   key_up   = key_event_check(&keys[1], LONG_PRESS_TIME);
-     key_down   = key_event_check(&keys[2], LONG_PRESS_TIME);
+    key_ch  = key_event_check(&keys[0], LONG_PRESS_TIME);
+    key_up   = key_event_check(&keys[1], LONG_PRESS_TIME);
+    key_down   = key_event_check(&keys[2], LONG_PRESS_TIME);
     key_touch = key_event_check(&keys[3], LONG_PRESS_TIME);
 
     /* scan key end */
@@ -120,10 +120,13 @@ void KeyProc(void)
         if (!set_done)
         {
             /*get event*/
-            if (key_up == KE_PRESS)
+            if (key_ch == KE_PRESS)
             {
                 if (direct_set_temp_flag)
                 {
+                    sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
+                    sFWG2_t.Direct_handle_parameter.last_set_temp = sFWG2_t.Direct_handle_parameter.set_temp;
+                    show_direct_set_temp_time = SHOW_DIRECT_HANDLE_SET_TEMP_TIME;
                     direct_set_wind_flag = true;
                     direct_set_temp_flag = false;
                     sbeep.status = BEEP_SHORT;
@@ -131,6 +134,8 @@ void KeyProc(void)
                 }
                 else if (direct_set_wind_flag)
                 {
+                    sFWG2_t.Direct_handle_parameter.last_set_wind = sFWG2_t.Direct_handle_parameter.set_wind;
+                    show_direct_set_wind_time = SHOW_DIRECT_HANDLE_SET_TEMP_TIME;
                     direct_set_wind_flag = false;
                     sbeep.status = BEEP_SHORT;
                     set_done = TRUE;
@@ -141,9 +146,8 @@ void KeyProc(void)
                          sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE   && \
                          sFWG2_t.Direct_handle_work_mode != EN_WORKING_MODE)
                 {
-                    if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN                 || \
-                            sFWG2_t.general_parameter.fwg2_page == PAGE_SHOW_DIRECT_WORK     || \
-                            sFWG2_t.general_parameter.fwg2_page == PAGE_SHOW_DIRECT_CURVE)
+                    if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN     || \
+                            sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
                     {
                         EVENT = SET_CH_EVENT;
                         set_done = TRUE;
@@ -172,24 +176,37 @@ void KeyProc(void)
             {
                 if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
                 {
-                    if (direct_set_temp_flag == false && direct_set_wind_flag == false)
-                    {
-                        direct_set_temp_flag = true;
-                    }
+                    
+                        if (direct_set_temp_flag == false && direct_set_wind_flag == false)
+                        {
+							if (sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
+							{
+							    direct_set_temp_flag = true;
+							}
+								
+							else if (sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
+							{
+							    direct_set_wind_flag = true;
+							}
+                        }
 
-                    if (direct_set_temp_flag)
-                    {
-                        EVENT = DIRECT_TEMP_REDUCE_EVENT;
-                        set_done = TRUE;
-                        direct_set_temp_time = 0;
-                    }
+                        if (direct_set_temp_flag)
+                        {
+                            EVENT = DIRECT_TEMP_REDUCE_EVENT;
+                            set_done = TRUE;
+                            direct_set_temp_time = 0;
+                        }
 
-                    if (direct_set_wind_flag)
-                    {
-                        EVENT = DIRECT_WIND_REDUCE_EVENT;
-                        set_done = TRUE;
-                        direct_set_wind_time = 0;
-                    }
+                        if (direct_set_wind_flag)
+                        {
+                            EVENT = DIRECT_WIND_REDUCE_EVENT;
+                            set_done = TRUE;
+                            direct_set_wind_time = 0;
+                        }
+                    
+					
+
+					
                 }
                 else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
                 {
@@ -197,13 +214,25 @@ void KeyProc(void)
                     set_done = TRUE;
                 }
             }
-            else if (key_fn == KE_PRESS)
+            else if (key_up == KE_PRESS)
             {
                 if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
                 {
                     if (direct_set_temp_flag == false && direct_set_wind_flag == false)
                     {
-                        direct_set_temp_flag = true;
+						 if (direct_set_temp_flag == false && direct_set_wind_flag == false)
+                        {
+							if (sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
+							{
+							    direct_set_temp_flag = true;
+							}
+								
+							else if (sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
+							{
+							    direct_set_wind_flag = true;
+							}
+                        }
+
                     }
 
                     if (direct_set_temp_flag)
@@ -228,7 +257,7 @@ void KeyProc(void)
             }
 
             /* key long perss */
-            if (key_up == KE_LONG_PRESS)
+            if (key_ch == KE_LONG_PRESS)
             {
                 /* enter cold mode */
                 if (sFWG2_t.general_parameter.fn_key_set == SELECT_COLD_WIN_MODE)
@@ -246,7 +275,7 @@ void KeyProc(void)
                 }
                 /* start countdown  */
                 else if (sFWG2_t.general_parameter.fn_key_set == SELECT_COUNTDOWN_MODE && \
-                         (sFWG2_t.general_parameter.fwg2_page == PAGE_SHOW_DIRECT_WORK))
+                         (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN))
                 {
                     sFWG2_t.general_parameter.countdown_flag = true;
                     sbeep.status = BEEP_LONG;
@@ -257,10 +286,18 @@ void KeyProc(void)
             {
                 if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
                 {
-                    if (direct_set_temp_flag == false && direct_set_wind_flag == false)
-                    {
-                        direct_set_temp_flag = true;
-                    }
+                        if (direct_set_temp_flag == false && direct_set_wind_flag == false)
+                        {
+							if (sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
+							{
+							    direct_set_temp_flag = true;
+							}
+								
+							else if (sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
+							{
+							    direct_set_wind_flag = true;
+							}
+						}
 
                     if (direct_set_temp_flag)
                     {
@@ -282,14 +319,22 @@ void KeyProc(void)
                     //EVENT = DIRECT_WIND_REDUCE_FIVE_EVENT;
                 }
             }
-            else if (key_fn == KE_LONG_PRESS)
+            else if (key_up == KE_LONG_PRESS)
             {
                 if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
                 {
-                    if (direct_set_temp_flag == false && direct_set_wind_flag == false)
-                    {
-                        direct_set_temp_flag = true;
-                    }
+                                            if (direct_set_temp_flag == false && direct_set_wind_flag == false)
+                        {
+							if (sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
+							{
+							    direct_set_temp_flag = true;
+							}
+								
+							else if (sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
+							{
+							    direct_set_wind_flag = true;
+							}
+						}
 
                     if (direct_set_temp_flag)
                     {
@@ -317,7 +362,7 @@ void KeyProc(void)
     {
         if (!set_done)
         {
-            if (key_up == KE_PRESS)
+            if (key_ch == KE_PRESS)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
@@ -585,8 +630,8 @@ static void key_event_handle(void)
                 sFWG2_t.general_parameter.countdown_time  = sFWG2_t.general_parameter.ch4_set_time;
             }
         }
-        else if (sFWG2_t.general_parameter.fwg2_page == PAGE_SHOW_DIRECT_WORK   || \
-                 sFWG2_t.general_parameter.fwg2_page == PAGE_SHOW_DIRECT_CURVE)
+        else if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN   || \
+                 sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
         {
             if (sFWG2_t.general_parameter.ch == 1)
             {

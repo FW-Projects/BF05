@@ -119,18 +119,28 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>CMSIS_AGDI</Key>
+          <Name>-X"Any" -UAny -O206 -S0 -C0 -P00000000 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO65555 -TC150000000 -TT10000000 -TP20 -TDS8031 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN1 -FF0AT32F415_128.FLM -FS08000000 -FL020000 -FP0($$Device:-AT32F415RBT7$Flash\AT32F415_128.FLM)</Name>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
+          <Key>elaphureLink</Key>
+          <Name>-UCMSIS_DAP -O206 -S10 -C0 -TO65554 -TC10000000 -TT10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN1 -FF0AT32F415_128.FLM -FS08000000 -FL020000 -FP0($$Device:-AT32F415RBT7$Flash\AT32F415_128.FLM)</Name>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>DLGUARM</Key>
           <Name></Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGTARM</Key>
-          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=-1,-1,-1,-1,0)(1009=2258,153,2516,741,1)(1012=-1,-1,-1,-1,0)</Name>
+          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=-1,-1,-1,-1,0)(1009=1934,89,2192,677,0)(1012=-1,-1,-1,-1,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>JL2CM3</Key>
-          <Name>-U25952324 -O78 -S8 -ZTIFSpeedSel50000 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO19 -TC150000000 -TP21 -TDS8013 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO15 -FD20000000 -FC1000 -FN1 -FF0AT32F415_128.FLM -FS08000000 -FL020000 -FP0($$Device:-AT32F415RBT7$Flash\AT32F415_128.FLM)</Name>
+          <Name>-U25952324 -O78 -S3 -ZTIFSpeedSel3000 -A0 -C0 -JU1 -JI127.0.0.1 -JP0 -RST0 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO19 -TC150000000 -TP21 -TDS8013 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TFE0 -FO15 -FD20000000 -FC1000 -FN1 -FF0AT32F415_128.FLM -FS08000000 -FL020000 -FP0($$Device:-AT32F415RBT7$Flash\AT32F415_128.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -164,6 +174,81 @@
           <count>0</count>
           <WinNumber>1</WinNumber>
           <ItemText>sFWG2_t</ItemText>
+        </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>sdwin</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>\\AT32F415RBT7_WorkBench\../app/FWG2_handle.c\sFWG2_t.general_parameter.work_mode</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>\\AT32F415RBT7_WorkBench\../app/FWG2_handle.c\sFWG2_t.general_parameter.fwg2_page</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>\\AT32F415RBT7_WorkBench\../app/FWG2_handle.c\sFWG2_t.general_parameter.code_ch</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>\\AT32F415RBT7_WorkBench\../app/FWG2_handle.c\sFWG2_t.general_parameter.code_mode_step</ItemText>
+        </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>\\AT32F415RBT7_WorkBench\../app/FWG2_handle.c\sFWG2_t.general_parameter.code_mode_state</ItemText>
+        </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>\\AT32F415RBT7_WorkBench\../app/FWG2_handle.c\sFWG2_t.general_parameter.code_mode_handle_select</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>sFWG2_t.general_parameter.adjust_key_set,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>show_direct_curve_set_temp_time</ItemText>
+        </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>sFWG2_t.Direct_handle_parameter.last_set_temp,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>sFWG2_t.Direct_handle_parameter.set_temp,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>last_direct_handle_set_temp_f_display,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>13</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>sFWG2_t.Direct_handle_parameter.set_temp_f_display,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>direct_temp_refirsh_time,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>15</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>\\AT32F415RBT7_WorkBench\../app/FWG2_handle.c\sFWG2_t.Direct_handle_parameter.actual_temp,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
@@ -243,6 +328,12 @@
           <SecondString>FF000000000000000000000000000000000051400000000000000000000000000000000073465747325F742E4469726563745F68616E646C655F706172616D657465722E61637475616C5F74656D70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000300000001000000000000000000F03F20000000000000000000000000000000000000005C120108</SecondString>
         </Wi>
       </LogicAnalyzers>
+      <SystemViewers>
+        <Entry>
+          <Name>System Viewer\USART3</Name>
+          <WinId>35905</WinId>
+        </Entry>
+      </SystemViewers>
     </TargetOption>
   </Target>
 
@@ -424,7 +515,7 @@
 
   <Group>
     <GroupName>firmware</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -576,7 +667,7 @@
 
   <Group>
     <GroupName>cmsis</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -608,7 +699,7 @@
 
   <Group>
     <GroupName>system</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -836,7 +927,7 @@
       <GroupNumber>6</GroupNumber>
       <FileNumber>46</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\device\key.c</PathWithFileName>

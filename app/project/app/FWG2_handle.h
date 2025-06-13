@@ -4,9 +4,9 @@
 #include "stdbool.h"
 
 /*     GPIO DEFINE
- *     DIRECT  HANDLE HOT OUTPUT   (TMR3_CHANNEL_1)
- *     DIRECT  HANDLE FAN OUTPUT   (TMR2_CHANNEL_2)
- *     DIRECT HANDLE HOT CHECK     (ADC_CHANNEL_11)
+ *     DIRECT  HANDLE HOT OUTPUT   (TMR2_CHANNEL_1)
+ *     DIRECT  HANDLE FAN OUTPUT   (TMR9_CHANNEL_2)
+ *     DIRECT HANDLE HOT CHECK     (ADC_CHANNEL_10)
  */
 #define MAX_SET_TEMP_VAL 500
 #define MIN_SET_TEMP_VAL 100
@@ -102,6 +102,13 @@ typedef enum
     SELECT_COLD_WIN_MODE,
     SELECT_COUNTDOWN_MODE,
 } fwg2_fn_key_set_e;
+
+typedef enum
+{
+    SELECT_TEMP = 0,
+    SELECT_WIND,
+} fwg2_adjust_key_set_e;
+
 typedef enum
 {
     TOUCH_CLOSE = 0,
@@ -118,8 +125,9 @@ typedef enum
 
 typedef enum
 {
-    PAGE_MAIN = 1,
-    PAGE_DIRECT_CYCLONE_CURVE,
+
+    PAGE_MAIN = 1,                          
+	PAGE_DIRECT_CURVE,
     PAGE_MENU_1,
     PAGE_MENU_2,
     PAGE_SET_WORK_MODE,
@@ -127,7 +135,8 @@ typedef enum
     PAGE_SET_CODE_MODE,
     PAGE_SET_TEMP_UNIT,
     PAGE_SET_SPEAKER,
-    PAGE_SET_ENHANCE_COLE_MODE,
+	PAGE_SET_TEMP_LOCK,
+    PAGE_SET_ENHANCE_COLD_MODE,
     PAGE_SET_ENHANCE_VAL,
     PAGE_SET_BL,
     PAGE_SET_CAL_TEMP,
@@ -135,16 +144,15 @@ typedef enum
     PAGE_SET_TOUCH,
     PAGE_SET_USART,
     PAGE_SET_LANGGUAGE,
-    PAGE_SET_VER,
+    PAGE_SET_SOFTWARE_VER,
     PAGE_SET_RESET_FWG2,
     PAGE_SET_OTA,
-    PAGE_NOLL_1,
-    PAGE_NOLL_2,
-    PAGE_NOLL_3,
-    PAGE_SHOW_DIRECT_WORK,
-    PAGE_SHOW_DIRECT_CURVE,
-
-    PAGE_SHOW_CODE_WORK = 0x1C
+	PAGE_NULL22,
+	PAGE_NULL23,
+    PAGE_MENU_3,
+	PAGE_ENHANCE_SET_VAL,                   
+    PAGE_SHOW_CODE_WORK,					
+  
 } fwg2_page_e;
 
 
@@ -186,8 +194,10 @@ typedef struct
     uint32_t actual_wind;
 
     uint16_t set_temp;
+	uint16_t last_set_temp;
     uint16_t set_temp_f_display;
     uint8_t set_wind;
+	uint8_t last_set_wind;
 
     uint8_t cold_mode_set_wind;
     uint8_t stop_set_wind;
@@ -205,19 +215,21 @@ typedef struct
 
 typedef struct
 {
-    fwg2_work_e              work_mode;
-    fwg2_temp_unit_e         temp_uint;
-    fwg2_speaker_state_e     speak_state;
-    fwg2_temp_lock_state_e   display_lock_state;
-    fwg2_fn_key_set_e        fn_key_set;
-    fwg2_ota_state_e         ota_state;
-    fwg2_touch_key_set_e     touch_key_set;
-    fwg2_uart_state_e        uart_state;
-	fwg2_enhance_state_e     enhance_state;
-    fwg2_page_e              fwg2_page;
-    fwg2_code_mode_step_e    code_mode_step;
-    fwg2_code_mode_state_e   code_mode_state;
+    fwg2_work_e                       work_mode;
+    fwg2_temp_unit_e                  temp_uint;
+    fwg2_speaker_state_e              speak_state;
+    fwg2_temp_lock_state_e            display_lock_state;
+    fwg2_fn_key_set_e                 fn_key_set;
+	fwg2_adjust_key_set_e             adjust_key_set;
+    fwg2_ota_state_e                  ota_state;
+    fwg2_touch_key_set_e              touch_key_set;
+    fwg2_uart_state_e                 uart_state;
+	fwg2_enhance_state_e              enhance_state;
+    fwg2_page_e                       fwg2_page;
+    fwg2_code_mode_step_e             code_mode_step;
+    fwg2_code_mode_state_e            code_mode_state;
     fwg2_code_mode_handle_select_e    code_mode_handle_select;
+	
 
     bool reset_fwg2_flag;
     bool relay_open_flag;

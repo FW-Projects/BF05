@@ -76,7 +76,7 @@ void wk_tmr2_init(void)
   tmr_output_struct.oc_mode = TMR_OUTPUT_CONTROL_PWM_MODE_B;
   tmr_output_struct.oc_output_state = TRUE;
   tmr_output_struct.occ_output_state = FALSE;
-  tmr_output_struct.oc_polarity = TMR_OUTPUT_ACTIVE_HIGH;
+  tmr_output_struct.oc_polarity = TMR_OUTPUT_ACTIVE_LOW;
   tmr_output_struct.occ_polarity = TMR_OUTPUT_ACTIVE_HIGH;
   tmr_output_struct.oc_idle_state = FALSE;
   tmr_output_struct.occ_idle_state = FALSE;
@@ -84,7 +84,7 @@ void wk_tmr2_init(void)
   tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 0);
   tmr_output_channel_buffer_enable(TMR2, TMR_SELECT_CHANNEL_1, FALSE);
 
-  tmr_output_channel_immediately_set(TMR2, TMR_SELECT_CHANNEL_1, FALSE);
+  tmr_output_channel_immediately_set(TMR2, TMR_SELECT_CHANNEL_1, TRUE);
 
 
   tmr_counter_enable(TMR2, TRUE);

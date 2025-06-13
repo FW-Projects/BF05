@@ -75,6 +75,9 @@ __IO uint32_t tmr4_ch2_readvalue;
 /* add user code begin function prototypes */
 static void Direct_Handle_PWM_Out(void);
 static void code_mode_time(void);
+static void enhance_mode_countdown(void);
+static void count_down(void);
+
 /* add user code end function prototypes */
 
 /* private user code ---------------------------------------------------------*/
@@ -221,89 +224,25 @@ void SysTick_Handler(void)
 {
   /* add user code begin SysTick_IRQ 0 */
     static uint16_t time_out = TIME_1S;
-    static uint16_t countdown_time = TIME_1S;
-    static uint16_t direct_handle_enhance_countdown_time = TIME_1S;
     time_out--;
 
     /*start the get fan speed of*/
     if (!time_out)
     {
-
-        sFWG2_t.Direct_handle_parameter.actual_wind = tmr4_ch1_readvalue;
+        //sFWG2_t.Direct_handle_parameter.actual_wind = tmr4_ch1_readvalue;
         //printf("Direct actual_wind  = %d\r\n", sFWG2_t.Direct_handle_parameter.actual_wind);
-        tmr4_ch1_readvalue = 0;
+        
+		sFWG2_t.Direct_handle_parameter.actual_wind = 50;
+		tmr4_ch1_readvalue = 0;
         time_out = 1000;
     }
-
     /*end the get fan speed of*/
-#if 1
 
-    /* start of countdown */
-    if (sFWG2_t.general_parameter.countdown_flag)
-    {
-        countdown_time--;
-
-        if (!countdown_time)
-        {
-            sFWG2_t.general_parameter.countdown_time_display--;
-
-            if (sFWG2_t.general_parameter.countdown_time_display <= -1)
-            {
-                sFWG2_t.general_parameter.countdown_time_display = sFWG2_t.general_parameter.countdown_time;
-                sFWG2_t.general_parameter.countdown_flag = false;
-                sbeep.status = BEEP_LONG;
-            }
-
-            countdown_time = TIME_1S;
-        }
-    }
-    else
-    {
-        if (sFWG2_t.general_parameter.fn_key_set == SELECT_COUNTDOWN_MODE)
-        {
-            sFWG2_t.Direct_handle_work_mode  = NORMAL_MODE;
-           
-        }
-
-        sFWG2_t.general_parameter.countdown_time_display =  sFWG2_t.general_parameter.countdown_time;
-    }/* end of countdown */
-
-#endif
-#if 1
-
-    /* start of direct handle's enhance mode countdown */
-    if (sFWG2_t.Direct_handle_work_mode == EN_WORKING_MODE)
-    {
-        direct_handle_enhance_countdown_time--;
-
-        if (!direct_handle_enhance_countdown_time)
-        {
-            direct_handle_enhance_countdown_time = TIME_1S;
-            sFWG2_t.Direct_handle_parameter.quick_work_time_display --;
-
-            if (sFWG2_t.Direct_handle_parameter.quick_work_time_display <= -1)
-            {
-                sFWG2_t.Direct_handle_work_mode = NORMAL_MODE;
-                sbeep.status = BEEP_LONG;
-            }
-        }
-    }
-    else
-    {
-        if (sFWG2_t.general_parameter.fn_key_set == SELECT_QUICK_MODE)
-        {
-            sFWG2_t.Direct_handle_work_mode = NORMAL_MODE;
-        }
-
-        sFWG2_t.Direct_handle_parameter.quick_work_time_display =  sFWG2_t.Direct_handle_parameter.quick_work_time;
-    }
-
-    /* end of direct handle's enhance mode countdown */
-#endif
-
+    enhance_mode_countdown();
     code_mode_time();
+	count_down();
     tmt.tick();
-    USART2_TimeOutCounter();
+    USART3_TimeOutCounter();
     /* add user code end SysTick_IRQ 0 */
 
   wk_timebase_handler();
@@ -363,20 +302,6 @@ void USART1_IRQHandler(void)
 }
 
 
-/**
-  * @brief  this function handles USART3 handler.
-  * @param  none
-  * @retval none
-  */
-void USART3_IRQHandler(void)
-{
-  /* add user code begin USART3_IRQ 0 */
-
-  /* add user code end USART3_IRQ 0 */
-  /* add user code begin USART3_IRQ 1 */
-
-  /* add user code end USART3_IRQ 1 */
-}
 
 /**
   * @brief  this function handles EXINT Line [15:10] handler.
@@ -397,41 +322,12 @@ void EXINT15_10_IRQHandler(void)
     /* add user code end EXINT15_10_IRQ 1 */
 }
 
-/**
-  * @brief  this function handles UART4 handler.
-  * @param  none
-  * @retval none
-  */
-void UART4_IRQHandler(void)
-{
-  /* add user code begin UART4_IRQ 0 */
-
-  /* add user code end UART4_IRQ 0 */
-  /* add user code begin UART4_IRQ 1 */
-
-  /* add user code end UART4_IRQ 1 */
-}
-
-/**
-  * @brief  this function handles UART5 handler.
-  * @param  none
-  * @retval none
-  */
-void UART5_IRQHandler(void)
-{
-  /* add user code begin UART5_IRQ 0 */
-
-  /* add user code end UART5_IRQ 0 */
-  /* add user code begin UART5_IRQ 1 */
-
-  /* add user code end UART5_IRQ 1 */
-}
-
 /* add user code begin 1 */
 static void Direct_Handle_PWM_Out(void)
 {
     static bool direct_handle_run_flag = false;
     static uint16_t Direct_handle_last_set_temp = 0;
+	static fwg2_code_mode_step_e last_code_mode_step = CODE_WAIT;
     static uint16_t delta = 0;
 
     /* normal mode pid control */
@@ -450,9 +346,9 @@ static void Direct_Handle_PWM_Out(void)
                     }
 
                     /* get Direct handle actual temp */
-                    // sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_11) +
+                    // sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_10) +
                     //    sFWG2_t.general_parameter.mcu_temp;//效果好
-                    sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2)  + sFWG2_t.general_parameter.mcu_temp;
+                    sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2) + sFWG2_t.general_parameter.mcu_temp;
 
                     /* when the set temp change over 30 will clea I val */
                     if (Direct_handle_last_set_temp != sFWG2_t.Direct_handle_parameter.set_temp)
@@ -504,26 +400,26 @@ static void Direct_Handle_PWM_Out(void)
                     }
 
                     /* open Direct handle pwm output */
-                    tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, direct_handle_pid_out);
-                    tmr_counter_enable(TMR3, TRUE);
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, direct_handle_pid_out);
+                    tmr_counter_enable(TMR2, TRUE);
                 }
             }
             else if (sFWG2_t.Direct_handle_position == IN_POSSITION)
             {
-                sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2) + sFWG2_t.general_parameter.mcu_temp;
+                sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2) + sFWG2_t.general_parameter.mcu_temp;
                 direct_handle_run_flag = false;
                 direct_handle_pid_out = 0;
-                tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, 0);
-                //PID_Clear(&direct_pid);
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 0);
+                PID_Clear(&direct_pid);
             }
         }
         else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
         {
-            sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2) + sFWG2_t.general_parameter.mcu_temp;
+            sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2) + sFWG2_t.general_parameter.mcu_temp;
             direct_handle_run_flag = false;
             direct_handle_pid_out = 0;
-            tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, 0);
-            //PID_Clear(&direct_pid);
+            tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 0);
+            PID_Clear(&direct_pid);
         }
         else if (sFWG2_t.Direct_handle_work_mode == EN_WORKING_MODE)
         {
@@ -537,9 +433,9 @@ static void Direct_Handle_PWM_Out(void)
                     }
 
                     /* get Direct handle actual temp */
-                    // sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_11) +
+                    // sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_10) +
                     //    sFWG2_t.general_parameter.mcu_temp;//效果好
-                    sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2)  + sFWG2_t.general_parameter.mcu_temp ;
+                    sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2)  + sFWG2_t.general_parameter.mcu_temp ;
 
                     /* when the set temp change over 30 will clea I val */
                     if (Direct_handle_last_set_temp != sFWG2_t.Direct_handle_parameter.set_temp)
@@ -572,8 +468,7 @@ static void Direct_Handle_PWM_Out(void)
 						
 						direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.Direct_handle_parameter.set_temp + sFWG2_t.Direct_handle_parameter.quick_work_temp,
                                                 (sFWG2_t.Direct_handle_parameter.actual_temp - sFWG2_t.Direct_handle_parameter.set_calibration_temp));
-						
-                       
+
                     }
 
                     if (direct_handle_pid_out <= 0)
@@ -582,17 +477,17 @@ static void Direct_Handle_PWM_Out(void)
                     }
 
                     /* open Direct handle pwm output */
-                    tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, direct_handle_pid_out);
-                    tmr_counter_enable(TMR3, TRUE);
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, direct_handle_pid_out);
+                    tmr_counter_enable(TMR2, TRUE);
                 }
             }
             else if (sFWG2_t.Direct_handle_position == IN_POSSITION)
             {
-                sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2) + sFWG2_t.general_parameter.mcu_temp;
+                sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2) + sFWG2_t.general_parameter.mcu_temp;
                 direct_handle_run_flag = false;
                 direct_handle_pid_out = 0;
-                tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, 0);
-                //PID_Clear(&direct_pid);
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 0);
+                PID_Clear(&direct_pid);
             }
         }
     }
@@ -604,12 +499,19 @@ static void Direct_Handle_PWM_Out(void)
         {
             if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_START)
             {
+				
+				if(last_code_mode_step != sFWG2_t.general_parameter.code_mode_step)
+				{
+				    last_code_mode_step = sFWG2_t.general_parameter.code_mode_step;
+					PID_Clear(&direct_pid);
+				}
+				
+				
                 if (sFWG2_t.general_parameter.relay_open_flag == true)
                 {
                     /* get Direct handle actual temp */
-                    //sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_11) +
-                    //    sFWG2_t.general_parameter.mcu_temp;//效果好
-                    sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2)  + sFWG2_t.general_parameter.mcu_temp;
+                    sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_10) + sFWG2_t.general_parameter.mcu_temp;//效果好
+                    //sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2)  + sFWG2_t.general_parameter.mcu_temp;
 
                     /* run pid funtion */
                     //linear_cal = linear_correction(set_temp+ set_calibration_temp);
@@ -732,19 +634,19 @@ static void Direct_Handle_PWM_Out(void)
                     }
 
                     /* open Direct handle pwm output */
-                    tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, direct_handle_pid_out);
-                    tmr_counter_enable(TMR3, TRUE);
+                    tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, direct_handle_pid_out);
+                    tmr_counter_enable(TMR2, TRUE);
                 }
             }
             else if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_STOP)
             {
-                sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_11) >> 2) + sFWG2_t.general_parameter.mcu_temp;
+				PID_Clear(&direct_pid);
+                sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2) + sFWG2_t.general_parameter.mcu_temp;
                 direct_handle_pid_out = 0;
-                tmr_channel_value_set(TMR3, TMR_SELECT_CHANNEL_1, 0);
+                tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 0);
             }
         }
         
-
         /* direct handle control end */
     }
 }
@@ -848,8 +750,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_pre_temp - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_pre_temp + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_pre_temp - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_pre_temp + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -860,8 +762,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_temp_1 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_temp_1 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_temp_1 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_temp_1 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -872,8 +774,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_temp_2 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_temp_2 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_temp_2 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_temp_2 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -884,8 +786,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_temp_3 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_temp_3 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code0_temp_3 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code0_temp_3 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -899,8 +801,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_pre_temp - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_pre_temp + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_pre_temp - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_pre_temp + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -911,8 +813,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_temp_1 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_temp_1 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_temp_1 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_temp_1 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -923,8 +825,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_temp_2 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_temp_2 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_temp_2 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_temp_2 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -935,8 +837,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_temp_3 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_temp_3 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code1_temp_3 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code1_temp_3 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -950,8 +852,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_pre_temp - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_pre_temp + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_pre_temp - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_pre_temp + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -962,8 +864,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_temp_1 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_temp_1 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_temp_1 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_temp_1 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -974,8 +876,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_temp_2 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_temp_2 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_temp_2 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_temp_2 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -986,8 +888,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_temp_3 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_temp_3 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code2_temp_3 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code2_temp_3 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -1001,8 +903,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_pre_temp - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_pre_temp + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_pre_temp - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_pre_temp + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -1013,8 +915,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_temp_1 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_temp_1 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_temp_1 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_temp_1 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -1025,8 +927,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_temp_2 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_temp_2 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_temp_2 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_temp_2 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -1037,8 +939,8 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_temp_3 - 5) && \
-                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_temp_3 + 5))
+                    if (sFWG2_t.Direct_handle_parameter.actual_temp > (sFWG2_t.general_parameter.code3_temp_3 - 3) && \
+                            sFWG2_t.Direct_handle_parameter.actual_temp < (sFWG2_t.general_parameter.code3_temp_3 + 3))
                     {
                         code_mode_countdown_time--;
                     }
@@ -1076,6 +978,76 @@ static void code_mode_time(void)
     }
 
     /* end of code mode countdown */
+}
+
+void count_down(void)
+{
+#if 1
+	static uint16_t countdown_time = TIME_1S;
+    
+	    /* start of countdown */
+    if (sFWG2_t.general_parameter.countdown_flag)
+    {
+        countdown_time--;
+
+        if (!countdown_time)
+        {
+            sFWG2_t.general_parameter.countdown_time_display--;
+
+            if (sFWG2_t.general_parameter.countdown_time_display <= -1)
+            {
+                sFWG2_t.general_parameter.countdown_time_display = sFWG2_t.general_parameter.countdown_time;
+                sFWG2_t.general_parameter.countdown_flag = false;
+                sbeep.status = BEEP_LONG;
+            }
+
+            countdown_time = TIME_1S;
+        }
+    }
+    else
+    {
+        if (sFWG2_t.general_parameter.fn_key_set == SELECT_COUNTDOWN_MODE)
+        {
+            sFWG2_t.Direct_handle_work_mode  = NORMAL_MODE;
+           
+        }
+
+        sFWG2_t.general_parameter.countdown_time_display =  sFWG2_t.general_parameter.countdown_time;
+    }/* end of countdown */
+
+#endif
+}
+void enhance_mode_countdown(void)
+{
+#if 1
+static uint16_t direct_handle_enhance_countdown_time = TIME_1S;
+    /* start of direct handle's enhance mode countdown */
+    if (sFWG2_t.Direct_handle_work_mode == EN_WORKING_MODE)
+    {
+        direct_handle_enhance_countdown_time--;
+
+        if (!direct_handle_enhance_countdown_time)
+        {
+            direct_handle_enhance_countdown_time = TIME_1S;
+            sFWG2_t.Direct_handle_parameter.quick_work_time_display --;
+
+            if (sFWG2_t.Direct_handle_parameter.quick_work_time_display <= -1)
+            {
+                sFWG2_t.Direct_handle_work_mode = NORMAL_MODE;
+                sbeep.status = BEEP_LONG;
+            }
+        }
+    }
+    else
+    {
+        if (sFWG2_t.general_parameter.fn_key_set == SELECT_QUICK_MODE)
+        {
+            sFWG2_t.Direct_handle_work_mode = NORMAL_MODE;
+        }
+
+        sFWG2_t.Direct_handle_parameter.quick_work_time_display =  sFWG2_t.Direct_handle_parameter.quick_work_time;
+    }
+#endif
 }
 
 /* add user code end 1 */

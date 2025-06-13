@@ -51,14 +51,9 @@ void wk_gpio_config(void)
 
   /* gpio input config */
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
-  gpio_init_struct.gpio_pins = SLEEP_PIN;
-  gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
-  gpio_init(SLEEP_GPIO_PORT, &gpio_init_struct);
-
-  gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
-  gpio_init_struct.gpio_pins = KEY_UP_PIN;
+  gpio_init_struct.gpio_pins = SLEEP_PIN | KEY_UP_PIN;
   gpio_init_struct.gpio_pull = GPIO_PULL_UP;
-  gpio_init(KEY_UP_GPIO_PORT, &gpio_init_struct);
+  gpio_init(GPIOC, &gpio_init_struct);
 
   gpio_init_struct.gpio_mode = GPIO_MODE_INPUT;
   gpio_init_struct.gpio_pins = KEY_DOWN_PIN | KEIY_CH_PIN | KEY_COUTH_PIN;
@@ -66,16 +61,8 @@ void wk_gpio_config(void)
   gpio_init(GPIOB, &gpio_init_struct);
 
   /* gpio output config */
-  gpio_bits_reset(HOT_K_GPIO_PORT, HOT_K_PIN);
   gpio_bits_reset(SPI1_CS_GPIO_PORT, SPI1_CS_PIN);
   gpio_bits_reset(GPIOB, SPK_M_PIN | RELAY_HOT_PIN);
-
-  gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_MODERATE;
-  gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
-  gpio_init_struct.gpio_mode = GPIO_MODE_OUTPUT;
-  gpio_init_struct.gpio_pins = HOT_K_PIN;
-  gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
-  gpio_init(HOT_K_GPIO_PORT, &gpio_init_struct);
 
   gpio_init_struct.gpio_drive_strength = GPIO_DRIVE_STRENGTH_MODERATE;
   gpio_init_struct.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
@@ -93,8 +80,9 @@ void wk_gpio_config(void)
 
   /* gpio analog config */
   gpio_init_struct.gpio_mode = GPIO_MODE_ANALOG;
-  gpio_init_struct.gpio_pins = GPIO_PINS_13 | GPIO_PINS_15 | GPIO_PINS_1 | GPIO_PINS_2 | GPIO_PINS_3 | 
-                               GPIO_PINS_7 | GPIO_PINS_8 | GPIO_PINS_9 | GPIO_PINS_10 | GPIO_PINS_11;
+  gpio_init_struct.gpio_pins = GPIO_PINS_13 | GPIO_PINS_14 | GPIO_PINS_15 | GPIO_PINS_1 | GPIO_PINS_2 | 
+                               GPIO_PINS_3 | GPIO_PINS_7 | GPIO_PINS_8 | GPIO_PINS_9 | GPIO_PINS_10 | 
+                               GPIO_PINS_11;
   gpio_init_struct.gpio_pull = GPIO_PULL_NONE;
   gpio_init(GPIOC, &gpio_init_struct);
 

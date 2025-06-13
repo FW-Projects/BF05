@@ -99,86 +99,104 @@ void output_task(void);
   */
 int main(void)
 {
-    /* add user code begin 1 */
-    /* config vector table offset */
-    nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x4000);
-    /* add user code end 1 */
-    /* system clock config. */
-    wk_system_clock_config();
-    /* config periph clock. */
-    wk_periph_clock_config();
-    /* init debug function. */
-    wk_debug_config();
-    /* nvic config. */
-    wk_nvic_config();
-    /* timebase config. */
-    wk_timebase_init();
-    /* init gpio function. */
-    wk_gpio_config();
-    /* init dma1 channel1 */
-    wk_dma1_channel1_init();
-    /* config dma channel transfer parameter */
-    /* user need to modify define values DMAx_CHANNELy_XXX_BASE_ADDR and DMAx_CHANNELy_BUFFER_SIZE in at32xxx_wk_config.h */
-    wk_dma_channel_config(DMA1_CHANNEL1,
-                          DMA1_CHANNEL1_PERIPHERAL_BASE_ADDR,
-                          DMA1_CHANNEL1_MEMORY_BASE_ADDR,
-                          DMA1_CHANNEL1_BUFFER_SIZE);
-    dma_channel_enable(DMA1_CHANNEL1, TRUE);
-    /* init usart1 function. */
-    wk_usart1_init();
-    /* init usart2 function. */
-    wk_usart2_init();
-    /* init usart3 function. */
-    wk_usart3_init();
-    /* init uart4 function. */
-    wk_uart4_init();
-    /* init uart5 function. */
-    wk_uart5_init();
-    /* init spi1 function. */
-    wk_spi1_init();
-    /* init adc1 function. */
-    wk_adc1_init();
-    /* init exint function. */
-    wk_exint_config();
-    /* init tmr2 function. */
-    wk_tmr2_init();
-    /* init tmr3 function. */
-    wk_tmr3_init();
-    /* init tmr9 function. */
-    wk_tmr9_init();
-    /* add user code begin 2 */
+  /* add user code begin 1 */
+  /* config vector table offset */
+  nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x4000);
+  /* add user code end 1 */
+
+  /* system clock config. */
+  wk_system_clock_config();
+
+  /* config periph clock. */
+  wk_periph_clock_config();
+
+  /* init debug function. */
+  wk_debug_config();
+
+  /* nvic config. */
+  wk_nvic_config();
+
+  /* timebase config. */
+  wk_timebase_init();
+
+  /* init gpio function. */
+  wk_gpio_config();
+
+  /* init dma1 channel1 */
+  wk_dma1_channel1_init();
+  /* config dma channel transfer parameter */
+  /* user need to modify define values DMAx_CHANNELy_XXX_BASE_ADDR and DMAx_CHANNELy_BUFFER_SIZE in at32xxx_wk_config.h */
+  wk_dma_channel_config(DMA1_CHANNEL1, 
+                        DMA1_CHANNEL1_PERIPHERAL_BASE_ADDR, 
+                        DMA1_CHANNEL1_MEMORY_BASE_ADDR, 
+                        DMA1_CHANNEL1_BUFFER_SIZE);
+  dma_channel_enable(DMA1_CHANNEL1, TRUE);
+
+  /* init usart1 function. */
+  wk_usart1_init();
+
+  /* init usart2 function. */
+  wk_usart2_init();
+
+  /* init usart3 function. */
+  wk_usart3_init();
+
+  /* init uart4 function. */
+  wk_uart4_init();
+
+  /* init uart5 function. */
+  wk_uart5_init();
+
+  /* init spi1 function. */
+  wk_spi1_init();
+
+  /* init adc1 function. */
+  wk_adc1_init();
+
+  /* init exint function. */
+  wk_exint_config();
+
+  /* init tmr2 function. */
+  wk_tmr2_init();
+
+  /* init tmr3 function. */
+  wk_tmr3_init();
+
+  /* init tmr9 function. */
+  wk_tmr9_init();
+
+  /* add user code begin 2 */
     tmt_init();
-	tmr_channel_value_set(TMR9, TMR_SELECT_CHANNEL_2, 20 * 1.13 + 30);
     tmt.create(iap_task, IAP_HANDLE_TIME);
     tmt.create(key_task, KEY_HANDLE_TIME);
     tmt.create(adc_task, KEY_HANDLE_TIME);
     tmt.create(beep_task, BEEP_HANDLE_TIME);
     tmt.create(work_task, WORK_HANDLE_TIME);
     tmt.create(flash_task, FLASH_HANDLE_TIME);
-
-    //tmt.create(output_task, OUTPUT_HANDLE_TIME);
-	//tmt.create(dwin_task, DWIN_HANDLE_TIME);
+    tmt.create(output_task, OUTPUT_HANDLE_TIME);
+	tmt.create(dwin_task, DWIN_HANDLE_TIME);
     EventRecorderInitialize(0, 1);
     FWG2_Init(&sFWG2_t);
     DwinInitialization(&sdwin);
-    PID_Init(&direct_pid, 240, 0.6, 1200, 59999);
+    PID_Init(&direct_pid, 200, 0.5, 0.5, 59999);
     iap_init();
     spiflash_init();
     __IO uint32_t flash_id_index  = spiflash_read_id();
     BSP_UsartInit();
     printf("system init ok\r\n");
     /* wait for system reday */
-    wk_delay_ms(4000);
+    wk_delay_ms(3000);
     /* add user code end 2 */
-    while (1)
-    {
-        /* add user code begin 3 */
-        tmt.run();
-        /* add user code end 3 */
-    }
+
+  while(1)
+  {
+    /* add user code begin 3 */
+    tmt.run();
+    /* add user code end 3 */
+  }
 }
 
-/* add user code begin 4 */
+  /* add user code begin 4 */
 void iap_task(void)
 {
     iap_command_handle();
@@ -211,19 +229,21 @@ void adc_task(void)
 
     if (first_in == false)
     {
+		sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2);
         sFWG2_t.general_parameter.mcu_temp =  get_adcval(ADC_CHANNEL_16);
         sFWG2_t.general_parameter.mcu_temp = (1.26 - ((double)sFWG2_t.general_parameter.mcu_temp * 3.3 / 4096)) / (-0.00423);
-
-        if (sFWG2_t.general_parameter.mcu_temp <= 50 && sFWG2_t.general_parameter.mcu_temp > 0)
+        if (sFWG2_t.general_parameter.mcu_temp <= 50 && sFWG2_t.general_parameter.mcu_temp > 0 && sFWG2_t.Direct_handle_parameter.actual_temp<500)
         {
             first_in = true;
         }
     }
+
 }
 
 void dwin_task(void)
 {
     static uint16_t time_count;
+	
     static bool first_in = false;
     static uint8_t state = 0;
 
@@ -257,17 +277,18 @@ void dwin_task(void)
 
         if (time_count % 5 == 0)
         {
-            Page_Main_Heartbeat_Packet();
-            Page_Code_Heartbeat_Packet();
+            //Page_Main_Heartbeat_Packet();
+			//Page_ALL_Curve_Heartbeat_Packet();
+
             Page_General_Heartbeat_Packet();
             Page_Set_Heartbeat_Packet();
-            Page_ALL_Curve_Heartbeat_Packet();
             Page_Switch();
         }
         else if (time_count % 3 == 0)
         {
             Page_Direct_Work_Heartbeat_Packet();
             Page_Direct_Curve_Heartbeat_Packet();
+			Page_Code_Heartbeat_Packet();
         }
 
         sdwin.recv_data(&sdwin);

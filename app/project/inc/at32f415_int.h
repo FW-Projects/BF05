@@ -69,11 +69,8 @@ void SysTick_Handler(void);
 
 void TMR3_GLOBAL_IRQHandler(void);
 void USART1_IRQHandler(void);
-void USART2_IRQHandler(void);
 void USART3_IRQHandler(void);
 void EXINT15_10_IRQHandler(void);
-void UART4_IRQHandler(void);
-void UART5_IRQHandler(void);
 
 /* add user code begin exported functions */
 

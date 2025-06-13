@@ -134,26 +134,16 @@ void wk_usart2_init(void)
 
   usart_hardware_flow_control_set(USART2, USART_HARDWARE_FLOW_NONE);
 
-  /**
-   * Users need to configure USART2 interrupt functions according to the actual application.
-   * 1. Call the below function to enable the corresponding USART2 interrupt.
-   *     --usart_interrupt_enable(...)
-   * 2. Add the user's interrupt handler code into the below function in the at32f415_int.c file.
-   *     --void USART2_IRQHandler(void)
-   */
-
   /* add user code begin usart2_init 2 */
     usart_interrupt_enable(USART2, USART_RDBF_INT, TRUE);
-	usart_interrupt_enable(USART2, USART_TDC_INT, TRUE);
 
   /* add user code end usart2_init 2 */
   
   usart_enable(USART2, TRUE);
 
-  /* add user code begin usart2_init 3 */
-//    usart_flag_clear(USART2, USART_TDBE_FLAG);
-//    usart_flag_clear(USART2, USART_TDC_FLAG);
-//    usart_flag_clear(USART2, USART_RDBF_FLAG);
+  /* add user code begin usart2_init 3 */    
+
+
   /* add user code end usart2_init 3 */
 }
 
@@ -208,13 +198,13 @@ void wk_usart3_init(void)
    */
 
   /* add user code begin usart3_init 2 */
-
+    usart_interrupt_enable(USART3, USART_RDBF_INT, TRUE);
+	usart_interrupt_enable(USART3, USART_TDC_INT, TRUE);
   /* add user code end usart3_init 2 */
 
   usart_enable(USART3, TRUE);
 
   /* add user code begin usart3_init 3 */
-
   /* add user code end usart3_init 3 */
 }
 
@@ -262,22 +252,14 @@ void wk_uart4_init(void)
 
   usart_hardware_flow_control_set(UART4, USART_HARDWARE_FLOW_NONE);
 
-  /**
-   * Users need to configure UART4 interrupt functions according to the actual application.
-   * 1. Call the below function to enable the corresponding UART4 interrupt.
-   *     --usart_interrupt_enable(...)
-   * 2. Add the user's interrupt handler code into the below function in the at32f415_int.c file.
-   *     --void UART4_IRQHandler(void)
-   */
-
   /* add user code begin uart4_init 2 */
-
+    usart_interrupt_enable(UART4, USART_RDBF_INT, TRUE);
   /* add user code end uart4_init 2 */
   
   usart_enable(UART4, TRUE);
 
   /* add user code begin uart4_init 3 */
-
+ 
   /* add user code end uart4_init 3 */
 }
 
@@ -323,22 +305,14 @@ void wk_uart5_init(void)
 
   usart_hardware_flow_control_set(UART5, USART_HARDWARE_FLOW_NONE);
 
-  /**
-   * Users need to configure UART5 interrupt functions according to the actual application.
-   * 1. Call the below function to enable the corresponding UART5 interrupt.
-   *     --usart_interrupt_enable(...)
-   * 2. Add the user's interrupt handler code into the below function in the at32f415_int.c file.
-   *     --void UART5_IRQHandler(void)
-   */
-
   /* add user code begin uart5_init 2 */
-
+    usart_interrupt_enable(UART5, USART_RDBF_INT, TRUE);
+	
   /* add user code end uart5_init 2 */
 
   usart_enable(UART5, TRUE);
 
   /* add user code begin uart5_init 3 */
-
   /* add user code end uart5_init 3 */
 }
 

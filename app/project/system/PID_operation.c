@@ -1,5 +1,6 @@
 #include "PID_operation.h"
 
+//创建结构体
 PID direct_pid;
 
 //为了防止积分项过度累积，引入积分项的限幅是一种常见的做法。
@@ -78,12 +79,12 @@ void PID_Init(PID *pid, float Kp, float Ki, float Kd, float Limit_value)
     pid->Integralmax = Limit_value;
     pid->outputmax  = Limit_value;
 }
-
+//清除PID数据
 void PID_Clear(PID *pid)
 {
     pid->PrevError = pid->LastError = pid->Error = pid->SumError = pid->output =  0;
 }
-
+//清除积分项
 void PID_Clear_I(PID *pid)
 {
     pid->SumError = 0;

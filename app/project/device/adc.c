@@ -16,7 +16,7 @@
 u16 get_adcval(adc_channel_select_type adc_channel)
 {
     adc_ordinary_channel_set(ADC1, adc_channel, 1,
-                             ADC_SAMPLETIME_239_5);	//ADC1,ADC通道,序列号1，采样时间为239.5周期
+                             ADC_SAMPLETIME_239_5);                     	//ADC1,ADC通道,序列号1，采样时间为239.5周期
     adc_ordinary_software_trigger_enable(ADC1, TRUE);						//使能指定的ADC1的软件转换启动功能
 
     while (!adc_flag_get(ADC1, ADC_CCE_FLAG));								//等待转换结束

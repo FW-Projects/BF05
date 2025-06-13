@@ -8,9 +8,9 @@ uint8_t off_set_buff[41] = {22, 21, 21, 21, 21, 21, 21, 21, 20, 20,
                            };
 
 /*
-    Direct  handle FAN: TMR2 CH1
+    Direct  handle FAN: TMR9 CH2
 
-	Direct  handle HOT: TMR3 CH1
+	Direct  handle HOT: TMR2 CH1
 
 */
 
@@ -222,8 +222,7 @@ void hot_control(void)
         /* heating control with normal mode  */
         if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
         {
-            if ((sFWG2_t.Direct_handle_state == HANDLE_SLEEP) || \
-                    sFWG2_t.Direct_handle_error_state != HANDLE_OK)
+            if ((sFWG2_t.Direct_handle_state == HANDLE_SLEEP) || sFWG2_t.Direct_handle_error_state != HANDLE_OK)
             {
                 /* close relay */
                 gpio_bits_reset(GPIOB, GPIO_PINS_14);
@@ -235,10 +234,9 @@ void hot_control(void)
                 sFWG2_t.general_parameter.relay_open_flag = false;
                 relay_open_delay = RELAY_OPEN_TIME;
             }
-            else if ((sFWG2_t.Direct_handle_state == HANDLE_WORKING) && \
-                     (sFWG2_t.Direct_handle_error_state == HANDLE_OK  || \
-                   
-                     sFWG2_t.Direct_handle_position == NOT_IN_POSSITION))
+            else if ((sFWG2_t.Direct_handle_state == HANDLE_WORKING) && 
+				(sFWG2_t.Direct_handle_error_state == HANDLE_OK  && 
+				sFWG2_t.Direct_handle_position == NOT_IN_POSSITION))
             {
                 /* open relay */
                 gpio_bits_set(GPIOB, GPIO_PINS_14);
@@ -297,7 +295,7 @@ void hot_control(void)
             else if (sFWG2_t.Direct_handle_error_state != HANDLE_OK)
             {
                 /* close relay */
-                gpio_bits_reset(GPIOC, GPIO_PINS_14);
+                gpio_bits_reset(GPIOB, GPIO_PINS_14);
                 /* close Direct handle pwm output */
                 tmr_counter_enable(TMR2, FALSE);
                 tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, 0);

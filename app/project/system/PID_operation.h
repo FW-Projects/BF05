@@ -22,8 +22,6 @@ typedef struct PID {
 
 extern PID direct_pid;
 
-
-
 void PID_Init(PID *pid, float Kp , float Ki , float Kd , float Limit_value);
 void PID_Clear(PID *pid);
 void PID_Clear_I(PID *pid);

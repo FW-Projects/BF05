@@ -37,7 +37,7 @@
             <ModeSub name="EXINT13" value="TRUE"/>
         </Mode>
         <Parameters>
-            <ParametersSub name="TriggerPolarity_13" value="EXINT_TRIGGER_FALLING_EDGE"/>
+            <ParametersSub name="TriggerPolarity_13" value="EXINT_TRIGGER_BOTH_EDGE"/>
         </Parameters>
     </EXINT>
     <SPI1>
@@ -72,6 +72,8 @@
             <ParametersSub name="CounterDirection" value="TMR_COUNT_DOWN"/>
             <ParametersSub name="Period" value="59999"/>
             <ParametersSub name="OCMode_1" value="TMR_OUTPUT_CONTROL_PWM_MODE_B"/>
+            <ParametersSub name="OC1ImmediatelyMode_PWM" value="TRUE"/>
+            <ParametersSub name="OCPolarity_1" value="TMR_OUTPUT_ACTIVE_LOW"/>
         </Parameters>
     </TMR2>
     <TMR3>
@@ -147,16 +149,13 @@
         <TMR3_GLOBAL_IRQHandler>1;0;0;0;0</TMR3_GLOBAL_IRQHandler>
         <SPI1_IRQHandler>0;0;0;0;0</SPI1_IRQHandler>
         <USART1_IRQHandler>1;0;0;0;0</USART1_IRQHandler>
-        <USART2_IRQHandler>1;0;0;0;0</USART2_IRQHandler>
+        <USART2_IRQHandler>0;0;0;0;0</USART2_IRQHandler>
         <USART3_IRQHandler>1;0;0;0;0</USART3_IRQHandler>
         <EXINT15_10_IRQHandler>1;0;0;0;0</EXINT15_10_IRQHandler>
-        <UART4_IRQHandler>1;0;0;0;0</UART4_IRQHandler>
-        <UART5_IRQHandler>1;0;0;0;0</UART5_IRQHandler>
+        <UART4_IRQHandler>0;0;0;0;0</UART4_IRQHandler>
+        <UART5_IRQHandler>0;0;0;0;0</UART5_IRQHandler>
     </NVIC>
     <GPIO>
-        <Signal SignalName="GPIO_Output" PinName="PC14/LEXT_IN">
-            <Parameters name="Label" value="HOT_K"/>
-        </Signal>
         <Signal SignalName="ADC1_IN10" PinName="PC0">
             <Parameters name="Label" value="HOT_ADC1"/>
         </Signal>
@@ -167,6 +166,7 @@
             <Parameters name="Label" value="SPI1_CS"/>
         </Signal>
         <Signal SignalName="GPIO_Input" PinName="PC4">
+            <Parameters name="GPIO_PullType_Set" value="GPIO_PULL_UP"/>
             <Parameters name="Label" value="SLEEP"/>
         </Signal>
         <Signal SignalName="GPIO_Input" PinName="PC5">
@@ -220,7 +220,6 @@
         <systicsel>8</systicsel>
     </ClockConfiguration>
     <PINInfo>
-        <PinSub pinname="PC14/LEXT_IN" signalname="GPIO_Output" signaltype="3"/>
         <PinSub pinname="PD0/HEXT_IN" signalname="CRM_HEXT_IN" signaltype="2"/>
         <PinSub pinname="PD1/HEXT_OUT" signalname="CRM_HEXT_OUT" signaltype="2"/>
         <PinSub pinname="PC0" signalname="ADC1_IN10" signaltype="3"/>
