@@ -82,7 +82,7 @@ u16 middleValueFilter(void)
 
 
 
-#define N_1 10
+#define N_1 26
 u16 value_buf[N_1];
 u16 sum = 0;
 u16 curNum = 0;

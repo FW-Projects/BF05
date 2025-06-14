@@ -346,9 +346,9 @@ static void Direct_Handle_PWM_Out(void)
                     }
 
                     /* get Direct handle actual temp */
-                    // sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_10) +
-                    //    sFWG2_t.general_parameter.mcu_temp;//效果好
-                    sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2) + sFWG2_t.general_parameter.mcu_temp;
+                     sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_10) +
+                        sFWG2_t.general_parameter.mcu_temp;//效果好
+                    //sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2) + sFWG2_t.general_parameter.mcu_temp;
 
                     /* when the set temp change over 30 will clea I val */
                     if (Direct_handle_last_set_temp != sFWG2_t.Direct_handle_parameter.set_temp)
@@ -433,9 +433,9 @@ static void Direct_Handle_PWM_Out(void)
                     }
 
                     /* get Direct handle actual temp */
-                    // sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_10) +
-                    //    sFWG2_t.general_parameter.mcu_temp;//效果好
-                    sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2)  + sFWG2_t.general_parameter.mcu_temp ;
+                     sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL_10) +
+                        sFWG2_t.general_parameter.mcu_temp;//效果好
+                    //sFWG2_t.Direct_handle_parameter.actual_temp  = (get_adcval(ADC_CHANNEL_10) >> 2)  + sFWG2_t.general_parameter.mcu_temp ;
 
                     /* when the set temp change over 30 will clea I val */
                     if (Direct_handle_last_set_temp != sFWG2_t.Direct_handle_parameter.set_temp)

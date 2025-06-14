@@ -277,9 +277,6 @@ void dwin_task(void)
 
         if (time_count % 5 == 0)
         {
-            //Page_Main_Heartbeat_Packet();
-			//Page_ALL_Curve_Heartbeat_Packet();
-
             Page_General_Heartbeat_Packet();
             Page_Set_Heartbeat_Packet();
             Page_Switch();

@@ -276,7 +276,7 @@ extern uint16_t show_direct_set_wind_time ;
 
 
 void DwinInitialization(DwinObjectType *dwin);
-void Page_Main_Heartbeat_Packet(void);
+
 void Page_General_Heartbeat_Packet(void);
 void Page_Set_Heartbeat_Packet(void);
 void Page_Direct_Work_Heartbeat_Packet(void);
@@ -285,7 +285,7 @@ void Page_Cyclone_Work_Heartbeat_Packet(void);
 void Page_Direct_Curve_Heartbeat_Packet(void);
 void Page_Cyclone_Curve_Heartbeat_Packet(void);
 void Page_Code_Heartbeat_Packet(void);
-void Page_ALL_Curve_Heartbeat_Packet(void);
+
 void Page_Switch(void);
 #endif
 /*********** (C) COPYRIGHT 1999-2019 Moonan Technology *********END OF FILE****/
