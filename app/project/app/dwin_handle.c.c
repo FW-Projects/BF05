@@ -117,7 +117,7 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
             case SET_CHANNEL:
                 sFWG2_t.general_parameter.ch = dwim->rx_buff[FRAME_VAL_L];
 
-                if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN || sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN)
+                if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN || sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
                 {
                     if (dwim->rx_buff[FRAME_VAL_L] == 1)
                     {
