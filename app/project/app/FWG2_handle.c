@@ -30,7 +30,7 @@ uint8_t FWG2_Init(FWG2_Handle * FWG2)
 	
 	FWG2->Direct_handle_parameter.set_calibration_temp  = 0,
 	FWG2->Direct_handle_parameter.linear_calibration_temp = 0,
-
+    
 
 
 /* end the  Direct handle init of*/   
@@ -62,7 +62,8 @@ uint8_t FWG2_Init(FWG2_Handle * FWG2)
 	FWG2->general_parameter.code_mode_state             = CODE_MODE_STOP,
 	FWG2->general_parameter.code_mode_handle_select     = SELECT_DIRECT_HANDLE,
 	
-
+    FWG2->general_parameter.setting_temp_flag           = true;
+	FWG2->general_parameter.setting_wind_flag           = true;
 	FWG2->general_parameter.reset_fwg2_flag	            = false;
 	FWG2->general_parameter.relay_open_flag             = false;
 	FWG2->general_parameter.countdown_flag              = false;

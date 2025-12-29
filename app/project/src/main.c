@@ -251,59 +251,8 @@ void beep_task()
 
 void dwin_task(void)
 {
-    static uint16_t time_count;
-    static bool first_in = false;
-    static uint8_t state = 0;
-
-    if (sFWG2_t.FWG2_STATE == FWG2_WORKING)
-    {
-        if (first_in == false)
-        {
-			/* set fahrenheit value */
-            sFWG2_t.Direct_handle_parameter.set_temp_f_display  =  9 * sFWG2_t.Direct_handle_parameter.set_temp  / 5  + 32;
-			sFWG2_t.Direct_handle_parameter.quick_work_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.quick_work_temp / 5  + 32;
-			sFWG2_t.general_parameter.ch1_set_temp_f_display = 9* sFWG2_t.general_parameter.ch1_set_temp /5 + 32;
-			sFWG2_t.general_parameter.ch2_set_temp_f_display = 9* sFWG2_t.general_parameter.ch2_set_temp /5 + 32;
-			sFWG2_t.general_parameter.ch3_set_temp_f_display = 9* sFWG2_t.general_parameter.ch3_set_temp /5 + 32;
-			sFWG2_t.general_parameter.ch4_set_temp_f_display = 9* sFWG2_t.general_parameter.ch4_set_temp /5 + 32;
-            first_in = true;
-        }
-
-        if (sFWG2_t.general_parameter.work_mode == CODE)
-        {
-            sFWG2_t.Direct_handle_parameter.actual_temp_f_display = 9 * (sFWG2_t.Direct_handle_parameter.actual_temp)  / 5  + 32;
-        }
-        else if (sFWG2_t.general_parameter.work_mode == NORMAL)
-        {
-            if (sFWG2_t.general_parameter.enhance_state == ENHANCE_OPEN)
-            {
-                sFWG2_t.Direct_handle_parameter.actual_temp_f_display = 9 * (sFWG2_t.Direct_handle_parameter.actual_temp -
-                    sFWG2_t.Direct_handle_parameter.set_calibration_temp - ENHANCE_TEMP)  / 5  + 32;
-            }
-            else if (sFWG2_t.general_parameter.enhance_state == ENHANCE_CLOSE)
-            {
-                sFWG2_t.Direct_handle_parameter.actual_temp_f_display = 9 * (sFWG2_t.Direct_handle_parameter.actual_temp -
-                    sFWG2_t.Direct_handle_parameter.set_calibration_temp)  / 5  + 32;
-            }
-        }
-
-        time_count++;
-
-        if (time_count % 5 == 0)
-        {
-            Page_General_Heartbeat_Packet();
-            Page_Set_Heartbeat_Packet();
-            Page_Switch();
-        }
-        else if (time_count % 3 == 0)
-        {
-            Page_Direct_Work_Heartbeat_Packet();
-            Page_Direct_Curve_Heartbeat_Packet();
-            Page_Code_Heartbeat_Packet();
-        }
-
-        sdwin.recv_data(&sdwin);
-    }
+	if(sFWG2_t.FWG2_STATE == FWG2_WORKING)
+     DwinRun();
 }
 
 void work_task(void)

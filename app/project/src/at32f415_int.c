@@ -54,7 +54,7 @@
 #define ADC_TEMP_BASE                    (1.26)
 #define ADC_TEMP_SLOPE                   (-0.00423)
 
-float direct_handle_pid_out;
+
 __IO uint16_t adc1_ordinary_value = 0;
 /* add user code end private define */
 
@@ -281,12 +281,12 @@ void TMR2_GLOBAL_IRQHandler(void)
             Direct_Handle_PWM_Out();
         }
 
-        if (direct_handle_pid_out <= 0)
+        if (sFWG2_t.general_parameter.pid_out <= 0)
         {
-            direct_handle_pid_out = 0;
+            sFWG2_t.general_parameter.pid_out = 0;
         }
 
-        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, (uint32_t)direct_handle_pid_out);
+        tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, (uint32_t)sFWG2_t.general_parameter.pid_out);
         tmr_counter_enable(TMR2, TRUE);
         tmr_flag_clear(TMR2, TMR_OVF_FLAG);
     }
@@ -432,36 +432,36 @@ static void Direct_Handle_PWM_Out(void)
                     }
 
                     /* run pid funtion */
-                    direct_handle_pid_out = PID_Position_Calc(&direct_pid, set_temp,
-                                            actual_temp);
+                    sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, set_temp,
+                                                        actual_temp);
                     direct_hot_run_time_ms++;
                 }
                 /*  when the actual temp over than set temp 100 ,stop pid funtion*/
                 else if (actual_temp > set_temp + PID_RANGE)
                 {
-                    direct_handle_pid_out = 0;
+                    sFWG2_t.general_parameter.pid_out = 0;
                     direct_hot_run_time_ms++;
                 }
                 else if (actual_temp < set_temp - PID_RANGE)
                 {
-                    direct_handle_pid_out = MAX_PWM_OUTPUT;
+                    sFWG2_t.general_parameter.pid_out = MAX_PWM_OUTPUT;
                     direct_hot_run_time_ms++;
                 }
 
-                if (direct_handle_pid_out <= 0)
+                if (sFWG2_t.general_parameter.pid_out <= 0)
                 {
-                    direct_handle_pid_out = 0;
+                    sFWG2_t.general_parameter.pid_out = 0;
                 }
             }
         }
         else if (sFWG2_t.Direct_handle_position == IN_POSSITION && sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN)
         {
-                /* get actual temp */
-                sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL);
-                actual_temp = sFWG2_t.Direct_handle_parameter.actual_temp +
-                              sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-                              sFWG2_t.Direct_handle_parameter.set_calibration_temp;
-            direct_handle_pid_out = 0;
+            /* get actual temp */
+            sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL);
+            actual_temp = sFWG2_t.Direct_handle_parameter.actual_temp +
+                          sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
+                          sFWG2_t.Direct_handle_parameter.set_calibration_temp;
+            sFWG2_t.general_parameter.pid_out = 0;
             PID_Clear(&direct_pid);
         }
 
@@ -469,12 +469,12 @@ static void Direct_Handle_PWM_Out(void)
 
         if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
         {
-                /* get actual temp */
-                sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL);
-                actual_temp = sFWG2_t.Direct_handle_parameter.actual_temp +
-                              sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-                              sFWG2_t.Direct_handle_parameter.set_calibration_temp;
-            direct_handle_pid_out = 0;
+            /* get actual temp */
+            sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL);
+            actual_temp = sFWG2_t.Direct_handle_parameter.actual_temp +
+                          sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
+                          sFWG2_t.Direct_handle_parameter.set_calibration_temp;
+            sFWG2_t.general_parameter.pid_out = 0;
             PID_Clear(&direct_pid);
         }
 
@@ -485,8 +485,6 @@ static void Direct_Handle_PWM_Out(void)
     /* code mode control pid */
     else if (sFWG2_t.general_parameter.work_mode == CODE)
     {
-        direct_pid.Kd = 28000;
-
         /* direct handle control begin */
         if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
         {
@@ -500,51 +498,48 @@ static void Direct_Handle_PWM_Out(void)
 
                 if (sFWG2_t.general_parameter.relay_open_flag == true)
                 {
-                /* get actual temp */
-                sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL);
-                actual_temp = sFWG2_t.Direct_handle_parameter.actual_temp +
-                              sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-                              sFWG2_t.Direct_handle_parameter.set_calibration_temp;
-					
-                    
+                    direct_pid.Kp = 360;
+                    direct_pid.Ki = 2;
+                    direct_pid.Kd = 6000;
+                    /* get actual temp */
+                    sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL);
+                    actual_temp = sFWG2_t.Direct_handle_parameter.actual_temp +
+                                  sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
+                                  sFWG2_t.Direct_handle_parameter.set_calibration_temp;
 
                     /* run pid funtion */
                     if (sFWG2_t.general_parameter.code_ch == 0)
                     {
                         if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code0_pre_temp);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_pre_temp,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code0_pre_temp);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_pre_temp,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code0_temp_1);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_temp_1,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code0_temp_1);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_temp_1,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code0_temp_2);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_temp_2,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code0_temp_2);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_temp_2,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code0_temp_3);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_temp_3,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code0_temp_3);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code0_temp_3,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_END)
@@ -557,38 +552,34 @@ static void Direct_Handle_PWM_Out(void)
                     {
                         if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code1_pre_temp);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_pre_temp,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code1_pre_temp);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_pre_temp,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code1_temp_1);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_temp_1,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code1_temp_1);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_temp_1,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code1_temp_2);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_temp_2,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code1_temp_2);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_temp_2,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code1_temp_3);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_temp_3,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code1_temp_3);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code1_temp_3,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_END)
@@ -601,37 +592,34 @@ static void Direct_Handle_PWM_Out(void)
                     {
                         if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code2_pre_temp);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_pre_temp,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code2_pre_temp);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_pre_temp,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code2_temp_1);
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_temp_1,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code2_temp_1);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_temp_1,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code2_temp_2);
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_temp_2,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code2_temp_2);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_temp_2,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code2_temp_3);
-							
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_temp_3,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code2_temp_3);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code2_temp_3,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_END)
@@ -644,38 +632,34 @@ static void Direct_Handle_PWM_Out(void)
                     {
                         if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code3_pre_temp);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_pre_temp,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code3_pre_temp);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_pre_temp,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_1)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code3_temp_1);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_temp_1,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code3_temp_1);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_temp_1,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_2)
                         {
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code3_temp_2);
-							
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_temp_2,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code3_temp_2);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_temp_2,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_STEUP_3)
                         {
-							
-							sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
-                            sFWG2_t.general_parameter.code3_temp_3);
-                            direct_handle_pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_temp_3,
-                                                    actual_temp);
+                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp = direct_linear_correction(
+                                    sFWG2_t.general_parameter.code3_temp_3);
+                            sFWG2_t.general_parameter.pid_out = PID_Position_Calc(&direct_pid, sFWG2_t.general_parameter.code3_temp_3,
+                                                                actual_temp);
                             direct_hot_run_time_ms++;
                         }
                         else if (sFWG2_t.general_parameter.code_mode_step == CODE_END)
@@ -685,9 +669,9 @@ static void Direct_Handle_PWM_Out(void)
                         }
                     }
 
-                    if (direct_handle_pid_out <= 0)
+                    if (sFWG2_t.general_parameter.pid_out <= 0)
                     {
-                        direct_handle_pid_out = 0;
+                        sFWG2_t.general_parameter.pid_out = 0;
                     }
 
                     direct_pid.Kd = hight_kd;
@@ -702,7 +686,7 @@ static void Direct_Handle_PWM_Out(void)
                               sFWG2_t.Direct_handle_parameter.set_calibration_temp;
                 direct_pid.Kd = low_kd;
                 PID_Clear(&direct_pid);
-                direct_handle_pid_out = 0;
+                sFWG2_t.general_parameter.pid_out = 0;
             }
         }
 
@@ -713,7 +697,7 @@ static void Direct_Handle_PWM_Out(void)
 
     if (sFWG2_t.Direct_handle_error_state != HANDLE_OK)
     {
-        direct_handle_pid_out = 0;
+        sFWG2_t.general_parameter.pid_out = 0;
     }
 }
 
@@ -723,15 +707,10 @@ static void code_mode_time(void)
 {
     static bool first_in = false;
     static uint16_t code_mode_countdown_time = TIME_1S;
-    static uint16_t actual_temp = 0;
 
     /* start of code mode countdown */
     if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_START)
     {
-        actual_temp = sFWG2_t.Direct_handle_parameter.actual_temp +
-                      sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-                      sFWG2_t.Direct_handle_parameter.set_calibration_temp;
-
         if (first_in == false)
         {
             first_in = true;
@@ -821,14 +800,32 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code0_pre_temp - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code0_pre_temp + 3))
+                    if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                     {
-                        code_mode_countdown_time--;
-                    }
-                    else
-                    {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
+                        {
+                            if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code0_pre_temp - 5) && \
+                                    sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code0_pre_temp + 5))
+                            {
+                                code_mode_countdown_time--;
+                            }
+                            else
+                            {
+                                code_mode_countdown_time = TIME_1S;
+                            }
+                        }
+                        else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
+                        {
+                            if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code0_pre_temp_f_display - 10) && \
+                                    sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code0_pre_temp_f_display + 10))
+                            {
+                                code_mode_countdown_time--;
+                            }
+                            else
+                            {
+                                code_mode_countdown_time = TIME_1S;
+                            }
+                        }
                     }
                 }
             }
@@ -836,14 +833,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code0_temp_1 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code0_temp_1 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code0_temp_1 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code0_temp_1 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code0_temp_1_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code0_temp_1_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -851,14 +863,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code0_temp_2 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code0_temp_2 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code0_temp_2 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code0_temp_2 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code0_temp_2_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code0_temp_2_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -866,14 +893,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code0_temp_3 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code0_temp_3 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code0_temp_3 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code0_temp_3 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code0_temp_3_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code0_temp_3_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -884,14 +926,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code1_pre_temp - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code1_pre_temp + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code1_pre_temp - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code1_pre_temp + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code1_pre_temp_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code1_pre_temp_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -899,14 +956,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code1_temp_1 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code1_temp_1 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code1_temp_1 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code1_temp_1 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code1_temp_1_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code1_temp_1_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -914,14 +986,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code1_temp_2 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code1_temp_2 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code1_temp_2 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code1_temp_2 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code1_temp_2_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code1_temp_2_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -929,14 +1016,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code1_temp_3 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code1_temp_3 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code1_temp_3 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code1_temp_3 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code1_temp_3_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code1_temp_3_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -947,14 +1049,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code2_pre_temp - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code2_pre_temp + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code2_pre_temp - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code2_pre_temp + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code2_pre_temp_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code2_pre_temp_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -962,14 +1079,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code2_temp_1 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code2_temp_1 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code2_temp_1 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code2_temp_1 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code2_temp_1_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code2_temp_1_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -977,14 +1109,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code2_temp_2 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code2_temp_2 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code2_temp_2 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code2_temp_2 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code2_temp_2_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code2_temp_2_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -992,14 +1139,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code2_temp_3 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code2_temp_3 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code2_temp_3 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code2_temp_3 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code2_temp_3_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code2_temp_3_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -1010,14 +1172,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code3_pre_temp - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code3_pre_temp + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code3_pre_temp - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code3_pre_temp + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code3_pre_temp_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code3_pre_temp_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -1025,14 +1202,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code3_temp_1 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code3_temp_1 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code3_temp_1 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code3_temp_1 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code3_temp_1_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code3_temp_1_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -1040,14 +1232,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code3_temp_2 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code3_temp_2 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code3_temp_2 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code3_temp_2 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code3_temp_2_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code3_temp_2_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -1055,14 +1262,29 @@ static void code_mode_time(void)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
-                    if (actual_temp > (sFWG2_t.general_parameter.code3_temp_3 - 3) && \
-                            actual_temp < (sFWG2_t.general_parameter.code3_temp_3 + 3))
+                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
                     {
-                        code_mode_countdown_time--;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code3_temp_3 - 5) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code3_temp_3 + 5))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
-                    else
+                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
                     {
-                        code_mode_countdown_time = TIME_1S;
+                        if (sFWG2_t.Direct_handle_parameter.show_temp > (sFWG2_t.general_parameter.code3_temp_3_f_display - 10) && \
+                                sFWG2_t.Direct_handle_parameter.show_temp < (sFWG2_t.general_parameter.code3_temp_3_f_display + 10))
+                        {
+                            code_mode_countdown_time--;
+                        }
+                        else
+                        {
+                            code_mode_countdown_time = TIME_1S;
+                        }
                     }
                 }
             }
@@ -1091,6 +1313,7 @@ static void code_mode_time(void)
     {
         first_in = false;
         code_mode_countdown_time = TIME_1S;
+        sFWG2_t.general_parameter.code_mode_step = CODE_WAIT;
         sFWG2_t.general_parameter.code_mode_countdown_time_display = 0;
     }
 

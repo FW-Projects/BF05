@@ -120,7 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>CMSIS_AGDI</Key>
-          <Name>-X"Any" -UAny -O206 -S0 -C0 -P00000000 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO65555 -TC150000000 -TT10000000 -TP20 -TDS8031 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN1 -FF0AT32F415_128.FLM -FS08000000 -FL020000 -FP0($$Device:-AT32F415RBT7$Flash\AT32F415_128.FLM)</Name>
+          <Name>-X"Any" -UAny -O206 -S8 -C0 -P00000000 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO65555 -TC150000000 -TT10000000 -TP20 -TDS8031 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO15 -FD20000000 -FC1000 -FN1 -FF0AT32F415_128.FLM -FS08000000 -FL020000 -FP0($$Device:-AT32F415RBT7$Flash\AT32F415_128.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -168,93 +168,54 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0AT32F415_128 -FS08000000 -FL00020000 -FP0($$Device:-AT32F415RBT7$Flash\AT32F415_128.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>192</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134240196</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\app\dwin_handle.c.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\AT32F415RBT7_WorkBench\../app/dwin_handle.c.c\192</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t</ItemText>
+          <ItemText>sdwin</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.ch,0x0A</ItemText>
+          <ItemText>sFWG2_t</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.ch1_set_temp,0x0A</ItemText>
+          <ItemText>sFWG2_t.general_parameter.code_mode_state</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.ch1_set_temp_f_display,0x0A</ItemText>
+          <ItemText>sFWG2_t.general_parameter.code_mode_step</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.ch2_set_temp,0x0A</ItemText>
+          <ItemText>sFWG2_t.general_parameter.code_ch,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.ch2_set_temp_f_display,0x0A</ItemText>
+          <ItemText>sFWG2_t.general_parameter.code_mode_countdown_time_display,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.ch3_set_temp,0x0A</ItemText>
+          <ItemText>actual_temp,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.ch3_set_temp_f_display,0x0A</ItemText>
+          <ItemText>sFWG2_t.Direct_handle_parameter.show_temp,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.ch4_set_temp,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>9</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.ch4_set_temp_f_display,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>10</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.Direct_handle_parameter.set_temp,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>11</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.Direct_handle_parameter.set_temp_f_display,0x0A</ItemText>
+          <ItemText>actual_temp,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
-      <WatchWindow2>
-        <Ww>
-          <count>0</count>
-          <WinNumber>2</WinNumber>
-          <ItemText>sFWG2_t.Direct_handle_parameter</ItemText>
-        </Ww>
-      </WatchWindow2>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
@@ -313,13 +274,6 @@
       <pszMrulep></pszMrulep>
       <pSingCmdsp></pSingCmdsp>
       <pMultCmdsp></pMultCmdsp>
-      <LogicAnalyzers>
-        <Wi>
-          <IntNumber>0</IntNumber>
-          <FirstString>sFWG2_t.Direct_handle_parameter.actual_temp &gt;&gt; 7</FirstString>
-          <SecondString>FF000000000000000000000000000000000051400000000000000000000000000000000073465747325F742E4469726563745F68616E646C655F706172616D657465722E61637475616C5F74656D70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000300000001000000000000000000F03F20000000000000000000000000000000000000005C120108</SecondString>
-        </Wi>
-      </LogicAnalyzers>
     </TargetOption>
   </Target>
 

@@ -38,7 +38,8 @@
 
 /* private typedef -----------------------------------------------------------*/
 /* add user code begin private typedef */
-#define LOCAL_DEVICE_ID  0x01
+#define LOCAL_DEVICE_ID_1  0x01
+#define LOCAL_DEVICE_ID_2  0x00
 /* add user code end private typedef */
 
 /* private define ------------------------------------------------------------*/
@@ -415,8 +416,8 @@ void usart1_send_ok(void)
     usart1_tx_buff[0] = 0xD1;
     usart1_tx_buff[1] = 0x02;
     usart1_tx_buff[2] = 0x02;
-    usart1_tx_buff[3] = 0x00;
-    usart1_tx_buff[4] = LOCAL_DEVICE_ID;
+    usart1_tx_buff[3] = LOCAL_DEVICE_ID_2;
+    usart1_tx_buff[4] = LOCAL_DEVICE_ID_1;
     usart1_tx_buff[5] = 0x00;
     usart1_tx_buff[6] = 0x0A;
     usart1_tx_buff[7] = 0x1D;
@@ -452,8 +453,8 @@ void usart1_send_error(void)
     usart1_tx_buff[0] = 0xD1;
     usart1_tx_buff[1] = 0x02;
     usart1_tx_buff[2] = 0x02;
-    usart1_tx_buff[3] = 0x00;
-    usart1_tx_buff[4] = LOCAL_DEVICE_ID;
+    usart1_tx_buff[3] = LOCAL_DEVICE_ID_2;
+    usart1_tx_buff[4] = LOCAL_DEVICE_ID_1;
     usart1_tx_buff[5] = 0x00;
     usart1_tx_buff[6] = 0x0A;
     usart1_tx_buff[7] = 0x00;
@@ -487,18 +488,24 @@ void usart1_connet_pc(void)
 {
     uint32_t crc_value = 0;
     usart1_tx_buff[0] = 0xD1;
+	
     usart1_tx_buff[1] = 0x01;
     usart1_tx_buff[2] = 0x01;
-    usart1_tx_buff[3] = 0x00;
-    usart1_tx_buff[4] = LOCAL_DEVICE_ID;
+	
+    usart1_tx_buff[3] = LOCAL_DEVICE_ID_2;
+    usart1_tx_buff[4] = LOCAL_DEVICE_ID_1;
+	
     usart1_tx_buff[5] = 0x00;
     usart1_tx_buff[6] = 0x0A;
-    usart1_tx_buff[7] = 0x18;
-    usart1_tx_buff[8] = 0x00;
-    usart1_tx_buff[9] = 0x00;
-    usart1_tx_buff[10] = 0x00;
+	
+    usart1_tx_buff[7] = 0x01;
+    usart1_tx_buff[8] = 0x04;
+    usart1_tx_buff[9] = 0x02;
+	
+    usart1_tx_buff[10] = 0x01;
     usart1_tx_buff[11] = 0x00;
     usart1_tx_buff[12] = 0x00;
+	
     usart1_tx_buff[13] = 0x00;
     usart1_tx_buff[14] = 0x00;
     usart1_tx_buff[15] = 0x00;

@@ -56,7 +56,7 @@ void fan_control(void)
                 {
                     sFWG2_t.Direct_handle_parameter.stop_set_wind = 100;
                     /* open fan output with a half of max set val*/
-                    tmr_channel_value_set(TMR9, TMR_SELECT_CHANNEL_2, MAX_SET_WIND_VAL * 1.13 + 30);
+                    tmr_channel_value_set(TMR9, TMR_SELECT_CHANNEL_2, sFWG2_t.Direct_handle_parameter.stop_set_wind * 1.13 + 30);
                 }
                 else if (sFWG2_t.Direct_handle_parameter.actual_temp >= 70 && sFWG2_t.Direct_handle_parameter.actual_temp < 250)
                 {
@@ -168,7 +168,7 @@ void fan_control(void)
                 {
                     sFWG2_t.Direct_handle_parameter.stop_set_wind = 100;
                     /* open fan output with a half of max set val*/
-                    tmr_channel_value_set(TMR9, TMR_SELECT_CHANNEL_2, MAX_SET_WIND_VAL* 1.13 + 30);
+                    tmr_channel_value_set(TMR9, TMR_SELECT_CHANNEL_2, sFWG2_t.Direct_handle_parameter.stop_set_wind* 1.13 + 30);
                 }
                 else if (sFWG2_t.Direct_handle_parameter.actual_temp >= 70 && sFWG2_t.Direct_handle_parameter.actual_temp < 250)
                 {
@@ -350,6 +350,11 @@ int8_t direct_linear_correction(uint16_t user_set_temp)
     volatile uint16_t check_start = 0;
     volatile uint8_t check_value = 0;
 
+	if( user_set_temp<=100)
+	{
+	    return 0;
+	}
+	
     if (sFWG2_t.Direct_handle_parameter.set_wind > 30)
     {
         if (user_set_temp < 300)

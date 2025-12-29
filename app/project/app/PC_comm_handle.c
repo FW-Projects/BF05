@@ -17,11 +17,6 @@ static void WriteDataToPC(PC_DATA_t * pc,
 void pc_event_handle(void);
 void send_heartbeat_data(PC_DATA_t * pc, FWG2_Handle * FWG2);
 
-extern bool show_direct_currtne_temp_flag;
-extern bool show_direct_set_temp_flag;
-extern bool show_direct_set_wind_flag;
-extern float direct_handle_pid_out;
-
 void pc_comm_handle(void)
 {
     static uint16_t time_1 = 0;
@@ -128,11 +123,50 @@ static void WriteDataToPC(PC_DATA_t * pc,
 
 void pc_event_handle(void)
 {
+    static uint32_t crc_value;
+
     switch (pc_event)
     {
     case CONNECT_PC_EVENT:
-        WriteDataToPC(&pc_data, 0x01, 0x01, LOCAL_DEVECE_ID, 0x0A, 256, 0x01, 0x00, 0x00, 0x00);
-        __NOP();
+        pc_data.tx_buff[PC_HEAD1] = PC_HEAD_1;
+	
+        pc_data.tx_buff[PC_CMD1] = 0x01;
+        pc_data.tx_buff[PC_CMD2] = 0x01;
+	
+        pc_data.tx_buff[PC_ID_H] = LOCAL_DEVECE_ID_2;
+        pc_data.tx_buff[PC_ID_L] = LOCAL_DEVECE_ID_1;
+	
+        pc_data.tx_buff[PC_DATA_LEN_H] =  0x00;
+        pc_data.tx_buff[PC_DATA_LEN_L] =  0x0A;
+	
+        pc_data.tx_buff[PC_DATA1_LEN_H] = 0x01;
+        pc_data.tx_buff[PC_DATA1_LEN_L] = 0x04;
+	
+        pc_data.tx_buff[PC_DATA2_LEN_H] = 0x02;
+        pc_data.tx_buff[PC_DATA2_LEN_L] = 0x01;
+	
+        pc_data.tx_buff[PC_DATA3_LEN_H] = 0x00;
+        pc_data.tx_buff[PC_DATA3_LEN_L] = 0x00;
+	
+        pc_data.tx_buff[PC_DATA4_LEN_H] = 0x00;
+        pc_data.tx_buff[PC_DATA4_LEN_L] = 0x00;
+		
+        pc_data.tx_buff[PC_DATA5_LEN_H] = 0x00;
+        pc_data.tx_buff[PC_DATA5_LEN_L] = 0x00;
+		
+        memset(pc_data.check_crc_buff, 0, PC_CRC_BUFF_SIZE);
+        convert_data(pc_data.tx_buff, pc_data.check_crc_buff, PC_CMD1, PC_DATA5_LEN_L);
+        crc_value = crc_block_calculate(pc_data.check_crc_buff, 4);
+        crc_data_reset();
+        pc_data.tx_buff[PC_CRC32_1] = ((crc_value >> 24) & 0xff);
+        pc_data.tx_buff[PC_CRC32_2] = ((crc_value >> 16) & 0xff);
+        pc_data.tx_buff[PC_CRC32_3] = ((crc_value >> 8) & 0xff);
+        pc_data.tx_buff[PC_CRC32_4] = (crc_value & 0xff);
+        pc_data.tx_buff[PC_HEAD2] = PC_HEAD_2;
+		/* send data */
+        usart_sendData(PC_USART, pc_data.tx_buff, PC_MAX_SEND_SIZE);
+        //        WriteDataToPC(&pc_data, 0x01, 0x01, LOCAL_DEVECE_ID_1, 0x0A, 256, 0x01, 0x00, 0x00, 0x00);
+        //        __NOP();
         pc_event = PC_END_EVENT;
         break;
 
@@ -148,89 +182,31 @@ void pc_event_handle(void)
 
 void send_heartbeat_data(PC_DATA_t * pc, FWG2_Handle * FWG2)
 {
-#if 1
+#if 0
     static uint32_t crc_value;
     static uint32_t convert_result;
     static uint8_t last_channel = 0;
     static uint16_t show_set_temp = 0;
-    static int16_t show_actual_temp = 0;
 
-
-    if (sFWG2_t.general_parameter.enhance_state == ENHANCE_CLOSE ||
-            sFWG2_t.general_parameter.enhance_state == ENHANCE_OPEN)
+    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
     {
-        // 计算基础温度值（摄氏温度）
-        int base_temp_c = sFWG2_t.Direct_handle_parameter.actual_temp +
-                          sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-                          sFWG2_t.Direct_handle_parameter.set_calibration_temp;
-
-        // 如果开启增强模式，减去增强温度
-        if (sFWG2_t.general_parameter.enhance_state == ENHANCE_OPEN)
-        {
-            base_temp_c -= ENHANCE_TEMP;
-        }
-
-        // 摄氏温度处理
-        if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
-        {
-            show_actual_temp = (sFWG2_t.Direct_handle_position == IN_POSSITION &&
-                                sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN) ?
-                               sFWG2_t.Direct_handle_parameter.actual_temp : base_temp_c;
-
-            if (show_actual_temp < sFWG2_t.general_parameter.mcu_temp)
-            {
-                show_actual_temp = sFWG2_t.general_parameter.mcu_temp;
-            }
-
-          
-            show_set_temp = sFWG2_t.Direct_handle_parameter.set_temp;
-
-            // 显示锁定检查
-            if (sFWG2_t.general_parameter.display_lock_state == LOCK &&
-                    show_actual_temp < sFWG2_t.Direct_handle_parameter.set_temp + LOCK_RANGE &&
-                    show_actual_temp > sFWG2_t.Direct_handle_parameter.set_temp - LOCK_RANGE)
-            {
-                show_actual_temp = show_set_temp;
-               
-            }
-        }
-        // 华氏温度处理
-        else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
-        {
-            show_actual_temp = (sFWG2_t.Direct_handle_position == IN_POSSITION &&
-                                sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN) ?
-                               sFWG2_t.Direct_handle_parameter.actual_temp * 9 / 5 + 32 : base_temp_c * 9 / 5 + 32;
-            int mcu_temp_f = sFWG2_t.general_parameter.mcu_temp * 9 / 5 + 32;
-
-            if (show_actual_temp < mcu_temp_f)
-            {
-                show_actual_temp = mcu_temp_f;
-            }
-
-           
-            show_set_temp = sFWG2_t.Direct_handle_parameter.set_temp_f_display;
-
-            // 显示锁定检查
-            if (sFWG2_t.general_parameter.display_lock_state == LOCK &&
-                    show_actual_temp < sFWG2_t.Direct_handle_parameter.set_temp_f_display + LOCK_RANGE_F &&
-                    show_actual_temp > sFWG2_t.Direct_handle_parameter.set_temp_f_display - LOCK_RANGE_F)
-            {
-                show_actual_temp = show_set_temp;
-                
-            }
-        }
+        show_set_temp = sFWG2_t.Direct_handle_parameter.set_temp;
+    }
+    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
+    {
+        show_set_temp = sFWG2_t.Direct_handle_parameter.set_temp_f_display;
     }
 
-    if (show_direct_currtne_temp_flag == true || show_direct_set_temp_flag == false)
+    if (sFWG2_t.general_parameter.setting_temp_flag == true)
     {
-        pc->tx_buff[10]       = (uint8_t)(((show_actual_temp) >> 8) & 0xff);
-        pc->tx_buff[11]       = (uint8_t)(((show_actual_temp) & 0XFF));
+        pc->tx_buff[10]       = (uint8_t)((show_set_temp >> 8) & 0xff);
+        pc->tx_buff[11]       = (uint8_t)((show_set_temp & 0XFF));
     }
-	else if (show_direct_set_temp_flag)
-	{
-	   pc->tx_buff[10]       = (uint8_t)((show_set_temp >> 8) & 0xff);
-       pc->tx_buff[11]       = (uint8_t)((show_set_temp & 0XFF)); 
-	}
+    else if (sFWG2_t.general_parameter.setting_temp_flag == false)
+    {
+        pc->tx_buff[10]       = (uint8_t)(((sFWG2_t.Direct_handle_parameter.show_temp) >> 8) & 0xff);
+        pc->tx_buff[11]       = (uint8_t)(((sFWG2_t.Direct_handle_parameter.show_temp) & 0XFF));
+    }
 
     pc->tx_buff[0]        = 0xD1;
     pc->tx_buff[1]        = 0x01;
@@ -242,200 +218,7 @@ void send_heartbeat_data(PC_DATA_t * pc, FWG2_Handle * FWG2)
     pc->tx_buff[7]        = 1;
     pc->tx_buff[8]        = 2;
     pc->tx_buff[9]        = 3;
-
-//    if (show_direct_currtne_temp_flag == true || show_direct_set_temp_flag == false)
-//    {
-//#if 1
-
-//        if (sFWG2_t.general_parameter.display_lock_state == UNLOCK)
-//        {
-//            /* show direct handle current temp */
-//            if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
-//            {
-//                if (sFWG2_t.general_parameter.enhance_state == ENHANCE_OPEN)
-//                {
-//                    if ((sFWG2_t.Direct_handle_parameter.actual_temp + sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                            sFWG2_t.Direct_handle_parameter.set_calibration_temp - ENHANCE_TEMP) > sFWG2_t.general_parameter.mcu_temp)
-//                    {
-//                        pc->tx_buff[10]       = (uint8_t)(((sFWG2_t.Direct_handle_parameter.actual_temp +
-//                                                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                                                            sFWG2_t.Direct_handle_parameter.set_calibration_temp - ENHANCE_TEMP) >> 8) & 0xff);
-//                        pc->tx_buff[11]       = (uint8_t)(((sFWG2_t.Direct_handle_parameter.actual_temp +
-//                                                            sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                                                            sFWG2_t.Direct_handle_parameter.set_calibration_temp - ENHANCE_TEMP) & 0XFF));
-//                    }
-//                    else
-//                    {
-//                        pc->tx_buff[10]       = (uint8_t)((sFWG2_t.general_parameter.mcu_temp >> 8) & 0xff);
-//                        pc->tx_buff[11]     = (uint8_t)((sFWG2_t.general_parameter.mcu_temp & 0XFF));
-//                    }
-//                }
-//                else
-//                {
-//                    if ((sFWG2_t.Direct_handle_parameter.actual_temp + sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                            sFWG2_t.Direct_handle_parameter.set_calibration_temp)  > sFWG2_t.general_parameter.mcu_temp)
-//                    {
-//                        pc->tx_buff[10]       = (uint8_t)((((sFWG2_t.Direct_handle_parameter.actual_temp +
-//                                                             sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                                                             sFWG2_t.Direct_handle_parameter.set_calibration_temp)) >> 8) & 0xff);
-//                        pc->tx_buff[11]       = (uint8_t)((((sFWG2_t.Direct_handle_parameter.actual_temp +
-//                                                             sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                                                             sFWG2_t.Direct_handle_parameter.set_calibration_temp)) & 0XFF));
-//                    }
-//                    else
-//                    {
-//                        pc->tx_buff[10]       = (uint8_t)((sFWG2_t.general_parameter.mcu_temp >> 8) & 0xff);
-//                        pc->tx_buff[11]     = (uint8_t)((sFWG2_t.general_parameter.mcu_temp & 0XFF));
-//                    }
-//                }
-//            }
-//            else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
-//            {
-//                pc->tx_buff[10]       = (uint8_t)((sFWG2_t.Direct_handle_parameter.actual_temp_f_display >> 8) & 0xff);
-//                pc->tx_buff[11]     = (uint8_t)((sFWG2_t.Direct_handle_parameter.actual_temp_f_display & 0XFF));
-//            }
-//        }
-//        else if (sFWG2_t.general_parameter.display_lock_state == LOCK)
-//        {
-//            if (sFWG2_t.general_parameter.enhance_state == ENHANCE_OPEN)
-//            {
-//                if ((sFWG2_t.Direct_handle_parameter.actual_temp + sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                        sFWG2_t.Direct_handle_parameter.set_calibration_temp - ENHANCE_TEMP) <
-//                        (sFWG2_t.Direct_handle_parameter.set_temp + LOCK_RANGE) &&
-//                        (sFWG2_t.Direct_handle_parameter.actual_temp + sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                         sFWG2_t.Direct_handle_parameter.set_calibration_temp - ENHANCE_TEMP) >
-//                        (sFWG2_t.Direct_handle_parameter.set_temp - LOCK_RANGE))
-//                {
-//                    /* show direct handle set temp */
-//                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
-//                    {
-//                        pc->tx_buff[10]       = (uint8_t)((sFWG2_t.Direct_handle_parameter.set_temp >> 8) & 0xff);
-//                        pc->tx_buff[11]     = (uint8_t)((sFWG2_t.Direct_handle_parameter.set_temp & 0XFF));
-//                    }
-//                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
-//                    {
-//                        pc->tx_buff[10]     = (uint8_t)((sFWG2_t.Direct_handle_parameter.set_temp_f_display >> 8) & 0xff);
-//                        pc->tx_buff[11]     = (uint8_t)((sFWG2_t.Direct_handle_parameter.set_temp_f_display & 0XFF));
-//                    }
-//                }
-//                else
-//                {
-//                    /* show direct handle current temp */
-//                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
-//                    {
-//                        pc->tx_buff[10]     = (uint8_t)(((sFWG2_t.Direct_handle_parameter.actual_temp +
-//                                                          sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                                                          sFWG2_t.Direct_handle_parameter.set_calibration_temp - ENHANCE_TEMP) >> 8) & 0xff);
-//                        pc->tx_buff[11]     = (uint8_t)(((sFWG2_t.Direct_handle_parameter.actual_temp +
-//                                                          sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                                                          sFWG2_t.Direct_handle_parameter.set_calibration_temp - ENHANCE_TEMP) & 0XFF));
-//                    }
-//                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
-//                    {
-//                        pc->tx_buff[10]     = (uint8_t)((sFWG2_t.Direct_handle_parameter.actual_temp_f_display >> 8) & 0xff);
-//                        pc->tx_buff[11]     = (uint8_t)((sFWG2_t.Direct_handle_parameter.actual_temp_f_display & 0XFF));
-//                    }
-//                }
-//            }
-//            else if (sFWG2_t.general_parameter.enhance_state == ENHANCE_CLOSE)
-//            {
-//                if ((sFWG2_t.Direct_handle_parameter.actual_temp + sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                        sFWG2_t.Direct_handle_parameter.set_calibration_temp) <
-//                        (sFWG2_t.Direct_handle_parameter.set_temp + LOCK_RANGE) &&
-//                        (sFWG2_t.Direct_handle_parameter.actual_temp + sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                         sFWG2_t.Direct_handle_parameter.set_calibration_temp) >
-//                        (sFWG2_t.Direct_handle_parameter.set_temp - LOCK_RANGE))
-//                {
-//                    /* show direct handle set temp */
-//                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
-//                    {
-//                        pc->tx_buff[10]     = (uint8_t)((sFWG2_t.Direct_handle_parameter.set_temp >> 8) & 0xff);
-//                        pc->tx_buff[11]     = (uint8_t)((sFWG2_t.Direct_handle_parameter.set_temp & 0XFF));
-//                    }
-//                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
-//                    {
-//                        pc->tx_buff[10]     = (uint8_t)((sFWG2_t.Direct_handle_parameter.set_temp_f_display >> 8) & 0xff);
-//                        pc->tx_buff[11]     = (uint8_t)((sFWG2_t.Direct_handle_parameter.set_temp_f_display & 0XFF));
-//                    }
-//                }
-//                else
-//                {
-//                    /* show direct handle current temp */
-//                    if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
-//                    {
-//                        pc->tx_buff[10]     = (uint8_t)(((sFWG2_t.Direct_handle_parameter.actual_temp +
-//                                                          sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                                                          sFWG2_t.Direct_handle_parameter.set_calibration_temp) >> 8) & 0xff);
-//                        pc->tx_buff[11]     = (uint8_t)(((sFWG2_t.Direct_handle_parameter.actual_temp +
-//                                                          sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
-//                                                          sFWG2_t.Direct_handle_parameter.set_calibration_temp) & 0XFF));
-//                    }
-//                    else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
-//                    {
-//                        pc->tx_buff[10]     = (uint8_t)(((sFWG2_t.Direct_handle_parameter.actual_temp_f_display) >> 8) & 0xff);
-//                        pc->tx_buff[11]     = (uint8_t)(((sFWG2_t.Direct_handle_parameter.actual_temp_f_display) & 0XFF));
-//                        sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SHOW_DIRECT_CURRENT_TEMP), DWIN_DATA_BITS,
-//                                        sFWG2_t.Direct_handle_parameter.actual_temp_f_display);
-//                    }
-//                }
-//            }
-//        }
-
-//#endif
-//    }
-//    else if (show_direct_set_temp_flag)
-//    {
-//        /* show direct handle set temp */
-//        if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
-//        {
-//            pc->tx_buff[10]       = (uint8_t)((FWG2->Direct_handle_parameter.set_temp >> 8) & 0xff);
-//            pc->tx_buff[11]       = (uint8_t)((FWG2->Direct_handle_parameter.set_temp & 0XFF));
-//        }
-//        else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
-//        {
-//            pc->tx_buff[10]       = (uint8_t)((FWG2->Direct_handle_parameter.set_temp_f_display >> 8) & 0xff);
-//            pc->tx_buff[11]       = (uint8_t)((FWG2->Direct_handle_parameter.set_temp_f_display & 0XFF));
-//        }
-//    }
-
-    if (sFWG2_t.general_parameter.work_mode == NORMAL)
-    {
-        if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE || sFWG2_t.Direct_handle_work_mode == QUICK_MODE)
-        {
-            /* show direct handle wind */
-            if (show_direct_set_wind_flag == false)
-            {
-                if ((sFWG2_t.Direct_handle_state == HANDLE_WORKING && sFWG2_t.Direct_handle_position == NOT_IN_POSSITION)
-                        || sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_CLOSE)
-                {
-                    pc->tx_buff[12]       = (uint8_t)FWG2->Direct_handle_parameter.set_wind;
-                }
-                else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING && sFWG2_t.Direct_handle_position == IN_POSSITION)
-                {
-                    if (sFWG2_t.Direct_handle_parameter.actual_temp < 65)
-                    {
-                        pc->tx_buff[12]       = (uint8_t)FWG2->Direct_handle_parameter.set_wind;
-                    }
-                    else
-                    {
-                        pc->tx_buff[12]       = (uint8_t)sFWG2_t.Direct_handle_parameter.stop_set_wind;
-                    }
-                }
-                else if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
-                {
-                    pc->tx_buff[12]       = (uint8_t)FWG2->Direct_handle_parameter.set_wind;
-                }
-            }
-            else
-            {
-                pc->tx_buff[12]       = (uint8_t)FWG2->Direct_handle_parameter.set_wind;
-            }
-        }
-        else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
-        {
-            pc->tx_buff[12]       = (uint8_t)sFWG2_t.Direct_handle_parameter.cold_mode_set_wind;
-        }
-    }
+    pc->tx_buff[12]       = (uint8_t)sFWG2_t.Direct_handle_parameter.show_wind;
 
     if (FWG2->general_parameter.countdown_flag == true)
     {
@@ -554,18 +337,18 @@ void send_heartbeat_data(PC_DATA_t * pc, FWG2_Handle * FWG2)
     pc->tx_buff[30]       = (uint8_t)FWG2->Direct_handle_error_state;
     pc->tx_buff[31]       = (uint8_t)FWG2->general_parameter.temp_uint;
     pc->tx_buff[32]       = (uint8_t)FWG2->general_parameter.fwg2_page;
-    pc->tx_buff[33]       = (uint8_t)(direct_handle_pid_out / 599);
+    pc->tx_buff[33]       = (uint8_t)(sFWG2_t.general_parameter.pid_out / 599);
 
-    if (show_direct_currtne_temp_flag == true || show_direct_set_temp_flag == false)
-    {
-        pc->tx_buff[34]   = 0;
-    }
-    else if (show_direct_set_temp_flag)
+    if (sFWG2_t.general_parameter.setting_temp_flag == true)
     {
         pc->tx_buff[34]   = 1;
     }
+    else if (sFWG2_t.general_parameter.setting_temp_flag == false)
+    {
+        pc->tx_buff[34]   = 0;
+    }
 
-    if (show_direct_set_wind_flag || sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
+    if (sFWG2_t.general_parameter.setting_wind_flag || sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
     {
         pc->tx_buff[35]       = 1;
     }
@@ -614,6 +397,34 @@ void send_heartbeat_data(PC_DATA_t * pc, FWG2_Handle * FWG2)
     pc->tx_buff[45] = PC_HEAD_2;
     /* send data */
     usart_sendData(PC_USART, pc->tx_buff, 46);
+#endif
+#if 1
+    static uint32_t crc_value;
+    static uint32_t convert_result;
+    pc->tx_buff[0]        = PC_HEAD_1;
+    pc->tx_buff[1]        = 0x01;
+    pc->tx_buff[2]        = 0x00;
+    pc->tx_buff[3]        = LOCAL_DEVECE_ID_2;
+    pc->tx_buff[4]        = LOCAL_DEVECE_ID_1;
+    pc->tx_buff[5]        = 0x00;
+    pc->tx_buff[6]        = 0x06;
+    pc->tx_buff[7]        = (uint8_t)(((sFWG2_t.Direct_handle_parameter.show_temp) >> 8) & 0xff);
+    pc->tx_buff[8]        = (uint8_t)(((sFWG2_t.Direct_handle_parameter.show_temp) & 0XFF));
+    pc->tx_buff[9]        = (uint8_t)sFWG2_t.Direct_handle_parameter.show_wind;
+    pc->tx_buff[10]       = (uint8_t)FWG2->general_parameter.temp_uint;
+    pc->tx_buff[11]       = 0x00;
+    pc->tx_buff[12]       = 0x00;
+    memset(pc->check_crc_buff, 0, PC_CRC_BUFF_SIZE);
+    convert_data(pc->tx_buff, pc->check_crc_buff, 1, 12);
+    crc_value = crc_block_calculate(pc->check_crc_buff, 12);
+    crc_data_reset();
+    pc->tx_buff[13] = ((crc_value >> 24) & 0xff);
+    pc->tx_buff[14] = ((crc_value >> 16) & 0xff);
+    pc->tx_buff[15] = ((crc_value >> 8) & 0xff);
+    pc->tx_buff[16] = (crc_value & 0xff);
+    pc->tx_buff[17] = PC_HEAD_2;
+	 /* send data */
+    usart_sendData(PC_USART, pc->tx_buff, 18);
 #endif
 }
 

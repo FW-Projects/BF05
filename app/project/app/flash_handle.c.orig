@@ -60,7 +60,7 @@ void FlashProc(void)
     static uint8_t  last_ota_state;
     static uint8_t  last_touch_key_set;
     static uint8_t  last_uart_state;
-	static uint8_t  last_enhance_state;
+    static uint8_t  last_enhance_state;
     static uint16_t last_ch1_set_temp;
     static uint16_t last_ch1_set_wind;
     static uint16_t last_ch1_set_time;
@@ -173,32 +173,32 @@ void FlashProc(void)
                 if (a_ver > b_ver)
                 {
                     get_data_from_a();
-					flash_version = a_ver;
+                    flash_version = a_ver;
                 }
                 else
                 {
                     get_data_from_b();
-					flash_version = b_ver;
+                    flash_version = b_ver;
                 }
             }
             /* check area a data  */
             else if (data_check_len(A_LAST_DIRECT_SET_TEMP_ADDRESS, FLASH_MENBER) != 0xFFFF)
             {
                 get_data_from_a();
-				flash_version = a_ver;
+                flash_version = a_ver;
             }
             /* check area b data  */
             else if (data_check_len(B_LAST_DIRECT_SET_TEMP_ADDRESS, FLASH_MENBER) != 0xFFFF)
             {
                 get_data_from_b();
-				flash_version = b_ver;
+                flash_version = b_ver;
             }
             else
             {
                 get_reset_data();
             }
-            check_all_data();
 
+            check_all_data();
             last_direct_set_temp                  = sFWG2_t.Direct_handle_parameter.set_temp;
             last_direct_set_wind                  = sFWG2_t.Direct_handle_parameter.set_wind;
             last_direct_set_cold_mode_wind        = sFWG2_t.Direct_handle_parameter.cold_mode_set_wind;
@@ -216,8 +216,7 @@ void FlashProc(void)
             last_ota_state                        = sFWG2_t.general_parameter.ota_state;
             last_touch_key_set                    = sFWG2_t.general_parameter.touch_key_set;
             last_uart_state                       = sFWG2_t.general_parameter.uart_state;
-			
-			last_enhance_state                    = sFWG2_t.general_parameter.enhance_state;
+            last_enhance_state                    = sFWG2_t.general_parameter.enhance_state;
             last_ch1_set_temp                     = sFWG2_t.general_parameter.ch1_set_temp;
             last_ch1_set_wind                     = sFWG2_t.general_parameter.ch1_set_wind;
             last_ch1_set_time                     = sFWG2_t.general_parameter.ch1_set_time;
@@ -337,7 +336,7 @@ void FlashProc(void)
                 last_ota_state                        != sFWG2_t.general_parameter.ota_state || \
                 last_touch_key_set                    != sFWG2_t.general_parameter.touch_key_set || \
                 last_uart_state                       != sFWG2_t.general_parameter.uart_state || \
-		        last_enhance_state                    != sFWG2_t.general_parameter.enhance_state || \
+                last_enhance_state                    != sFWG2_t.general_parameter.enhance_state || \
                 last_ch1_set_temp                     != sFWG2_t.general_parameter.ch1_set_temp || \
                 last_ch1_set_wind                     != sFWG2_t.general_parameter.ch1_set_wind || \
                 last_ch1_set_time                     != sFWG2_t.general_parameter.ch1_set_time || \
@@ -471,9 +470,9 @@ void FlashProc(void)
             flash_halfword_program(A_LAST_ADJUST_KEY_SET, sFWG2_t.general_parameter.adjust_key_set);
             flash_halfword_program(A_LAST_OTA_STATE, sFWG2_t.general_parameter.ota_state);
             flash_halfword_program(A_LAST_TOUCH_KEY_SET, sFWG2_t.general_parameter.touch_key_set);
-			//flash_halfword_program(A_LAST_SLEEP_STATE, sFWG2_t.general_parameter.fwg2_sleep_state);
+            //flash_halfword_program(A_LAST_SLEEP_STATE, sFWG2_t.general_parameter.fwg2_sleep_state);
             flash_halfword_program(A_LAST_UART_STATE, sFWG2_t.general_parameter.uart_state);
-			flash_halfword_program(A_LAST_ENHANCE_STATE, sFWG2_t.general_parameter.enhance_state);
+            flash_halfword_program(A_LAST_ENHANCE_STATE, sFWG2_t.general_parameter.enhance_state);
             /* falsh ch data */
             flash_halfword_program(A_LAST_CH1_SET_TEMP, sFWG2_t.general_parameter.ch1_set_temp);
             flash_halfword_program(A_LAST_CH1_SET_WIND, sFWG2_t.general_parameter.ch1_set_wind);
@@ -586,9 +585,9 @@ void FlashProc(void)
             flash_halfword_program(B_LAST_ADJUST_KEY_SET, sFWG2_t.general_parameter.adjust_key_set);
             flash_halfword_program(B_LAST_OTA_STATE, sFWG2_t.general_parameter.ota_state);
             flash_halfword_program(B_LAST_TOUCH_KEY_SET, sFWG2_t.general_parameter.touch_key_set);
-			//flash_halfword_program(B_LAST_SLEEP_STATE, sFWG2_t.general_parameter.fwg2_sleep_state);
+            //flash_halfword_program(B_LAST_SLEEP_STATE, sFWG2_t.general_parameter.fwg2_sleep_state);
             flash_halfword_program(B_LAST_UART_STATE, sFWG2_t.general_parameter.uart_state);
-			flash_halfword_program(B_LAST_ENHANCE_STATE, sFWG2_t.general_parameter.enhance_state);
+            flash_halfword_program(B_LAST_ENHANCE_STATE, sFWG2_t.general_parameter.enhance_state);
             /* falsh ch data */
             flash_halfword_program(B_LAST_CH1_SET_TEMP, sFWG2_t.general_parameter.ch1_set_temp);
             flash_halfword_program(B_LAST_CH1_SET_WIND, sFWG2_t.general_parameter.ch1_set_wind);
@@ -701,9 +700,7 @@ void FlashProc(void)
         last_ota_state                        = sFWG2_t.general_parameter.ota_state;
         last_touch_key_set                    = sFWG2_t.general_parameter.touch_key_set;
         last_uart_state                       = sFWG2_t.general_parameter.uart_state;
-		last_enhance_state                    = sFWG2_t.general_parameter.enhance_state;
-		
-		
+        last_enhance_state                    = sFWG2_t.general_parameter.enhance_state;
         last_ch1_set_temp                     = sFWG2_t.general_parameter.ch1_set_temp;
         last_ch1_set_wind                     = sFWG2_t.general_parameter.ch1_set_wind;
         last_ch1_set_time                     = sFWG2_t.general_parameter.ch1_set_time;
@@ -821,931 +818,963 @@ void FlashProc(void)
 
 static void get_data_from_a(void)
 {
-	sFWG2_t.Direct_handle_parameter.set_temp       = flash_wred_halfword(A_LAST_DIRECT_SET_TEMP_ADDRESS);
-                    sFWG2_t.Direct_handle_parameter.set_wind       = flash_wred_halfword(A_LAST_DIRECT_SET_WIND_ADDRESS);
-                    sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = flash_wred_halfword(A_LAST_DIRECT_SET_COLD_MODE_WIND_ADDRESS);
-                    sFWG2_t.Direct_handle_parameter.set_calibration_temp = flash_wred_halfword(A_LAST_DIRECT_SET_CALIBRATION_TEMP);
-                    sFWG2_t.Direct_handle_parameter.quick_work_temp = flash_wred_halfword(A_LAST_DIRECT_SET_QUICK_TEMP);
-                    sFWG2_t.Direct_handle_parameter.quick_work_time = flash_wred_halfword(A_LAST_DIRECT_SET_QUICK_TIME);
-                    sFWG2_t.general_parameter.work_mode            = flash_wred_halfword(A_LAST_FWG2_WORK_MODE);
-                    sFWG2_t.general_parameter.countdown_time       = flash_wred_halfword(A_LAST_SET_COUNTDOWN_TIME);
-                    sFWG2_t.general_parameter.temp_uint		       = flash_wred_halfword(A_LAST_TEMP_UINT);
-                    sFWG2_t.general_parameter.speak_state          = flash_wred_halfword(A_LAST_SPEAK_STATE);
-                    sFWG2_t.general_parameter.display_lock_state   = flash_wred_halfword(A_LAST_DISPLAY_LOCK_STATE);
-                    sFWG2_t.general_parameter.fn_key_long_set           = flash_wred_halfword(A_LAST_FN_KEY_LONG_SET);
-                    sFWG2_t.general_parameter.fn_key_short_set           = flash_wred_halfword(A_LAST_FN_KEY_SHORT_SET);
-                    sFWG2_t.general_parameter.adjust_key_set       = flash_wred_halfword(A_LAST_ADJUST_KEY_SET);
-                    sFWG2_t.general_parameter.ota_state            = flash_wred_halfword(A_LAST_OTA_STATE);
-                    sFWG2_t.general_parameter.touch_key_set        = flash_wred_halfword(A_LAST_TOUCH_KEY_SET);
-                    sFWG2_t.general_parameter.uart_state           = flash_wred_halfword(A_LAST_UART_STATE);
-					sFWG2_t.general_parameter.enhance_state        = flash_wred_halfword(A_LAST_ENHANCE_STATE);
-                    sFWG2_t.general_parameter.ch1_set_temp         = flash_wred_halfword(A_LAST_CH1_SET_TEMP);
-                    sFWG2_t.general_parameter.ch1_set_wind         = flash_wred_halfword(A_LAST_CH1_SET_WIND);
-                    sFWG2_t.general_parameter.ch1_set_time         = flash_wred_halfword(A_LAST_CH1_SET_TIME);
-                    sFWG2_t.general_parameter.ch2_set_temp         = flash_wred_halfword(A_LAST_CH2_SET_TEMP);
-                    sFWG2_t.general_parameter.ch2_set_wind         = flash_wred_halfword(A_LAST_CH2_SET_WIND);
-                    sFWG2_t.general_parameter.ch2_set_time         = flash_wred_halfword(A_LAST_CH2_SET_TIME);
-                    sFWG2_t.general_parameter.ch3_set_temp         = flash_wred_halfword(A_LAST_CH3_SET_TEMP);
-                    sFWG2_t.general_parameter.ch3_set_wind         = flash_wred_halfword(A_LAST_CH3_SET_WIND);
-                    sFWG2_t.general_parameter.ch3_set_time         = flash_wred_halfword(A_LAST_CH3_SET_TIME);
-                    sFWG2_t.general_parameter.ch4_set_temp         = flash_wred_halfword(A_LAST_CH4_SET_TEMP);
-                    sFWG2_t.general_parameter.ch4_set_wind         = flash_wred_halfword(A_LAST_CH4_SET_WIND);
-                    sFWG2_t.general_parameter.ch4_set_time         = flash_wred_halfword(A_LAST_CH4_SET_TIME);
-                    sFWG2_t.general_parameter.code0_pre_temp	   = flash_wred_halfword(A_LAST_CODE0_PRE_TEMP);
-                    sFWG2_t.general_parameter.code0_pre_wind	   = flash_wred_halfword(A_LAST_CODE0_PRE_WIND);
-                    sFWG2_t.general_parameter.code0_pre_time	   = flash_wred_halfword(A_LAST_CODE0_PRE_TIME);
-                    sFWG2_t.general_parameter.code0_temp_1  	   = flash_wred_halfword(A_LAST_CODE0_TEMP_1);
-                    sFWG2_t.general_parameter.code0_wind_1  	   = flash_wred_halfword(A_LAST_CODE0_WIND_1);
-                    sFWG2_t.general_parameter.code0_time_1  	   = flash_wred_halfword(A_LAST_CODE0_TIME_1);
-                    sFWG2_t.general_parameter.code0_temp_2  	   = flash_wred_halfword(A_LAST_CODE0_TEMP_2);
-                    sFWG2_t.general_parameter.code0_wind_2  	   = flash_wred_halfword(A_LAST_CODE0_WIND_2);
-                    sFWG2_t.general_parameter.code0_time_2  	   = flash_wred_halfword(A_LAST_CODE0_TIME_2);
-                    sFWG2_t.general_parameter.code0_temp_3         = flash_wred_halfword(A_LAST_CODE0_TEMP_3);
-                    sFWG2_t.general_parameter.code0_wind_3  	   = flash_wred_halfword(A_LAST_CODE0_WIND_3);
-                    sFWG2_t.general_parameter.code0_time_3  	   = flash_wred_halfword(A_LAST_CODE0_TIME_3);
-                    sFWG2_t.general_parameter.code0_temp_4  	   = flash_wred_halfword(A_LAST_CODE0_TEMP_4);
-                    sFWG2_t.general_parameter.code0_wind_4  	   = flash_wred_halfword(A_LAST_CODE0_WIND_4);
-                    sFWG2_t.general_parameter.code0_time_4  	   = flash_wred_halfword(A_LAST_CODE0_TIME_4);
-                    sFWG2_t.general_parameter.code1_pre_temp	   = flash_wred_halfword(A_LAST_CODE1_PRE_TEMP);
-                    sFWG2_t.general_parameter.code1_pre_wind	   = flash_wred_halfword(A_LAST_CODE1_PRE_WIND);
-                    sFWG2_t.general_parameter.code1_pre_time	   = flash_wred_halfword(A_LAST_CODE1_PRE_TIME);
-                    sFWG2_t.general_parameter.code1_temp_1  	   = flash_wred_halfword(A_LAST_CODE1_TEMP_1);
-                    sFWG2_t.general_parameter.code1_wind_1  	   = flash_wred_halfword(A_LAST_CODE1_WIND_1);
-                    sFWG2_t.general_parameter.code1_time_1  	   = flash_wred_halfword(A_LAST_CODE1_TIME_1);
-                    sFWG2_t.general_parameter.code1_temp_2  	   = flash_wred_halfword(A_LAST_CODE1_TEMP_2);
-                    sFWG2_t.general_parameter.code1_wind_2  	   = flash_wred_halfword(A_LAST_CODE1_WIND_2);
-                    sFWG2_t.general_parameter.code1_time_2  	   = flash_wred_halfword(A_LAST_CODE1_TIME_2);
-                    sFWG2_t.general_parameter.code1_temp_3         = flash_wred_halfword(A_LAST_CODE1_TEMP_3);
-                    sFWG2_t.general_parameter.code1_wind_3  	   = flash_wred_halfword(A_LAST_CODE1_WIND_3);
-                    sFWG2_t.general_parameter.code1_time_3  	   = flash_wred_halfword(A_LAST_CODE1_TIME_3);
-                    sFWG2_t.general_parameter.code1_temp_4  	   = flash_wred_halfword(A_LAST_CODE1_TEMP_4);
-                    sFWG2_t.general_parameter.code1_wind_4  	   = flash_wred_halfword(A_LAST_CODE1_WIND_4);
-                    sFWG2_t.general_parameter.code1_time_4  	   = flash_wred_halfword(A_LAST_CODE1_TIME_4);
-                    sFWG2_t.general_parameter.code2_pre_temp 	   = flash_wred_halfword(A_LAST_CODE2_PRE_WIND);
-                    sFWG2_t.general_parameter.code2_pre_wind 	   = flash_wred_halfword(A_LAST_CODE2_PRE_WIND);
-                    sFWG2_t.general_parameter.code2_pre_time	   = flash_wred_halfword(A_LAST_CODE2_PRE_TIME);
-                    sFWG2_t.general_parameter.code2_temp_1  	   = flash_wred_halfword(A_LAST_CODE2_TEMP_1);
-                    sFWG2_t.general_parameter.code2_wind_1  	   = flash_wred_halfword(A_LAST_CODE2_WIND_1);
-                    sFWG2_t.general_parameter.code2_time_1  	   = flash_wred_halfword(A_LAST_CODE2_TIME_1);
-                    sFWG2_t.general_parameter.code2_temp_2  	   = flash_wred_halfword(A_LAST_CODE2_TEMP_2);
-                    sFWG2_t.general_parameter.code2_wind_2  	   = flash_wred_halfword(A_LAST_CODE2_WIND_2);
-                    sFWG2_t.general_parameter.code2_time_2  	   = flash_wred_halfword(A_LAST_CODE2_TIME_2);
-                    sFWG2_t.general_parameter.code2_temp_3         = flash_wred_halfword(A_LAST_CODE2_TEMP_3);
-                    sFWG2_t.general_parameter.code2_wind_3  	   = flash_wred_halfword(A_LAST_CODE2_WIND_3);
-                    sFWG2_t.general_parameter.code2_time_3  	   = flash_wred_halfword(A_LAST_CODE2_TIME_3);
-                    sFWG2_t.general_parameter.code2_temp_4  	   = flash_wred_halfword(A_LAST_CODE2_TEMP_4);
-                    sFWG2_t.general_parameter.code2_wind_4  	   = flash_wred_halfword(A_LAST_CODE2_WIND_4);
-                    sFWG2_t.general_parameter.code2_time_4  	   = flash_wred_halfword(A_LAST_CODE2_TIME_4);
-                    sFWG2_t.general_parameter.code3_pre_temp 	   = flash_wred_halfword(A_LAST_CODE3_PRE_WIND);
-                    sFWG2_t.general_parameter.code3_pre_wind 	   = flash_wred_halfword(A_LAST_CODE3_PRE_WIND);
-                    sFWG2_t.general_parameter.code3_pre_time	   = flash_wred_halfword(A_LAST_CODE3_PRE_TIME);
-                    sFWG2_t.general_parameter.code3_temp_1  	   = flash_wred_halfword(A_LAST_CODE3_TEMP_1);
-                    sFWG2_t.general_parameter.code3_wind_1  	   = flash_wred_halfword(A_LAST_CODE3_WIND_1);
-                    sFWG2_t.general_parameter.code3_time_1  	   = flash_wred_halfword(A_LAST_CODE3_TIME_1);
-                    sFWG2_t.general_parameter.code3_temp_2  	   = flash_wred_halfword(A_LAST_CODE3_TEMP_2);
-                    sFWG2_t.general_parameter.code3_wind_2  	   = flash_wred_halfword(A_LAST_CODE3_WIND_2);
-                    sFWG2_t.general_parameter.code3_time_2  	   = flash_wred_halfword(A_LAST_CODE3_TIME_2);
-                    sFWG2_t.general_parameter.code3_temp_3         = flash_wred_halfword(A_LAST_CODE3_TEMP_3);
-                    sFWG2_t.general_parameter.code3_wind_3  	   = flash_wred_halfword(A_LAST_CODE3_WIND_3);
-                    sFWG2_t.general_parameter.code3_time_3  	   = flash_wred_halfword(A_LAST_CODE3_TIME_3);
-                    sFWG2_t.general_parameter.code3_temp_4  	   = flash_wred_halfword(A_LAST_CODE3_TEMP_4);
-                    sFWG2_t.general_parameter.code3_wind_4  	   = flash_wred_halfword(A_LAST_CODE3_WIND_4);
-                    sFWG2_t.general_parameter.code3_time_4  	   = flash_wred_halfword(A_LAST_CODE3_TIME_4);
-                    sFWG2_t.general_parameter.code4_pre_temp 	   = flash_wred_halfword(A_LAST_CODE4_PRE_WIND);
-                    sFWG2_t.general_parameter.code4_pre_wind 	   = flash_wred_halfword(A_LAST_CODE4_PRE_WIND);
-                    sFWG2_t.general_parameter.code4_pre_time	   = flash_wred_halfword(A_LAST_CODE4_PRE_TIME);
-                    sFWG2_t.general_parameter.code4_temp_1  	   = flash_wred_halfword(A_LAST_CODE4_TEMP_1);
-                    sFWG2_t.general_parameter.code4_wind_1  	   = flash_wred_halfword(A_LAST_CODE4_WIND_1);
-                    sFWG2_t.general_parameter.code4_time_1  	   = flash_wred_halfword(A_LAST_CODE4_TIME_1);
-                    sFWG2_t.general_parameter.code4_temp_2  	   = flash_wred_halfword(A_LAST_CODE4_TEMP_2);
-                    sFWG2_t.general_parameter.code4_wind_2  	   = flash_wred_halfword(A_LAST_CODE4_WIND_2);
-                    sFWG2_t.general_parameter.code4_time_2  	   = flash_wred_halfword(A_LAST_CODE4_TIME_2);
-                    sFWG2_t.general_parameter.code4_temp_3         = flash_wred_halfword(A_LAST_CODE4_TEMP_3);
-                    sFWG2_t.general_parameter.code4_wind_3  	   = flash_wred_halfword(A_LAST_CODE4_WIND_3);
-                    sFWG2_t.general_parameter.code4_time_3  	   = flash_wred_halfword(A_LAST_CODE4_TIME_3);
-                    sFWG2_t.general_parameter.code4_temp_4  	   = flash_wred_halfword(A_LAST_CODE4_TEMP_4);
-                    sFWG2_t.general_parameter.code4_wind_4  	   = flash_wred_halfword(A_LAST_CODE4_WIND_4);
-                    sFWG2_t.general_parameter.code4_time_4  	   = flash_wred_halfword(A_LAST_CODE4_TIME_4);
-                    sFWG2_t.general_parameter.system_run_time_m    = flash_wred_halfword(A_LAST_SYSTEM_RUN_TIME);
-                    sFWG2_t.general_parameter.direct_hot_work_time_m  = flash_wred_halfword(A_LAST_DIRECT_HOT_WORK_TIME);
+    sFWG2_t.Direct_handle_parameter.set_temp       = flash_wred_halfword(A_LAST_DIRECT_SET_TEMP_ADDRESS);
+    sFWG2_t.Direct_handle_parameter.set_wind       = flash_wred_halfword(A_LAST_DIRECT_SET_WIND_ADDRESS);
+    sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = flash_wred_halfword(A_LAST_DIRECT_SET_COLD_MODE_WIND_ADDRESS);
+    sFWG2_t.Direct_handle_parameter.set_calibration_temp = flash_wred_halfword(A_LAST_DIRECT_SET_CALIBRATION_TEMP);
+    sFWG2_t.Direct_handle_parameter.quick_work_temp = flash_wred_halfword(A_LAST_DIRECT_SET_QUICK_TEMP);
+    sFWG2_t.Direct_handle_parameter.quick_work_time = flash_wred_halfword(A_LAST_DIRECT_SET_QUICK_TIME);
+    sFWG2_t.general_parameter.work_mode            = flash_wred_halfword(A_LAST_FWG2_WORK_MODE);
+    sFWG2_t.general_parameter.countdown_time       = flash_wred_halfword(A_LAST_SET_COUNTDOWN_TIME);
+    sFWG2_t.general_parameter.temp_uint		       = flash_wred_halfword(A_LAST_TEMP_UINT);
+    sFWG2_t.general_parameter.speak_state          = flash_wred_halfword(A_LAST_SPEAK_STATE);
+    sFWG2_t.general_parameter.display_lock_state   = flash_wred_halfword(A_LAST_DISPLAY_LOCK_STATE);
+    sFWG2_t.general_parameter.fn_key_long_set           = flash_wred_halfword(A_LAST_FN_KEY_LONG_SET);
+    sFWG2_t.general_parameter.fn_key_short_set           = flash_wred_halfword(A_LAST_FN_KEY_SHORT_SET);
+    sFWG2_t.general_parameter.adjust_key_set       = flash_wred_halfword(A_LAST_ADJUST_KEY_SET);
+    sFWG2_t.general_parameter.ota_state            = flash_wred_halfword(A_LAST_OTA_STATE);
+    sFWG2_t.general_parameter.touch_key_set        = flash_wred_halfword(A_LAST_TOUCH_KEY_SET);
+    sFWG2_t.general_parameter.uart_state           = flash_wred_halfword(A_LAST_UART_STATE);
+    sFWG2_t.general_parameter.enhance_state        = flash_wred_halfword(A_LAST_ENHANCE_STATE);
+    sFWG2_t.general_parameter.ch1_set_temp         = flash_wred_halfword(A_LAST_CH1_SET_TEMP);
+    sFWG2_t.general_parameter.ch1_set_wind         = flash_wred_halfword(A_LAST_CH1_SET_WIND);
+    sFWG2_t.general_parameter.ch1_set_time         = flash_wred_halfword(A_LAST_CH1_SET_TIME);
+    sFWG2_t.general_parameter.ch2_set_temp         = flash_wred_halfword(A_LAST_CH2_SET_TEMP);
+    sFWG2_t.general_parameter.ch2_set_wind         = flash_wred_halfword(A_LAST_CH2_SET_WIND);
+    sFWG2_t.general_parameter.ch2_set_time         = flash_wred_halfword(A_LAST_CH2_SET_TIME);
+    sFWG2_t.general_parameter.ch3_set_temp         = flash_wred_halfword(A_LAST_CH3_SET_TEMP);
+    sFWG2_t.general_parameter.ch3_set_wind         = flash_wred_halfword(A_LAST_CH3_SET_WIND);
+    sFWG2_t.general_parameter.ch3_set_time         = flash_wred_halfword(A_LAST_CH3_SET_TIME);
+    sFWG2_t.general_parameter.ch4_set_temp         = flash_wred_halfword(A_LAST_CH4_SET_TEMP);
+    sFWG2_t.general_parameter.ch4_set_wind         = flash_wred_halfword(A_LAST_CH4_SET_WIND);
+    sFWG2_t.general_parameter.ch4_set_time         = flash_wred_halfword(A_LAST_CH4_SET_TIME);
+    sFWG2_t.general_parameter.code0_pre_temp	   = flash_wred_halfword(A_LAST_CODE0_PRE_TEMP);
+    sFWG2_t.general_parameter.code0_pre_wind	   = flash_wred_halfword(A_LAST_CODE0_PRE_WIND);
+    sFWG2_t.general_parameter.code0_pre_time	   = flash_wred_halfword(A_LAST_CODE0_PRE_TIME);
+    sFWG2_t.general_parameter.code0_temp_1  	   = flash_wred_halfword(A_LAST_CODE0_TEMP_1);
+    sFWG2_t.general_parameter.code0_wind_1  	   = flash_wred_halfword(A_LAST_CODE0_WIND_1);
+    sFWG2_t.general_parameter.code0_time_1  	   = flash_wred_halfword(A_LAST_CODE0_TIME_1);
+    sFWG2_t.general_parameter.code0_temp_2  	   = flash_wred_halfword(A_LAST_CODE0_TEMP_2);
+    sFWG2_t.general_parameter.code0_wind_2  	   = flash_wred_halfword(A_LAST_CODE0_WIND_2);
+    sFWG2_t.general_parameter.code0_time_2  	   = flash_wred_halfword(A_LAST_CODE0_TIME_2);
+    sFWG2_t.general_parameter.code0_temp_3         = flash_wred_halfword(A_LAST_CODE0_TEMP_3);
+    sFWG2_t.general_parameter.code0_wind_3  	   = flash_wred_halfword(A_LAST_CODE0_WIND_3);
+    sFWG2_t.general_parameter.code0_time_3  	   = flash_wred_halfword(A_LAST_CODE0_TIME_3);
+    sFWG2_t.general_parameter.code0_temp_4  	   = flash_wred_halfword(A_LAST_CODE0_TEMP_4);
+    sFWG2_t.general_parameter.code0_wind_4  	   = flash_wred_halfword(A_LAST_CODE0_WIND_4);
+    sFWG2_t.general_parameter.code0_time_4  	   = flash_wred_halfword(A_LAST_CODE0_TIME_4);
+    sFWG2_t.general_parameter.code1_pre_temp	   = flash_wred_halfword(A_LAST_CODE1_PRE_TEMP);
+    sFWG2_t.general_parameter.code1_pre_wind	   = flash_wred_halfword(A_LAST_CODE1_PRE_WIND);
+    sFWG2_t.general_parameter.code1_pre_time	   = flash_wred_halfword(A_LAST_CODE1_PRE_TIME);
+    sFWG2_t.general_parameter.code1_temp_1  	   = flash_wred_halfword(A_LAST_CODE1_TEMP_1);
+    sFWG2_t.general_parameter.code1_wind_1  	   = flash_wred_halfword(A_LAST_CODE1_WIND_1);
+    sFWG2_t.general_parameter.code1_time_1  	   = flash_wred_halfword(A_LAST_CODE1_TIME_1);
+    sFWG2_t.general_parameter.code1_temp_2  	   = flash_wred_halfword(A_LAST_CODE1_TEMP_2);
+    sFWG2_t.general_parameter.code1_wind_2  	   = flash_wred_halfword(A_LAST_CODE1_WIND_2);
+    sFWG2_t.general_parameter.code1_time_2  	   = flash_wred_halfword(A_LAST_CODE1_TIME_2);
+    sFWG2_t.general_parameter.code1_temp_3         = flash_wred_halfword(A_LAST_CODE1_TEMP_3);
+    sFWG2_t.general_parameter.code1_wind_3  	   = flash_wred_halfword(A_LAST_CODE1_WIND_3);
+    sFWG2_t.general_parameter.code1_time_3  	   = flash_wred_halfword(A_LAST_CODE1_TIME_3);
+    sFWG2_t.general_parameter.code1_temp_4  	   = flash_wred_halfword(A_LAST_CODE1_TEMP_4);
+    sFWG2_t.general_parameter.code1_wind_4  	   = flash_wred_halfword(A_LAST_CODE1_WIND_4);
+    sFWG2_t.general_parameter.code1_time_4  	   = flash_wred_halfword(A_LAST_CODE1_TIME_4);
+    sFWG2_t.general_parameter.code2_pre_temp 	   = flash_wred_halfword(A_LAST_CODE2_PRE_WIND);
+    sFWG2_t.general_parameter.code2_pre_wind 	   = flash_wred_halfword(A_LAST_CODE2_PRE_WIND);
+    sFWG2_t.general_parameter.code2_pre_time	   = flash_wred_halfword(A_LAST_CODE2_PRE_TIME);
+    sFWG2_t.general_parameter.code2_temp_1  	   = flash_wred_halfword(A_LAST_CODE2_TEMP_1);
+    sFWG2_t.general_parameter.code2_wind_1  	   = flash_wred_halfword(A_LAST_CODE2_WIND_1);
+    sFWG2_t.general_parameter.code2_time_1  	   = flash_wred_halfword(A_LAST_CODE2_TIME_1);
+    sFWG2_t.general_parameter.code2_temp_2  	   = flash_wred_halfword(A_LAST_CODE2_TEMP_2);
+    sFWG2_t.general_parameter.code2_wind_2  	   = flash_wred_halfword(A_LAST_CODE2_WIND_2);
+    sFWG2_t.general_parameter.code2_time_2  	   = flash_wred_halfword(A_LAST_CODE2_TIME_2);
+    sFWG2_t.general_parameter.code2_temp_3         = flash_wred_halfword(A_LAST_CODE2_TEMP_3);
+    sFWG2_t.general_parameter.code2_wind_3  	   = flash_wred_halfword(A_LAST_CODE2_WIND_3);
+    sFWG2_t.general_parameter.code2_time_3  	   = flash_wred_halfword(A_LAST_CODE2_TIME_3);
+    sFWG2_t.general_parameter.code2_temp_4  	   = flash_wred_halfword(A_LAST_CODE2_TEMP_4);
+    sFWG2_t.general_parameter.code2_wind_4  	   = flash_wred_halfword(A_LAST_CODE2_WIND_4);
+    sFWG2_t.general_parameter.code2_time_4  	   = flash_wred_halfword(A_LAST_CODE2_TIME_4);
+    sFWG2_t.general_parameter.code3_pre_temp 	   = flash_wred_halfword(A_LAST_CODE3_PRE_WIND);
+    sFWG2_t.general_parameter.code3_pre_wind 	   = flash_wred_halfword(A_LAST_CODE3_PRE_WIND);
+    sFWG2_t.general_parameter.code3_pre_time	   = flash_wred_halfword(A_LAST_CODE3_PRE_TIME);
+    sFWG2_t.general_parameter.code3_temp_1  	   = flash_wred_halfword(A_LAST_CODE3_TEMP_1);
+    sFWG2_t.general_parameter.code3_wind_1  	   = flash_wred_halfword(A_LAST_CODE3_WIND_1);
+    sFWG2_t.general_parameter.code3_time_1  	   = flash_wred_halfword(A_LAST_CODE3_TIME_1);
+    sFWG2_t.general_parameter.code3_temp_2  	   = flash_wred_halfword(A_LAST_CODE3_TEMP_2);
+    sFWG2_t.general_parameter.code3_wind_2  	   = flash_wred_halfword(A_LAST_CODE3_WIND_2);
+    sFWG2_t.general_parameter.code3_time_2  	   = flash_wred_halfword(A_LAST_CODE3_TIME_2);
+    sFWG2_t.general_parameter.code3_temp_3         = flash_wred_halfword(A_LAST_CODE3_TEMP_3);
+    sFWG2_t.general_parameter.code3_wind_3  	   = flash_wred_halfword(A_LAST_CODE3_WIND_3);
+    sFWG2_t.general_parameter.code3_time_3  	   = flash_wred_halfword(A_LAST_CODE3_TIME_3);
+    sFWG2_t.general_parameter.code3_temp_4  	   = flash_wred_halfword(A_LAST_CODE3_TEMP_4);
+    sFWG2_t.general_parameter.code3_wind_4  	   = flash_wred_halfword(A_LAST_CODE3_WIND_4);
+    sFWG2_t.general_parameter.code3_time_4  	   = flash_wred_halfword(A_LAST_CODE3_TIME_4);
+    sFWG2_t.general_parameter.code4_pre_temp 	   = flash_wred_halfword(A_LAST_CODE4_PRE_WIND);
+    sFWG2_t.general_parameter.code4_pre_wind 	   = flash_wred_halfword(A_LAST_CODE4_PRE_WIND);
+    sFWG2_t.general_parameter.code4_pre_time	   = flash_wred_halfword(A_LAST_CODE4_PRE_TIME);
+    sFWG2_t.general_parameter.code4_temp_1  	   = flash_wred_halfword(A_LAST_CODE4_TEMP_1);
+    sFWG2_t.general_parameter.code4_wind_1  	   = flash_wred_halfword(A_LAST_CODE4_WIND_1);
+    sFWG2_t.general_parameter.code4_time_1  	   = flash_wred_halfword(A_LAST_CODE4_TIME_1);
+    sFWG2_t.general_parameter.code4_temp_2  	   = flash_wred_halfword(A_LAST_CODE4_TEMP_2);
+    sFWG2_t.general_parameter.code4_wind_2  	   = flash_wred_halfword(A_LAST_CODE4_WIND_2);
+    sFWG2_t.general_parameter.code4_time_2  	   = flash_wred_halfword(A_LAST_CODE4_TIME_2);
+    sFWG2_t.general_parameter.code4_temp_3         = flash_wred_halfword(A_LAST_CODE4_TEMP_3);
+    sFWG2_t.general_parameter.code4_wind_3  	   = flash_wred_halfword(A_LAST_CODE4_WIND_3);
+    sFWG2_t.general_parameter.code4_time_3  	   = flash_wred_halfword(A_LAST_CODE4_TIME_3);
+    sFWG2_t.general_parameter.code4_temp_4  	   = flash_wred_halfword(A_LAST_CODE4_TEMP_4);
+    sFWG2_t.general_parameter.code4_wind_4  	   = flash_wred_halfword(A_LAST_CODE4_WIND_4);
+    sFWG2_t.general_parameter.code4_time_4  	   = flash_wred_halfword(A_LAST_CODE4_TIME_4);
+    sFWG2_t.general_parameter.system_run_time_m    = flash_wred_halfword(A_LAST_SYSTEM_RUN_TIME);
+    sFWG2_t.general_parameter.direct_hot_work_time_m  = flash_wred_halfword(A_LAST_DIRECT_HOT_WORK_TIME);
 }
+
 static void get_data_from_b(void)
 {
-	sFWG2_t.Direct_handle_parameter.set_temp       = flash_wred_halfword(B_LAST_DIRECT_SET_TEMP_ADDRESS);
-                    sFWG2_t.Direct_handle_parameter.set_wind       = flash_wred_halfword(B_LAST_DIRECT_SET_WIND_ADDRESS);
-                    sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = flash_wred_halfword(B_LAST_DIRECT_SET_COLD_MODE_WIND_ADDRESS);
-                    sFWG2_t.Direct_handle_parameter.set_calibration_temp = flash_wred_halfword(B_LAST_DIRECT_SET_CALIBRATION_TEMP);
-                    sFWG2_t.Direct_handle_parameter.quick_work_temp = flash_wred_halfword(B_LAST_DIRECT_SET_QUICK_TEMP);
-                    sFWG2_t.Direct_handle_parameter.quick_work_time = flash_wred_halfword(B_LAST_DIRECT_SET_QUICK_TIME);
-                    sFWG2_t.general_parameter.work_mode            = flash_wred_halfword(B_LAST_FWG2_WORK_MODE);
-                    sFWG2_t.general_parameter.countdown_time       = flash_wred_halfword(B_LAST_SET_COUNTDOWN_TIME);
-                    sFWG2_t.general_parameter.temp_uint		       = flash_wred_halfword(B_LAST_TEMP_UINT);
-                    sFWG2_t.general_parameter.speak_state          = flash_wred_halfword(B_LAST_SPEAK_STATE);
-                    sFWG2_t.general_parameter.display_lock_state   = flash_wred_halfword(B_LAST_DISPLAY_LOCK_STATE);
-                    sFWG2_t.general_parameter.fn_key_long_set           = flash_wred_halfword(B_LAST_FN_KEY_LONG_SET);
-                    sFWG2_t.general_parameter.fn_key_short_set           = flash_wred_halfword(B_LAST_FN_KEY_SHORT_SET);
-                    sFWG2_t.general_parameter.adjust_key_set       = flash_wred_halfword(B_LAST_ADJUST_KEY_SET);
-                    sFWG2_t.general_parameter.ota_state            = flash_wred_halfword(B_LAST_OTA_STATE);
-                    sFWG2_t.general_parameter.touch_key_set        = flash_wred_halfword(B_LAST_TOUCH_KEY_SET);
-                    sFWG2_t.general_parameter.uart_state           = flash_wred_halfword(B_LAST_UART_STATE);
-					sFWG2_t.general_parameter.enhance_state        = flash_wred_halfword(B_LAST_ENHANCE_STATE);
-                    sFWG2_t.general_parameter.ch1_set_temp         = flash_wred_halfword(B_LAST_CH1_SET_TEMP);
-                    sFWG2_t.general_parameter.ch1_set_wind         = flash_wred_halfword(B_LAST_CH1_SET_WIND);
-                    sFWG2_t.general_parameter.ch1_set_time         = flash_wred_halfword(B_LAST_CH1_SET_TIME);
-                    sFWG2_t.general_parameter.ch2_set_temp         = flash_wred_halfword(B_LAST_CH2_SET_TEMP);
-                    sFWG2_t.general_parameter.ch2_set_wind         = flash_wred_halfword(B_LAST_CH2_SET_WIND);
-                    sFWG2_t.general_parameter.ch2_set_time         = flash_wred_halfword(B_LAST_CH2_SET_TIME);
-                    sFWG2_t.general_parameter.ch3_set_temp         = flash_wred_halfword(B_LAST_CH3_SET_TEMP);
-                    sFWG2_t.general_parameter.ch3_set_wind         = flash_wred_halfword(B_LAST_CH3_SET_WIND);
-                    sFWG2_t.general_parameter.ch3_set_time         = flash_wred_halfword(B_LAST_CH3_SET_TIME);
-                    sFWG2_t.general_parameter.ch4_set_temp         = flash_wred_halfword(B_LAST_CH4_SET_TEMP);
-                    sFWG2_t.general_parameter.ch4_set_wind         = flash_wred_halfword(B_LAST_CH4_SET_WIND);
-                    sFWG2_t.general_parameter.ch4_set_time         = flash_wred_halfword(B_LAST_CH4_SET_TIME);
-                    sFWG2_t.general_parameter.code0_pre_temp	   = flash_wred_halfword(B_LAST_CODE0_PRE_TEMP);
-                    sFWG2_t.general_parameter.code0_pre_wind	   = flash_wred_halfword(B_LAST_CODE0_PRE_WIND);
-                    sFWG2_t.general_parameter.code0_pre_time	   = flash_wred_halfword(B_LAST_CODE0_PRE_TIME);
-                    sFWG2_t.general_parameter.code0_temp_1  	   = flash_wred_halfword(B_LAST_CODE0_TEMP_1);
-                    sFWG2_t.general_parameter.code0_wind_1  	   = flash_wred_halfword(B_LAST_CODE0_WIND_1);
-                    sFWG2_t.general_parameter.code0_time_1  	   = flash_wred_halfword(B_LAST_CODE0_TIME_1);
-                    sFWG2_t.general_parameter.code0_temp_2  	   = flash_wred_halfword(B_LAST_CODE0_TEMP_2);
-                    sFWG2_t.general_parameter.code0_wind_2  	   = flash_wred_halfword(B_LAST_CODE0_WIND_2);
-                    sFWG2_t.general_parameter.code0_time_2  	   = flash_wred_halfword(B_LAST_CODE0_TIME_2);
-                    sFWG2_t.general_parameter.code0_temp_3         = flash_wred_halfword(B_LAST_CODE0_TEMP_3);
-                    sFWG2_t.general_parameter.code0_wind_3  	   = flash_wred_halfword(B_LAST_CODE0_WIND_3);
-                    sFWG2_t.general_parameter.code0_time_3  	   = flash_wred_halfword(B_LAST_CODE0_TIME_3);
-                    sFWG2_t.general_parameter.code0_temp_4  	   = flash_wred_halfword(B_LAST_CODE0_TEMP_4);
-                    sFWG2_t.general_parameter.code0_wind_4  	   = flash_wred_halfword(B_LAST_CODE0_WIND_4);
-                    sFWG2_t.general_parameter.code0_time_4  	   = flash_wred_halfword(B_LAST_CODE0_TIME_4);
-                    sFWG2_t.general_parameter.code1_pre_temp	   = flash_wred_halfword(B_LAST_CODE1_PRE_TEMP);
-                    sFWG2_t.general_parameter.code1_pre_wind	   = flash_wred_halfword(B_LAST_CODE1_PRE_WIND);
-                    sFWG2_t.general_parameter.code1_pre_time	   = flash_wred_halfword(B_LAST_CODE1_PRE_TIME);
-                    sFWG2_t.general_parameter.code1_temp_1  	   = flash_wred_halfword(B_LAST_CODE1_TEMP_1);
-                    sFWG2_t.general_parameter.code1_wind_1  	   = flash_wred_halfword(B_LAST_CODE1_WIND_1);
-                    sFWG2_t.general_parameter.code1_time_1  	   = flash_wred_halfword(B_LAST_CODE1_TIME_1);
-                    sFWG2_t.general_parameter.code1_temp_2  	   = flash_wred_halfword(B_LAST_CODE1_TEMP_2);
-                    sFWG2_t.general_parameter.code1_wind_2  	   = flash_wred_halfword(B_LAST_CODE1_WIND_2);
-                    sFWG2_t.general_parameter.code1_time_2  	   = flash_wred_halfword(B_LAST_CODE1_TIME_2);
-                    sFWG2_t.general_parameter.code1_temp_3         = flash_wred_halfword(B_LAST_CODE1_TEMP_3);
-                    sFWG2_t.general_parameter.code1_wind_3  	   = flash_wred_halfword(B_LAST_CODE1_WIND_3);
-                    sFWG2_t.general_parameter.code1_time_3  	   = flash_wred_halfword(B_LAST_CODE1_TIME_3);
-                    sFWG2_t.general_parameter.code1_temp_4  	   = flash_wred_halfword(B_LAST_CODE1_TEMP_4);
-                    sFWG2_t.general_parameter.code1_wind_4  	   = flash_wred_halfword(B_LAST_CODE1_WIND_4);
-                    sFWG2_t.general_parameter.code1_time_4  	   = flash_wred_halfword(B_LAST_CODE1_TIME_4);
-                    sFWG2_t.general_parameter.code2_pre_temp 	   = flash_wred_halfword(B_LAST_CODE2_PRE_WIND);
-                    sFWG2_t.general_parameter.code2_pre_wind 	   = flash_wred_halfword(B_LAST_CODE2_PRE_WIND);
-                    sFWG2_t.general_parameter.code2_pre_time	   = flash_wred_halfword(B_LAST_CODE2_PRE_TIME);
-                    sFWG2_t.general_parameter.code2_temp_1  	   = flash_wred_halfword(B_LAST_CODE2_TEMP_1);
-                    sFWG2_t.general_parameter.code2_wind_1  	   = flash_wred_halfword(B_LAST_CODE2_WIND_1);
-                    sFWG2_t.general_parameter.code2_time_1  	   = flash_wred_halfword(B_LAST_CODE2_TIME_1);
-                    sFWG2_t.general_parameter.code2_temp_2  	   = flash_wred_halfword(B_LAST_CODE2_TEMP_2);
-                    sFWG2_t.general_parameter.code2_wind_2  	   = flash_wred_halfword(B_LAST_CODE2_WIND_2);
-                    sFWG2_t.general_parameter.code2_time_2  	   = flash_wred_halfword(B_LAST_CODE2_TIME_2);
-                    sFWG2_t.general_parameter.code2_temp_3         = flash_wred_halfword(B_LAST_CODE2_TEMP_3);
-                    sFWG2_t.general_parameter.code2_wind_3  	   = flash_wred_halfword(B_LAST_CODE2_WIND_3);
-                    sFWG2_t.general_parameter.code2_time_3  	   = flash_wred_halfword(B_LAST_CODE2_TIME_3);
-                    sFWG2_t.general_parameter.code2_temp_4  	   = flash_wred_halfword(B_LAST_CODE2_TEMP_4);
-                    sFWG2_t.general_parameter.code2_wind_4  	   = flash_wred_halfword(B_LAST_CODE2_WIND_4);
-                    sFWG2_t.general_parameter.code2_time_4  	   = flash_wred_halfword(B_LAST_CODE2_TIME_4);
-                    sFWG2_t.general_parameter.code3_pre_temp 	   = flash_wred_halfword(B_LAST_CODE3_PRE_WIND);
-                    sFWG2_t.general_parameter.code3_pre_wind 	   = flash_wred_halfword(B_LAST_CODE3_PRE_WIND);
-                    sFWG2_t.general_parameter.code3_pre_time	   = flash_wred_halfword(B_LAST_CODE3_PRE_TIME);
-                    sFWG2_t.general_parameter.code3_temp_1  	   = flash_wred_halfword(B_LAST_CODE3_TEMP_1);
-                    sFWG2_t.general_parameter.code3_wind_1  	   = flash_wred_halfword(B_LAST_CODE3_WIND_1);
-                    sFWG2_t.general_parameter.code3_time_1  	   = flash_wred_halfword(B_LAST_CODE3_TIME_1);
-                    sFWG2_t.general_parameter.code3_temp_2  	   = flash_wred_halfword(B_LAST_CODE3_TEMP_2);
-                    sFWG2_t.general_parameter.code3_wind_2  	   = flash_wred_halfword(B_LAST_CODE3_WIND_2);
-                    sFWG2_t.general_parameter.code3_time_2  	   = flash_wred_halfword(B_LAST_CODE3_TIME_2);
-                    sFWG2_t.general_parameter.code3_temp_3         = flash_wred_halfword(B_LAST_CODE3_TEMP_3);
-                    sFWG2_t.general_parameter.code3_wind_3  	   = flash_wred_halfword(B_LAST_CODE3_WIND_3);
-                    sFWG2_t.general_parameter.code3_time_3  	   = flash_wred_halfword(B_LAST_CODE3_TIME_3);
-                    sFWG2_t.general_parameter.code3_temp_4  	   = flash_wred_halfword(B_LAST_CODE3_TEMP_4);
-                    sFWG2_t.general_parameter.code3_wind_4  	   = flash_wred_halfword(B_LAST_CODE3_WIND_4);
-                    sFWG2_t.general_parameter.code3_time_4  	   = flash_wred_halfword(B_LAST_CODE3_TIME_4);
-                    sFWG2_t.general_parameter.code4_pre_temp 	   = flash_wred_halfword(B_LAST_CODE4_PRE_WIND);
-                    sFWG2_t.general_parameter.code4_pre_wind 	   = flash_wred_halfword(B_LAST_CODE4_PRE_WIND);
-                    sFWG2_t.general_parameter.code4_pre_time	   = flash_wred_halfword(B_LAST_CODE4_PRE_TIME);
-                    sFWG2_t.general_parameter.code4_temp_1  	   = flash_wred_halfword(B_LAST_CODE4_TEMP_1);
-                    sFWG2_t.general_parameter.code4_wind_1  	   = flash_wred_halfword(B_LAST_CODE4_WIND_1);
-                    sFWG2_t.general_parameter.code4_time_1  	   = flash_wred_halfword(B_LAST_CODE4_TIME_1);
-                    sFWG2_t.general_parameter.code4_temp_2  	   = flash_wred_halfword(B_LAST_CODE4_TEMP_2);
-                    sFWG2_t.general_parameter.code4_wind_2  	   = flash_wred_halfword(B_LAST_CODE4_WIND_2);
-                    sFWG2_t.general_parameter.code4_time_2  	   = flash_wred_halfword(B_LAST_CODE4_TIME_2);
-                    sFWG2_t.general_parameter.code4_temp_3         = flash_wred_halfword(B_LAST_CODE4_TEMP_3);
-                    sFWG2_t.general_parameter.code4_wind_3  	   = flash_wred_halfword(B_LAST_CODE4_WIND_3);
-                    sFWG2_t.general_parameter.code4_time_3  	   = flash_wred_halfword(B_LAST_CODE4_TIME_3);
-                    sFWG2_t.general_parameter.code4_temp_4  	   = flash_wred_halfword(B_LAST_CODE4_TEMP_4);
-                    sFWG2_t.general_parameter.code4_wind_4  	   = flash_wred_halfword(B_LAST_CODE4_WIND_4);
-                    sFWG2_t.general_parameter.code4_time_4  	   = flash_wred_halfword(B_LAST_CODE4_TIME_4);
-                    sFWG2_t.general_parameter.system_run_time_m    = flash_wred_halfword(B_LAST_SYSTEM_RUN_TIME);
-                    sFWG2_t.general_parameter.direct_hot_work_time_m  = flash_wred_halfword(B_LAST_DIRECT_HOT_WORK_TIME);
+    sFWG2_t.Direct_handle_parameter.set_temp       = flash_wred_halfword(B_LAST_DIRECT_SET_TEMP_ADDRESS);
+    sFWG2_t.Direct_handle_parameter.set_wind       = flash_wred_halfword(B_LAST_DIRECT_SET_WIND_ADDRESS);
+    sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = flash_wred_halfword(B_LAST_DIRECT_SET_COLD_MODE_WIND_ADDRESS);
+    sFWG2_t.Direct_handle_parameter.set_calibration_temp = flash_wred_halfword(B_LAST_DIRECT_SET_CALIBRATION_TEMP);
+    sFWG2_t.Direct_handle_parameter.quick_work_temp = flash_wred_halfword(B_LAST_DIRECT_SET_QUICK_TEMP);
+    sFWG2_t.Direct_handle_parameter.quick_work_time = flash_wred_halfword(B_LAST_DIRECT_SET_QUICK_TIME);
+    sFWG2_t.general_parameter.work_mode            = flash_wred_halfword(B_LAST_FWG2_WORK_MODE);
+    sFWG2_t.general_parameter.countdown_time       = flash_wred_halfword(B_LAST_SET_COUNTDOWN_TIME);
+    sFWG2_t.general_parameter.temp_uint		       = flash_wred_halfword(B_LAST_TEMP_UINT);
+    sFWG2_t.general_parameter.speak_state          = flash_wred_halfword(B_LAST_SPEAK_STATE);
+    sFWG2_t.general_parameter.display_lock_state   = flash_wred_halfword(B_LAST_DISPLAY_LOCK_STATE);
+    sFWG2_t.general_parameter.fn_key_long_set           = flash_wred_halfword(B_LAST_FN_KEY_LONG_SET);
+    sFWG2_t.general_parameter.fn_key_short_set           = flash_wred_halfword(B_LAST_FN_KEY_SHORT_SET);
+    sFWG2_t.general_parameter.adjust_key_set       = flash_wred_halfword(B_LAST_ADJUST_KEY_SET);
+    sFWG2_t.general_parameter.ota_state            = flash_wred_halfword(B_LAST_OTA_STATE);
+    sFWG2_t.general_parameter.touch_key_set        = flash_wred_halfword(B_LAST_TOUCH_KEY_SET);
+    sFWG2_t.general_parameter.uart_state           = flash_wred_halfword(B_LAST_UART_STATE);
+    sFWG2_t.general_parameter.enhance_state        = flash_wred_halfword(B_LAST_ENHANCE_STATE);
+    sFWG2_t.general_parameter.ch1_set_temp         = flash_wred_halfword(B_LAST_CH1_SET_TEMP);
+    sFWG2_t.general_parameter.ch1_set_wind         = flash_wred_halfword(B_LAST_CH1_SET_WIND);
+    sFWG2_t.general_parameter.ch1_set_time         = flash_wred_halfword(B_LAST_CH1_SET_TIME);
+    sFWG2_t.general_parameter.ch2_set_temp         = flash_wred_halfword(B_LAST_CH2_SET_TEMP);
+    sFWG2_t.general_parameter.ch2_set_wind         = flash_wred_halfword(B_LAST_CH2_SET_WIND);
+    sFWG2_t.general_parameter.ch2_set_time         = flash_wred_halfword(B_LAST_CH2_SET_TIME);
+    sFWG2_t.general_parameter.ch3_set_temp         = flash_wred_halfword(B_LAST_CH3_SET_TEMP);
+    sFWG2_t.general_parameter.ch3_set_wind         = flash_wred_halfword(B_LAST_CH3_SET_WIND);
+    sFWG2_t.general_parameter.ch3_set_time         = flash_wred_halfword(B_LAST_CH3_SET_TIME);
+    sFWG2_t.general_parameter.ch4_set_temp         = flash_wred_halfword(B_LAST_CH4_SET_TEMP);
+    sFWG2_t.general_parameter.ch4_set_wind         = flash_wred_halfword(B_LAST_CH4_SET_WIND);
+    sFWG2_t.general_parameter.ch4_set_time         = flash_wred_halfword(B_LAST_CH4_SET_TIME);
+    sFWG2_t.general_parameter.code0_pre_temp	   = flash_wred_halfword(B_LAST_CODE0_PRE_TEMP);
+    sFWG2_t.general_parameter.code0_pre_wind	   = flash_wred_halfword(B_LAST_CODE0_PRE_WIND);
+    sFWG2_t.general_parameter.code0_pre_time	   = flash_wred_halfword(B_LAST_CODE0_PRE_TIME);
+    sFWG2_t.general_parameter.code0_temp_1  	   = flash_wred_halfword(B_LAST_CODE0_TEMP_1);
+    sFWG2_t.general_parameter.code0_wind_1  	   = flash_wred_halfword(B_LAST_CODE0_WIND_1);
+    sFWG2_t.general_parameter.code0_time_1  	   = flash_wred_halfword(B_LAST_CODE0_TIME_1);
+    sFWG2_t.general_parameter.code0_temp_2  	   = flash_wred_halfword(B_LAST_CODE0_TEMP_2);
+    sFWG2_t.general_parameter.code0_wind_2  	   = flash_wred_halfword(B_LAST_CODE0_WIND_2);
+    sFWG2_t.general_parameter.code0_time_2  	   = flash_wred_halfword(B_LAST_CODE0_TIME_2);
+    sFWG2_t.general_parameter.code0_temp_3         = flash_wred_halfword(B_LAST_CODE0_TEMP_3);
+    sFWG2_t.general_parameter.code0_wind_3  	   = flash_wred_halfword(B_LAST_CODE0_WIND_3);
+    sFWG2_t.general_parameter.code0_time_3  	   = flash_wred_halfword(B_LAST_CODE0_TIME_3);
+    sFWG2_t.general_parameter.code0_temp_4  	   = flash_wred_halfword(B_LAST_CODE0_TEMP_4);
+    sFWG2_t.general_parameter.code0_wind_4  	   = flash_wred_halfword(B_LAST_CODE0_WIND_4);
+    sFWG2_t.general_parameter.code0_time_4  	   = flash_wred_halfword(B_LAST_CODE0_TIME_4);
+    sFWG2_t.general_parameter.code1_pre_temp	   = flash_wred_halfword(B_LAST_CODE1_PRE_TEMP);
+    sFWG2_t.general_parameter.code1_pre_wind	   = flash_wred_halfword(B_LAST_CODE1_PRE_WIND);
+    sFWG2_t.general_parameter.code1_pre_time	   = flash_wred_halfword(B_LAST_CODE1_PRE_TIME);
+    sFWG2_t.general_parameter.code1_temp_1  	   = flash_wred_halfword(B_LAST_CODE1_TEMP_1);
+    sFWG2_t.general_parameter.code1_wind_1  	   = flash_wred_halfword(B_LAST_CODE1_WIND_1);
+    sFWG2_t.general_parameter.code1_time_1  	   = flash_wred_halfword(B_LAST_CODE1_TIME_1);
+    sFWG2_t.general_parameter.code1_temp_2  	   = flash_wred_halfword(B_LAST_CODE1_TEMP_2);
+    sFWG2_t.general_parameter.code1_wind_2  	   = flash_wred_halfword(B_LAST_CODE1_WIND_2);
+    sFWG2_t.general_parameter.code1_time_2  	   = flash_wred_halfword(B_LAST_CODE1_TIME_2);
+    sFWG2_t.general_parameter.code1_temp_3         = flash_wred_halfword(B_LAST_CODE1_TEMP_3);
+    sFWG2_t.general_parameter.code1_wind_3  	   = flash_wred_halfword(B_LAST_CODE1_WIND_3);
+    sFWG2_t.general_parameter.code1_time_3  	   = flash_wred_halfword(B_LAST_CODE1_TIME_3);
+    sFWG2_t.general_parameter.code1_temp_4  	   = flash_wred_halfword(B_LAST_CODE1_TEMP_4);
+    sFWG2_t.general_parameter.code1_wind_4  	   = flash_wred_halfword(B_LAST_CODE1_WIND_4);
+    sFWG2_t.general_parameter.code1_time_4  	   = flash_wred_halfword(B_LAST_CODE1_TIME_4);
+    sFWG2_t.general_parameter.code2_pre_temp 	   = flash_wred_halfword(B_LAST_CODE2_PRE_WIND);
+    sFWG2_t.general_parameter.code2_pre_wind 	   = flash_wred_halfword(B_LAST_CODE2_PRE_WIND);
+    sFWG2_t.general_parameter.code2_pre_time	   = flash_wred_halfword(B_LAST_CODE2_PRE_TIME);
+    sFWG2_t.general_parameter.code2_temp_1  	   = flash_wred_halfword(B_LAST_CODE2_TEMP_1);
+    sFWG2_t.general_parameter.code2_wind_1  	   = flash_wred_halfword(B_LAST_CODE2_WIND_1);
+    sFWG2_t.general_parameter.code2_time_1  	   = flash_wred_halfword(B_LAST_CODE2_TIME_1);
+    sFWG2_t.general_parameter.code2_temp_2  	   = flash_wred_halfword(B_LAST_CODE2_TEMP_2);
+    sFWG2_t.general_parameter.code2_wind_2  	   = flash_wred_halfword(B_LAST_CODE2_WIND_2);
+    sFWG2_t.general_parameter.code2_time_2  	   = flash_wred_halfword(B_LAST_CODE2_TIME_2);
+    sFWG2_t.general_parameter.code2_temp_3         = flash_wred_halfword(B_LAST_CODE2_TEMP_3);
+    sFWG2_t.general_parameter.code2_wind_3  	   = flash_wred_halfword(B_LAST_CODE2_WIND_3);
+    sFWG2_t.general_parameter.code2_time_3  	   = flash_wred_halfword(B_LAST_CODE2_TIME_3);
+    sFWG2_t.general_parameter.code2_temp_4  	   = flash_wred_halfword(B_LAST_CODE2_TEMP_4);
+    sFWG2_t.general_parameter.code2_wind_4  	   = flash_wred_halfword(B_LAST_CODE2_WIND_4);
+    sFWG2_t.general_parameter.code2_time_4  	   = flash_wred_halfword(B_LAST_CODE2_TIME_4);
+    sFWG2_t.general_parameter.code3_pre_temp 	   = flash_wred_halfword(B_LAST_CODE3_PRE_WIND);
+    sFWG2_t.general_parameter.code3_pre_wind 	   = flash_wred_halfword(B_LAST_CODE3_PRE_WIND);
+    sFWG2_t.general_parameter.code3_pre_time	   = flash_wred_halfword(B_LAST_CODE3_PRE_TIME);
+    sFWG2_t.general_parameter.code3_temp_1  	   = flash_wred_halfword(B_LAST_CODE3_TEMP_1);
+    sFWG2_t.general_parameter.code3_wind_1  	   = flash_wred_halfword(B_LAST_CODE3_WIND_1);
+    sFWG2_t.general_parameter.code3_time_1  	   = flash_wred_halfword(B_LAST_CODE3_TIME_1);
+    sFWG2_t.general_parameter.code3_temp_2  	   = flash_wred_halfword(B_LAST_CODE3_TEMP_2);
+    sFWG2_t.general_parameter.code3_wind_2  	   = flash_wred_halfword(B_LAST_CODE3_WIND_2);
+    sFWG2_t.general_parameter.code3_time_2  	   = flash_wred_halfword(B_LAST_CODE3_TIME_2);
+    sFWG2_t.general_parameter.code3_temp_3         = flash_wred_halfword(B_LAST_CODE3_TEMP_3);
+    sFWG2_t.general_parameter.code3_wind_3  	   = flash_wred_halfword(B_LAST_CODE3_WIND_3);
+    sFWG2_t.general_parameter.code3_time_3  	   = flash_wred_halfword(B_LAST_CODE3_TIME_3);
+    sFWG2_t.general_parameter.code3_temp_4  	   = flash_wred_halfword(B_LAST_CODE3_TEMP_4);
+    sFWG2_t.general_parameter.code3_wind_4  	   = flash_wred_halfword(B_LAST_CODE3_WIND_4);
+    sFWG2_t.general_parameter.code3_time_4  	   = flash_wred_halfword(B_LAST_CODE3_TIME_4);
+    sFWG2_t.general_parameter.code4_pre_temp 	   = flash_wred_halfword(B_LAST_CODE4_PRE_WIND);
+    sFWG2_t.general_parameter.code4_pre_wind 	   = flash_wred_halfword(B_LAST_CODE4_PRE_WIND);
+    sFWG2_t.general_parameter.code4_pre_time	   = flash_wred_halfword(B_LAST_CODE4_PRE_TIME);
+    sFWG2_t.general_parameter.code4_temp_1  	   = flash_wred_halfword(B_LAST_CODE4_TEMP_1);
+    sFWG2_t.general_parameter.code4_wind_1  	   = flash_wred_halfword(B_LAST_CODE4_WIND_1);
+    sFWG2_t.general_parameter.code4_time_1  	   = flash_wred_halfword(B_LAST_CODE4_TIME_1);
+    sFWG2_t.general_parameter.code4_temp_2  	   = flash_wred_halfword(B_LAST_CODE4_TEMP_2);
+    sFWG2_t.general_parameter.code4_wind_2  	   = flash_wred_halfword(B_LAST_CODE4_WIND_2);
+    sFWG2_t.general_parameter.code4_time_2  	   = flash_wred_halfword(B_LAST_CODE4_TIME_2);
+    sFWG2_t.general_parameter.code4_temp_3         = flash_wred_halfword(B_LAST_CODE4_TEMP_3);
+    sFWG2_t.general_parameter.code4_wind_3  	   = flash_wred_halfword(B_LAST_CODE4_WIND_3);
+    sFWG2_t.general_parameter.code4_time_3  	   = flash_wred_halfword(B_LAST_CODE4_TIME_3);
+    sFWG2_t.general_parameter.code4_temp_4  	   = flash_wred_halfword(B_LAST_CODE4_TEMP_4);
+    sFWG2_t.general_parameter.code4_wind_4  	   = flash_wred_halfword(B_LAST_CODE4_WIND_4);
+    sFWG2_t.general_parameter.code4_time_4  	   = flash_wred_halfword(B_LAST_CODE4_TIME_4);
+    sFWG2_t.general_parameter.system_run_time_m    = flash_wred_halfword(B_LAST_SYSTEM_RUN_TIME);
+    sFWG2_t.general_parameter.direct_hot_work_time_m  = flash_wred_halfword(B_LAST_DIRECT_HOT_WORK_TIME);
 }
+
 static void get_reset_data(void)
 {
     sFWG2_t.Direct_handle_parameter.set_temp       = 300;
-                sFWG2_t.Direct_handle_parameter.set_wind       = 40;
-                sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = 100;
-                sFWG2_t.Direct_handle_parameter.set_calibration_temp = 0;
-                sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
-                sFWG2_t.Direct_handle_parameter.quick_work_time = 60;
-                sFWG2_t.general_parameter.work_mode            = NORMAL;
-                sFWG2_t.general_parameter.countdown_time       = 30;
-                sFWG2_t.general_parameter.temp_uint		       = CELSIUS;
-                sFWG2_t.general_parameter.speak_state          = SPEAKER_OPEN;
-                sFWG2_t.general_parameter.display_lock_state   = LOCK;
-                sFWG2_t.general_parameter.fn_key_long_set           = L_COLD_WIN_MODE;
-                sFWG2_t.general_parameter.fn_key_short_set           = S_CHANNEL_SWITCH;
-                sFWG2_t.general_parameter.adjust_key_set       = SELECT_TEMP;
-                sFWG2_t.general_parameter.ota_state            = OTA_OFF;
-                sFWG2_t.general_parameter.touch_key_set        = TOUCH_CLOSE;
-				sFWG2_t.general_parameter.fwg2_sleep_state     = SLEEP_OPEN;
-                sFWG2_t.general_parameter.uart_state           = UART_CLOSE;
-                sFWG2_t.general_parameter.ch1_set_temp = 350;
-                    sFWG2_t.general_parameter.ch1_set_temp_f_display = 662;
-                    sFWG2_t.general_parameter.ch1_set_wind = 20;
-                    sFWG2_t.general_parameter.ch1_set_time = 10;
-                    sFWG2_t.general_parameter.ch2_set_temp = 380;
-                    sFWG2_t.general_parameter.ch2_set_temp_f_display = 716;
-                    sFWG2_t.general_parameter.ch2_set_wind = 30;
-                    sFWG2_t.general_parameter.ch2_set_time = 15;
-                    sFWG2_t.general_parameter.ch3_set_temp = 400;
-                    sFWG2_t.general_parameter.ch3_set_temp_f_display = 752;
-                    sFWG2_t.general_parameter.ch3_set_wind = 40;
-                    sFWG2_t.general_parameter.ch3_set_time = 20;
-                    sFWG2_t.general_parameter.ch4_set_temp = 450;
-                    sFWG2_t.general_parameter.ch4_set_temp_f_display = 842;
-                    sFWG2_t.general_parameter.ch4_set_wind = 40;
-                    sFWG2_t.general_parameter.ch4_set_time = 10;
-                sFWG2_t.general_parameter.code0_pre_temp = 150;
-                    sFWG2_t.general_parameter.code0_pre_wind = 40;
-                    sFWG2_t.general_parameter.code0_pre_time = 10;
-                    sFWG2_t.general_parameter.code0_temp_1 = 260;
-                    sFWG2_t.general_parameter.code0_wind_1 = 20;
-                    sFWG2_t.general_parameter.code0_time_1 = 3;
-                    sFWG2_t.general_parameter.code0_temp_2 = 280;
-                    sFWG2_t.general_parameter.code0_wind_2 = 20;
-                    sFWG2_t.general_parameter.code0_time_2 = 4;
-                    sFWG2_t.general_parameter.code0_temp_3 = 100;
-                    sFWG2_t.general_parameter.code0_wind_3 = 20;
-                    sFWG2_t.general_parameter.code0_time_3 = 5;
-					
-                    sFWG2_t.general_parameter.code1_pre_temp = 150;
-                    sFWG2_t.general_parameter.code1_pre_wind = 40;
-                    sFWG2_t.general_parameter.code1_pre_time = 3;
-                    sFWG2_t.general_parameter.code1_temp_1 = 260;
-                    sFWG2_t.general_parameter.code1_wind_1 = 20;
-                    sFWG2_t.general_parameter.code1_time_1 = 3;
-                    sFWG2_t.general_parameter.code1_temp_2 = 380;
-                    sFWG2_t.general_parameter.code1_wind_2 = 40;
-                    sFWG2_t.general_parameter.code1_time_2 = 10;
-                    sFWG2_t.general_parameter.code1_temp_3 = 260;
-                    sFWG2_t.general_parameter.code1_wind_3 = 20;
-                    sFWG2_t.general_parameter.code1_time_3 = 5;
-					
-                    sFWG2_t.general_parameter.code2_pre_temp = 400;
-                    sFWG2_t.general_parameter.code2_pre_wind = 30;
-                    sFWG2_t.general_parameter.code2_pre_time = 4;
-                    sFWG2_t.general_parameter.code2_temp_1 = 450;
-                    sFWG2_t.general_parameter.code2_wind_1 = 40;
-                    sFWG2_t.general_parameter.code2_time_1 = 8;
-                    sFWG2_t.general_parameter.code2_temp_2 = 380;
-                    sFWG2_t.general_parameter.code2_wind_2 = 40;
-                    sFWG2_t.general_parameter.code2_time_2 = 4;
-                    sFWG2_t.general_parameter.code2_temp_3 = 260;
-                    sFWG2_t.general_parameter.code2_wind_3 = 20;
-                    sFWG2_t.general_parameter.code2_time_3 = 5;
-					
-                    sFWG2_t.general_parameter.code3_pre_temp = 400;
-                    sFWG2_t.general_parameter.code3_pre_wind = 30;
-                    sFWG2_t.general_parameter.code3_pre_time = 4;
-                    sFWG2_t.general_parameter.code3_temp_1 = 500;
-                    sFWG2_t.general_parameter.code3_wind_1 = 30;
-                    sFWG2_t.general_parameter.code3_time_1 = 6;
-                    sFWG2_t.general_parameter.code3_temp_2 = 380;
-                    sFWG2_t.general_parameter.code3_wind_2 = 40;
-                    sFWG2_t.general_parameter.code3_time_2 = 4;
-                    sFWG2_t.general_parameter.code3_temp_3 = 260;
-                    sFWG2_t.general_parameter.code3_wind_3 = 40;
-                    sFWG2_t.general_parameter.code3_time_3 = 5;
-					
-                sFWG2_t.general_parameter.code4_pre_temp 	   = 110;
-                sFWG2_t.general_parameter.code4_pre_wind 	   = 20;
-                sFWG2_t.general_parameter.code4_pre_time	   = 60;
-                sFWG2_t.general_parameter.code4_temp_1  	   = 200;
-                sFWG2_t.general_parameter.code4_wind_1  	   = 50;
-                sFWG2_t.general_parameter.code4_time_1  	   = 10;
-                sFWG2_t.general_parameter.code4_temp_2  	   = 200;
-                sFWG2_t.general_parameter.code4_wind_2  	   = 50;
-                sFWG2_t.general_parameter.code4_time_2  	   = 10;
-                sFWG2_t.general_parameter.code4_temp_3         = 200;
-                sFWG2_t.general_parameter.code4_wind_3  	   = 50;
-                sFWG2_t.general_parameter.code4_time_3  	   = 10;
-                sFWG2_t.general_parameter.code4_temp_4  	   = 200;
-                sFWG2_t.general_parameter.code4_wind_4  	   = 50;
-                sFWG2_t.general_parameter.code4_time_4  	   = 10;
-                sFWG2_t.general_parameter.system_run_time_m    = 0;
-                sFWG2_t.general_parameter.direct_hot_work_time_m  = 0;
+    sFWG2_t.Direct_handle_parameter.set_wind       = 40;
+    sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = 100;
+    sFWG2_t.Direct_handle_parameter.set_calibration_temp = 0;
+    sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
+    sFWG2_t.Direct_handle_parameter.quick_work_time = 60;
+    sFWG2_t.general_parameter.work_mode            = NORMAL;
+    sFWG2_t.general_parameter.countdown_time       = 30;
+    sFWG2_t.general_parameter.temp_uint		       = CELSIUS;
+    sFWG2_t.general_parameter.speak_state          = SPEAKER_OPEN;
+    sFWG2_t.general_parameter.display_lock_state   = LOCK;
+    sFWG2_t.general_parameter.fn_key_long_set           = L_COLD_WIN_MODE;
+    sFWG2_t.general_parameter.fn_key_short_set           = S_CHANNEL_SWITCH;
+    sFWG2_t.general_parameter.adjust_key_set       = SELECT_TEMP;
+    sFWG2_t.general_parameter.ota_state            = OTA_OFF;
+    sFWG2_t.general_parameter.touch_key_set        = TOUCH_CLOSE;
+    sFWG2_t.general_parameter.fwg2_sleep_state     = SLEEP_OPEN;
+    sFWG2_t.general_parameter.uart_state           = UART_CLOSE;
+    sFWG2_t.general_parameter.ch1_set_temp = 350;
+    sFWG2_t.general_parameter.ch1_set_temp_f_display = 662;
+    sFWG2_t.general_parameter.ch1_set_wind = 20;
+    sFWG2_t.general_parameter.ch1_set_time = 10;
+    sFWG2_t.general_parameter.ch2_set_temp = 380;
+    sFWG2_t.general_parameter.ch2_set_temp_f_display = 716;
+    sFWG2_t.general_parameter.ch2_set_wind = 30;
+    sFWG2_t.general_parameter.ch2_set_time = 15;
+    sFWG2_t.general_parameter.ch3_set_temp = 400;
+    sFWG2_t.general_parameter.ch3_set_temp_f_display = 752;
+    sFWG2_t.general_parameter.ch3_set_wind = 40;
+    sFWG2_t.general_parameter.ch3_set_time = 20;
+    sFWG2_t.general_parameter.ch4_set_temp = 450;
+    sFWG2_t.general_parameter.ch4_set_temp_f_display = 842;
+    sFWG2_t.general_parameter.ch4_set_wind = 60;
+    sFWG2_t.general_parameter.ch4_set_time = 10;
+    sFWG2_t.general_parameter.code0_pre_temp = 150;
+    sFWG2_t.general_parameter.code0_pre_wind = 40;
+    sFWG2_t.general_parameter.code0_pre_time = 10;
+    sFWG2_t.general_parameter.code0_temp_1 = 260;
+    sFWG2_t.general_parameter.code0_wind_1 = 20;
+    sFWG2_t.general_parameter.code0_time_1 = 3;
+    sFWG2_t.general_parameter.code0_temp_2 = 280;
+    sFWG2_t.general_parameter.code0_wind_2 = 20;
+    sFWG2_t.general_parameter.code0_time_2 = 4;
+    sFWG2_t.general_parameter.code0_temp_3 = 100;
+    sFWG2_t.general_parameter.code0_wind_3 = 20;
+    sFWG2_t.general_parameter.code0_time_3 = 5;
+    sFWG2_t.general_parameter.code1_pre_temp = 150;
+    sFWG2_t.general_parameter.code1_pre_wind = 40;
+    sFWG2_t.general_parameter.code1_pre_time = 3;
+    sFWG2_t.general_parameter.code1_temp_1 = 260;
+    sFWG2_t.general_parameter.code1_wind_1 = 20;
+    sFWG2_t.general_parameter.code1_time_1 = 3;
+    sFWG2_t.general_parameter.code1_temp_2 = 380;
+    sFWG2_t.general_parameter.code1_wind_2 = 40;
+    sFWG2_t.general_parameter.code1_time_2 = 10;
+    sFWG2_t.general_parameter.code1_temp_3 = 260;
+    sFWG2_t.general_parameter.code1_wind_3 = 20;
+    sFWG2_t.general_parameter.code1_time_3 = 5;
+    sFWG2_t.general_parameter.code2_pre_temp = 400;
+    sFWG2_t.general_parameter.code2_pre_wind = 30;
+    sFWG2_t.general_parameter.code2_pre_time = 4;
+    sFWG2_t.general_parameter.code2_temp_1 = 450;
+    sFWG2_t.general_parameter.code2_wind_1 = 40;
+    sFWG2_t.general_parameter.code2_time_1 = 8;
+    sFWG2_t.general_parameter.code2_temp_2 = 380;
+    sFWG2_t.general_parameter.code2_wind_2 = 40;
+    sFWG2_t.general_parameter.code2_time_2 = 4;
+    sFWG2_t.general_parameter.code2_temp_3 = 260;
+    sFWG2_t.general_parameter.code2_wind_3 = 20;
+    sFWG2_t.general_parameter.code2_time_3 = 5;
+    sFWG2_t.general_parameter.code3_pre_temp = 400;
+    sFWG2_t.general_parameter.code3_pre_wind = 30;
+    sFWG2_t.general_parameter.code3_pre_time = 4;
+    sFWG2_t.general_parameter.code3_temp_1 = 500;
+    sFWG2_t.general_parameter.code3_wind_1 = 30;
+    sFWG2_t.general_parameter.code3_time_1 = 6;
+    sFWG2_t.general_parameter.code3_temp_2 = 380;
+    sFWG2_t.general_parameter.code3_wind_2 = 40;
+    sFWG2_t.general_parameter.code3_time_2 = 4;
+    sFWG2_t.general_parameter.code3_temp_3 = 260;
+    sFWG2_t.general_parameter.code3_wind_3 = 40;
+    sFWG2_t.general_parameter.code3_time_3 = 5;
+    sFWG2_t.general_parameter.code4_pre_temp 	   = 110;
+    sFWG2_t.general_parameter.code4_pre_wind 	   = 20;
+    sFWG2_t.general_parameter.code4_pre_time	   = 60;
+    sFWG2_t.general_parameter.code4_temp_1  	   = 200;
+    sFWG2_t.general_parameter.code4_wind_1  	   = 50;
+    sFWG2_t.general_parameter.code4_time_1  	   = 10;
+    sFWG2_t.general_parameter.code4_temp_2  	   = 200;
+    sFWG2_t.general_parameter.code4_wind_2  	   = 50;
+    sFWG2_t.general_parameter.code4_time_2  	   = 10;
+    sFWG2_t.general_parameter.code4_temp_3         = 200;
+    sFWG2_t.general_parameter.code4_wind_3  	   = 50;
+    sFWG2_t.general_parameter.code4_time_3  	   = 10;
+    sFWG2_t.general_parameter.code4_temp_4  	   = 200;
+    sFWG2_t.general_parameter.code4_wind_4  	   = 50;
+    sFWG2_t.general_parameter.code4_time_4  	   = 10;
+    sFWG2_t.general_parameter.system_run_time_m    = 0;
+    sFWG2_t.general_parameter.direct_hot_work_time_m  = 0;
 }
+
 static void check_all_data(void)
 {
-if (sFWG2_t.Direct_handle_parameter.set_temp  > MAX_SET_TEMP_VAL
-                    || sFWG2_t.Direct_handle_parameter.set_temp  < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.Direct_handle_parameter.set_temp  = 300;
-            }
-
-            if (sFWG2_t.Direct_handle_parameter.set_wind > MAX_SET_WIND_VAL
-                    || sFWG2_t.Direct_handle_parameter.set_wind < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.Direct_handle_parameter.set_wind  = 40;
-            }
-
-            if (sFWG2_t.Direct_handle_parameter.quick_work_temp >= 100)
-            {
-                sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
-            }
-
-            if (sFWG2_t.Direct_handle_parameter.quick_work_temp < 0)
-            {
-                sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
-            }
-
-            if (sFWG2_t.Direct_handle_parameter.quick_work_time >= MAX_SET_TIME_VAL)
-            {
-                sFWG2_t.Direct_handle_parameter.quick_work_time = 60;
-            }
-
-            if (sFWG2_t.Direct_handle_parameter.quick_work_time < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.Direct_handle_parameter.quick_work_time = 60;
-            }
-
-            if (sFWG2_t.general_parameter.work_mode != NORMAL && sFWG2_t.general_parameter.work_mode != CODE)
-            {
-                sFWG2_t.general_parameter.work_mode = NORMAL;
-            }
-
-            if (sFWG2_t.general_parameter.temp_uint != CELSIUS && sFWG2_t.general_parameter.temp_uint != FAHRENHEIT)
-            {
-                sFWG2_t.general_parameter.temp_uint = CELSIUS;
-            }
-
-            if (sFWG2_t.general_parameter.speak_state != SPEAKER_OPEN && sFWG2_t.general_parameter.speak_state != SPEAKER_CLOSE)
-            {
-                sFWG2_t.general_parameter.speak_state = SPEAKER_OPEN;
-            }
-
-            if (sFWG2_t.general_parameter.display_lock_state != UNLOCK && sFWG2_t.general_parameter.display_lock_state != LOCK)
-            {
-                sFWG2_t.general_parameter.display_lock_state = LOCK;
-            }
-
-            if (sFWG2_t.general_parameter.fn_key_long_set != L_COLD_WIN_MODE
-                    && sFWG2_t.general_parameter.fn_key_long_set != L_QUICK_MODE
-                    && sFWG2_t.general_parameter.fn_key_long_set != L_COUNTDOWN_MODE)
-            {
-                sFWG2_t.general_parameter.fn_key_long_set = L_COLD_WIN_MODE;
-            }
-
-            if (sFWG2_t.general_parameter.fn_key_short_set != S_CHANNEL_SWITCH
-                    && sFWG2_t.general_parameter.fn_key_short_set != S_QUICK_MODE
-                    && sFWG2_t.general_parameter.fn_key_short_set != S_COUNTDOWN_MODE)
-            {
-                sFWG2_t.general_parameter.fn_key_short_set = S_CHANNEL_SWITCH;
-            }
-
-            if (sFWG2_t.general_parameter.adjust_key_set != SELECT_TEMP
-                    && sFWG2_t.general_parameter.adjust_key_set != SELECT_WIND
-                    && sFWG2_t.general_parameter.adjust_key_set != SELECT_CHANNEL)
-            {
-                sFWG2_t.general_parameter.adjust_key_set = SELECT_TEMP;
-            }
-
-            if (sFWG2_t.general_parameter.ota_state != OTA_OFF && sFWG2_t.general_parameter.ota_state != OTA_ON)
-            {
-                sFWG2_t.general_parameter.ota_state = OTA_OFF;
-            }
-
-            if (sFWG2_t.general_parameter.touch_key_set != TOUCH_CLOSE && sFWG2_t.general_parameter.touch_key_set != TOUCH_CLOSE)
-            {
-                sFWG2_t.general_parameter.touch_key_set = TOUCH_OPEN;
-            }
-
-            if (sFWG2_t.general_parameter.fwg2_sleep_state != SLEEP_CLOSE && sFWG2_t.general_parameter.fwg2_sleep_state != SLEEP_OPEN)
-            {
-                sFWG2_t.general_parameter.fwg2_sleep_state = SLEEP_OPEN;
-            }			
-			
-            if (sFWG2_t.general_parameter.uart_state != UART_CLOSE && sFWG2_t.general_parameter.uart_state != UART_OPEN)
-            {
-                sFWG2_t.general_parameter.uart_state = UART_CLOSE;
-            }
-
-            if (sFWG2_t.Direct_handle_parameter.set_calibration_temp > 100
-                    || sFWG2_t.Direct_handle_parameter.set_calibration_temp < -100)
-            {
-                sFWG2_t.Direct_handle_parameter.set_calibration_temp = 0;
-            }
-
-            if (sFWG2_t.general_parameter.countdown_time > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.countdown_time <= MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.countdown_time = 30;
-            }
-
-            if (sFWG2_t.general_parameter.ch1_set_temp > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.ch1_set_temp < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.ch1_set_temp = 300;
-            }
-
-            if (sFWG2_t.general_parameter.ch1_set_wind > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.ch1_set_wind < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.ch1_set_wind = 40;
-            }
-
-            if (sFWG2_t.general_parameter.ch1_set_time > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.ch1_set_time < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.ch1_set_time = 30;
-            }
-
-            if (sFWG2_t.general_parameter.ch2_set_temp > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.ch2_set_temp < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.ch2_set_temp = 320;
-            }
-
-            if (sFWG2_t.general_parameter.ch2_set_wind > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.ch2_set_wind < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.ch2_set_wind = 45;
-            }
-
-            if (sFWG2_t.general_parameter.ch2_set_time > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.ch2_set_time < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.ch2_set_time = 40;
-            }
-
-            if (sFWG2_t.general_parameter.ch3_set_temp > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.ch3_set_temp < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.ch3_set_temp = 350;
-            }
-
-            if (sFWG2_t.general_parameter.ch3_set_wind > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.ch3_set_wind < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.ch3_set_wind = 50;
-            }
-
-            if (sFWG2_t.general_parameter.ch3_set_time > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.ch3_set_time < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.ch3_set_time = 50;
-            }
-
-            if (sFWG2_t.general_parameter.ch4_set_temp > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.ch4_set_temp < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.ch4_set_temp = 380;
-            }
-
-            if (sFWG2_t.general_parameter.ch4_set_wind > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.ch4_set_wind < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.ch4_set_wind = 80;
-            }
-
-            if (sFWG2_t.general_parameter.ch4_set_time > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.ch4_set_time < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.ch4_set_time = 60;
-            }
-
-            /* code 0 data */
-            if (sFWG2_t.general_parameter.code0_pre_temp > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code0_pre_temp < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code0_pre_temp = 150;
-            }
-
-            if (sFWG2_t.general_parameter.code0_pre_wind > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code0_pre_wind < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code0_pre_wind = 40;
-            }
-
-            if (sFWG2_t.general_parameter.code0_pre_time > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code0_pre_time < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code0_pre_time = 90;
-            }
-
-            if (sFWG2_t.general_parameter.code0_temp_1 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code0_temp_1 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code0_temp_1 = 180;
-            }
-
-            if (sFWG2_t.general_parameter.code0_wind_1 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code0_wind_1 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code0_wind_1 = 50;
-            }
-
-            if (sFWG2_t.general_parameter.code0_time_1 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code0_time_1 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code0_time_1 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code0_temp_2 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code0_temp_2 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code0_temp_2 = 245;
-            }
-
-            if (sFWG2_t.general_parameter.code0_wind_2 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code0_wind_2 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code0_wind_2 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code0_time_2 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code0_time_2 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code0_time_2 = 50;
-            }
-
-            if (sFWG2_t.general_parameter.code0_temp_3 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code0_temp_3 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code0_temp_3 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code0_wind_3 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code0_wind_3 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code0_wind_3 = 130;
-            }
-
-            if (sFWG2_t.general_parameter.code0_time_3 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code0_time_3 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code0_time_3 = 120;
-            }
-
-            if (sFWG2_t.general_parameter.code0_temp_4 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code0_temp_4 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code0_temp_4 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code0_wind_4 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code0_wind_4 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code0_wind_4 = 20;
-            }
-
-            if (sFWG2_t.general_parameter.code0_time_4 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code0_time_4 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code0_time_4 = 60;
-            }
-
-            /* code 1 data */
-            if (sFWG2_t.general_parameter.code1_pre_temp > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code1_pre_temp < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code1_pre_temp = 140;
-            }
-
-            if (sFWG2_t.general_parameter.code1_pre_wind > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code1_pre_wind < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code1_pre_wind = 30;
-            }
-
-            if (sFWG2_t.general_parameter.code1_pre_time > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code1_pre_time < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code1_pre_time = 120;
-            }
-
-            if (sFWG2_t.general_parameter.code1_temp_1 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code1_temp_1 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code1_temp_1 = 170;
-            }
-
-            if (sFWG2_t.general_parameter.code1_wind_1 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code1_wind_1 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code1_wind_1 = 40;
-            }
-
-            if (sFWG2_t.general_parameter.code1_time_1 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code1_time_1 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code1_time_1 = 110;
-            }
-
-            if (sFWG2_t.general_parameter.code1_temp_2 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code1_temp_2 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code1_temp_2 = 240;
-            }
-
-            if (sFWG2_t.general_parameter.code1_wind_2 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code1_wind_2 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code1_wind_2 = 80;
-            }
-
-            if (sFWG2_t.general_parameter.code1_time_2 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code1_time_2 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code1_time_2 = 40;
-            }
-
-            if (sFWG2_t.general_parameter.code1_temp_3 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code1_temp_3 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code1_temp_3 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code1_wind_3 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code1_wind_3 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code1_wind_3 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code1_time_3 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code1_time_3 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code1_time_3 = 150;
-            }
-
-            if (sFWG2_t.general_parameter.code1_temp_4 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code1_temp_4 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code1_temp_4 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code1_wind_4 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code1_wind_4 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code1_wind_4 = 20;
-            }
-
-            if (sFWG2_t.general_parameter.code1_time_4 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code1_time_4 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code1_time_4 = 60;
-            }
-
-            /* code 2 data */
-            if (sFWG2_t.general_parameter.code2_pre_temp > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code2_pre_temp < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code2_pre_temp = 130;
-            }
-
-            if (sFWG2_t.general_parameter.code2_pre_wind > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code2_pre_wind < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code2_pre_wind = 35;
-            }
-
-            if (sFWG2_t.general_parameter.code2_pre_time > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code2_pre_time < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code2_pre_time = 80;
-            }
-
-            if (sFWG2_t.general_parameter.code2_temp_1 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code2_temp_1 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code2_temp_1 = 160;
-            }
-
-            if (sFWG2_t.general_parameter.code2_wind_1 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code2_wind_1 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code2_wind_1 = 45;
-            }
-
-            if (sFWG2_t.general_parameter.code2_time_1 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code2_time_1 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code2_time_1 = 90;
-            }
-
-            if (sFWG2_t.general_parameter.code2_temp_2 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code2_temp_2 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code2_temp_2 = 220;
-            }
-
-            if (sFWG2_t.general_parameter.code2_wind_2 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code2_wind_2 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code2_wind_2 = 90;
-            }
-
-            if (sFWG2_t.general_parameter.code2_time_2 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code2_time_1 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code2_time_2 = 70;
-            }
-
-            if (sFWG2_t.general_parameter.code2_temp_3 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code2_temp_3 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code2_temp_3 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code2_wind_3 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code2_wind_3 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code2_wind_3 = 120;
-            }
-
-            if (sFWG2_t.general_parameter.code2_time_3 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code2_time_3 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code2_time_3 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code2_temp_4 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code2_temp_4 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code2_temp_4 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code2_wind_4 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code2_wind_4 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code2_wind_4 = 20;
-            }
-
-            if (sFWG2_t.general_parameter.code2_time_4 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code2_time_4 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code2_time_4 = 60;
-            }
-
-            /* code 3 data */
-            if (sFWG2_t.general_parameter.code3_pre_temp > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code3_pre_temp < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code3_pre_temp = 160;
-            }
-
-            if (sFWG2_t.general_parameter.code3_pre_wind > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code3_pre_wind < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code3_pre_wind = 60;
-            }
-
-            if (sFWG2_t.general_parameter.code3_pre_time > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code3_pre_time < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code3_pre_time = 110;
-            }
-
-            if (sFWG2_t.general_parameter.code3_temp_1 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code3_temp_1 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code3_temp_1 = 190;
-            }
-
-            if (sFWG2_t.general_parameter.code3_wind_1 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code3_wind_1 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code3_wind_1 = 70;
-            }
-
-            if (sFWG2_t.general_parameter.code3_time_1 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code3_time_1 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code3_time_1 = 120;
-            }
-
-            if (sFWG2_t.general_parameter.code3_temp_2 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code3_temp_2 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code3_temp_2 = 250;
-            }
-
-            if (sFWG2_t.general_parameter.code3_wind_2 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code3_wind_2 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code3_wind_2 = 150;
-            }
-
-            if (sFWG2_t.general_parameter.code3_time_2 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code3_time_2 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code3_time_2 = 80;
-            }
-
-            if (sFWG2_t.general_parameter.code3_temp_3 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code3_temp_3 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code3_temp_3 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code3_wind_3 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code3_wind_3 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code3_wind_3 = 150;
-            }
-
-            if (sFWG2_t.general_parameter.code3_time_3 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code3_time_3 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code3_time_3 = 180;
-            }
-
-            if (sFWG2_t.general_parameter.code3_temp_4 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code3_temp_4 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code3_temp_4 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code3_wind_4 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code3_wind_4 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code3_wind_4 = 20;
-            }
-
-            if (sFWG2_t.general_parameter.code3_time_4 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code3_time_4 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code3_time_4 = 60;
-            }
-
-            /* code 4 data */
-            if (sFWG2_t.general_parameter.code4_pre_temp > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code4_pre_temp < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code4_pre_temp = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code4_pre_wind > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code4_pre_wind < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code4_pre_wind = 20;
-            }
-
-            if (sFWG2_t.general_parameter.code4_pre_time > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code4_pre_time < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code4_pre_time = 60;
-            }
-
-            if (sFWG2_t.general_parameter.code4_temp_1 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code4_temp_1 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code4_temp_1 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code4_wind_1 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code4_wind_1 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code4_wind_1 = 20;
-            }
-
-            if (sFWG2_t.general_parameter.code4_time_1 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code4_time_1 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code4_time_1 = 60;
-            }
-
-            if (sFWG2_t.general_parameter.code4_temp_2 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code4_temp_2 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code4_temp_2 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code4_wind_2 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code4_wind_2 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code4_wind_2 = 20;
-            }
-
-            if (sFWG2_t.general_parameter.code4_time_2 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code4_time_2 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code4_time_2 = 60;
-            }
-
-            if (sFWG2_t.general_parameter.code4_temp_3 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code4_temp_3 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code4_temp_3 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code4_wind_3 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code4_wind_3 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code4_wind_3 = 20;
-            }
-
-            if (sFWG2_t.general_parameter.code4_time_3 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code4_time_3 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code4_time_3 = 60;
-            }
-
-            if (sFWG2_t.general_parameter.code4_temp_4 > MAX_SET_TEMP_VAL
-                    || sFWG2_t.general_parameter.code4_temp_4 < MIN_SET_TEMP_VAL)
-            {
-                sFWG2_t.general_parameter.code4_temp_4 = 100;
-            }
-
-            if (sFWG2_t.general_parameter.code4_wind_4 > MAX_SET_WIND_VAL
-                    || sFWG2_t.general_parameter.code4_wind_4 < MIN_SET_WIND_VAL)
-            {
-                sFWG2_t.general_parameter.code4_wind_4 = 20;
-            }
-
-            if (sFWG2_t.general_parameter.code4_time_4 > MAX_SET_TIME_VAL || sFWG2_t.general_parameter.code4_time_4 < MIN_SET_TIME_VAL)
-            {
-                sFWG2_t.general_parameter.code4_time_4 = 60;
-            }
+    if (sFWG2_t.Direct_handle_parameter.set_temp  > MAX_SET_TEMP_VAL
+            || sFWG2_t.Direct_handle_parameter.set_temp  < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.Direct_handle_parameter.set_temp  = 380;
+    }
+
+    if (sFWG2_t.Direct_handle_parameter.set_wind > MAX_SET_WIND_VAL
+            || sFWG2_t.Direct_handle_parameter.set_wind < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.Direct_handle_parameter.set_wind  = 40;
+    }
+
+    if (sFWG2_t.Direct_handle_parameter.quick_work_temp >= 100)
+    {
+        sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
+    }
+
+    if (sFWG2_t.Direct_handle_parameter.quick_work_temp < 0)
+    {
+        sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
+    }
+
+    if (sFWG2_t.Direct_handle_parameter.quick_work_time >= MAX_SET_TIME_VAL)
+    {
+        sFWG2_t.Direct_handle_parameter.quick_work_time = 30;
+    }
+
+    if (sFWG2_t.Direct_handle_parameter.quick_work_time < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.Direct_handle_parameter.quick_work_time = 30;
+    }
+
+    if (sFWG2_t.general_parameter.work_mode != NORMAL && sFWG2_t.general_parameter.work_mode != CODE)
+    {
+        sFWG2_t.general_parameter.work_mode = NORMAL;
+    }
+
+    if (sFWG2_t.general_parameter.temp_uint != CELSIUS && sFWG2_t.general_parameter.temp_uint != FAHRENHEIT)
+    {
+        sFWG2_t.general_parameter.temp_uint = CELSIUS;
+    }
+
+    if (sFWG2_t.general_parameter.speak_state != SPEAKER_OPEN && sFWG2_t.general_parameter.speak_state != SPEAKER_CLOSE)
+    {
+        sFWG2_t.general_parameter.speak_state = SPEAKER_OPEN;
+    }
+
+    if (sFWG2_t.general_parameter.display_lock_state != UNLOCK && sFWG2_t.general_parameter.display_lock_state != LOCK)
+    {
+        sFWG2_t.general_parameter.display_lock_state = LOCK;
+    }
+
+    if (sFWG2_t.general_parameter.fn_key_long_set != L_COLD_WIN_MODE
+            && sFWG2_t.general_parameter.fn_key_long_set != L_QUICK_MODE
+            && sFWG2_t.general_parameter.fn_key_long_set != L_COUNTDOWN_MODE)
+    {
+        sFWG2_t.general_parameter.fn_key_long_set = L_COLD_WIN_MODE;
+    }
+
+    if (sFWG2_t.general_parameter.fn_key_short_set != S_CHANNEL_SWITCH
+            && sFWG2_t.general_parameter.fn_key_short_set != S_QUICK_MODE
+            && sFWG2_t.general_parameter.fn_key_short_set != S_COUNTDOWN_MODE)
+    {
+        sFWG2_t.general_parameter.fn_key_short_set = S_CHANNEL_SWITCH;
+    }
+
+    if (sFWG2_t.general_parameter.adjust_key_set != SELECT_TEMP
+            && sFWG2_t.general_parameter.adjust_key_set != SELECT_WIND
+            && sFWG2_t.general_parameter.adjust_key_set != SELECT_CHANNEL)
+    {
+        sFWG2_t.general_parameter.adjust_key_set = SELECT_TEMP;
+    }
+
+    if (sFWG2_t.general_parameter.ota_state != OTA_OFF && sFWG2_t.general_parameter.ota_state != OTA_ON)
+    {
+        sFWG2_t.general_parameter.ota_state = OTA_OFF;
+    }
+
+    if (sFWG2_t.general_parameter.touch_key_set != TOUCH_CLOSE && sFWG2_t.general_parameter.touch_key_set != TOUCH_CLOSE)
+    {
+        sFWG2_t.general_parameter.touch_key_set = TOUCH_OPEN;
+    }
+
+    if (sFWG2_t.general_parameter.fwg2_sleep_state != SLEEP_CLOSE
+            && sFWG2_t.general_parameter.fwg2_sleep_state != SLEEP_OPEN)
+    {
+        sFWG2_t.general_parameter.fwg2_sleep_state = SLEEP_OPEN;
+    }
+
+    if (sFWG2_t.general_parameter.uart_state != UART_CLOSE && sFWG2_t.general_parameter.uart_state != UART_OPEN)
+    {
+        sFWG2_t.general_parameter.uart_state = UART_CLOSE;
+    }
+
+    if (sFWG2_t.Direct_handle_parameter.set_calibration_temp > 100
+            || sFWG2_t.Direct_handle_parameter.set_calibration_temp < -100)
+    {
+        sFWG2_t.Direct_handle_parameter.set_calibration_temp = 0;
+    }
+
+    if (sFWG2_t.general_parameter.countdown_time > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.countdown_time <= MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.countdown_time = 10;
+    }
+
+    if (sFWG2_t.general_parameter.ch1_set_temp > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.ch1_set_temp < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.ch1_set_temp = 350;
+    }
+
+    if (sFWG2_t.general_parameter.ch1_set_wind > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.ch1_set_wind < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.ch1_set_wind = 20;
+    }
+
+    if (sFWG2_t.general_parameter.ch1_set_time > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.ch1_set_time < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.ch1_set_time = 10;
+    }
+
+    if (sFWG2_t.general_parameter.ch2_set_temp > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.ch2_set_temp < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.ch2_set_temp = 380;
+    }
+
+    if (sFWG2_t.general_parameter.ch2_set_wind > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.ch2_set_wind < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.ch2_set_wind = 30;
+    }
+
+    if (sFWG2_t.general_parameter.ch2_set_time > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.ch2_set_time < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.ch2_set_time = 15;
+    }
+
+    if (sFWG2_t.general_parameter.ch3_set_temp > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.ch3_set_temp < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.ch3_set_temp = 400;
+    }
+
+    if (sFWG2_t.general_parameter.ch3_set_wind > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.ch3_set_wind < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.ch3_set_wind = 40;
+    }
+
+    if (sFWG2_t.general_parameter.ch3_set_time > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.ch3_set_time < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.ch3_set_time = 20;
+    }
+
+    if (sFWG2_t.general_parameter.ch4_set_temp > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.ch4_set_temp < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.ch4_set_temp = 450;
+    }
+
+    if (sFWG2_t.general_parameter.ch4_set_wind > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.ch4_set_wind < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.ch4_set_wind = 60;
+    }
+
+    if (sFWG2_t.general_parameter.ch4_set_time > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.ch4_set_time < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.ch4_set_time = 30;
+    }
+
+    /* code 0 data */
+    if (sFWG2_t.general_parameter.code0_pre_temp > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code0_pre_temp < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code0_pre_temp = 150;
+    }
+
+    if (sFWG2_t.general_parameter.code0_pre_wind > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code0_pre_wind < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code0_pre_wind = 40;
+    }
+
+    if (sFWG2_t.general_parameter.code0_pre_time > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code0_pre_time < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code0_pre_time = 10;
+    }
+
+    if (sFWG2_t.general_parameter.code0_temp_1 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code0_temp_1 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code0_temp_1 = 260;
+    }
+
+    if (sFWG2_t.general_parameter.code0_wind_1 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code0_wind_1 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code0_wind_1 = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code0_time_1 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code0_time_1 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code0_time_1 = 3;
+    }
+
+    if (sFWG2_t.general_parameter.code0_temp_2 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code0_temp_2 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code0_temp_2 = 280;
+    }
+
+    if (sFWG2_t.general_parameter.code0_wind_2 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code0_wind_2 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code0_wind_2 = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code0_time_2 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code0_time_2 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code0_time_2 = 4;
+    }
+
+    if (sFWG2_t.general_parameter.code0_temp_3 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code0_temp_3 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code0_temp_3 = 100;
+    }
+
+    if (sFWG2_t.general_parameter.code0_wind_3 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code0_wind_3 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code0_wind_3 = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code0_time_3 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code0_time_3 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code0_time_3 = 5;
+    }
+
+	
+	
+    if (sFWG2_t.general_parameter.code0_temp_4 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code0_temp_4 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code0_temp_4 = 150;
+    }
+
+    if (sFWG2_t.general_parameter.code0_wind_4 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code0_wind_4 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code0_wind_4 = 40;
+    }
+
+    if (sFWG2_t.general_parameter.code0_time_4 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code0_time_4 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code0_time_4 = 3;
+    }
+
+    /* code 1 data */
+    if (sFWG2_t.general_parameter.code1_pre_temp > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code1_pre_temp < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code1_pre_temp = 150;
+    }
+
+    if (sFWG2_t.general_parameter.code1_pre_wind > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code1_pre_wind < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code1_pre_wind = 40;
+    }
+
+    if (sFWG2_t.general_parameter.code1_pre_time > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code1_pre_time < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code1_pre_time = 3;
+    }
+
+    if (sFWG2_t.general_parameter.code1_temp_1 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code1_temp_1 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code1_temp_1 = 260;
+    }
+
+    if (sFWG2_t.general_parameter.code1_wind_1 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code1_wind_1 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code1_wind_1 = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code1_time_1 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code1_time_1 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code1_time_1 = 3;
+    }
+
+    if (sFWG2_t.general_parameter.code1_temp_2 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code1_temp_2 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code1_temp_2 = 380;
+    }
+
+    if (sFWG2_t.general_parameter.code1_wind_2 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code1_wind_2 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code1_wind_2 = 40;
+    }
+
+    if (sFWG2_t.general_parameter.code1_time_2 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code1_time_2 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code1_time_2 = 10;
+    }
+
+    if (sFWG2_t.general_parameter.code1_temp_3 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code1_temp_3 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code1_temp_3 = 260;
+    }
+
+    if (sFWG2_t.general_parameter.code1_wind_3 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code1_wind_3 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code1_wind_3 = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code1_time_3 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code1_time_3 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code1_time_3 = 5;
+    }
+
+    if (sFWG2_t.general_parameter.code1_temp_4 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code1_temp_4 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code1_temp_4 = 450;
+    }
+
+    if (sFWG2_t.general_parameter.code1_wind_4 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code1_wind_4 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code1_wind_4 = 40;
+    }
+
+    if (sFWG2_t.general_parameter.code1_time_4 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code1_time_4 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code1_time_4 = 8;
+    }
+
+    /* code 2 data */
+    if (sFWG2_t.general_parameter.code2_pre_temp > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code2_pre_temp < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code2_pre_temp = 400;
+    }
+
+    if (sFWG2_t.general_parameter.code2_pre_wind > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code2_pre_wind < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code2_pre_wind = 30;
+    }
+
+    if (sFWG2_t.general_parameter.code2_pre_time > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code2_pre_time < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code2_pre_time = 4;
+    }
+
+    if (sFWG2_t.general_parameter.code2_temp_1 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code2_temp_1 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code2_temp_1 = 450;
+    }
+
+    if (sFWG2_t.general_parameter.code2_wind_1 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code2_wind_1 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code2_wind_1 = 40;
+    }
+
+    if (sFWG2_t.general_parameter.code2_time_1 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code2_time_1 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code2_time_1 = 8;
+    }
+
+    if (sFWG2_t.general_parameter.code2_temp_2 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code2_temp_2 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code2_temp_2 = 380;
+    }
+
+    if (sFWG2_t.general_parameter.code2_wind_2 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code2_wind_2 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code2_wind_2 = 40;
+    }
+
+    if (sFWG2_t.general_parameter.code2_time_2 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code2_time_1 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code2_time_2 = 4;
+    }
+
+    if (sFWG2_t.general_parameter.code2_temp_3 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code2_temp_3 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code2_temp_3 = 260;
+    }
+
+    if (sFWG2_t.general_parameter.code2_wind_3 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code2_wind_3 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code2_wind_3 = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code2_time_3 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code2_time_3 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code2_time_3 = 5;
+    }
+
+    if (sFWG2_t.general_parameter.code2_temp_4 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code2_temp_4 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code2_temp_4 = 380;
+    }
+
+    if (sFWG2_t.general_parameter.code2_wind_4 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code2_wind_4 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code2_wind_4 = 40;
+    }
+
+    if (sFWG2_t.general_parameter.code2_time_4 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code2_time_4 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code2_time_4 = 4;
+    }
+
+    /* code 3 data */
+    if (sFWG2_t.general_parameter.code3_pre_temp > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code3_pre_temp < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code3_pre_temp = 400;
+    }
+
+    if (sFWG2_t.general_parameter.code3_pre_wind > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code3_pre_wind < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code3_pre_wind = 30;
+    }
+
+    if (sFWG2_t.general_parameter.code3_pre_time > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code3_pre_time < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code3_pre_time = 4;
+    }
+
+    if (sFWG2_t.general_parameter.code3_temp_1 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code3_temp_1 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code3_temp_1 = 500;
+    }
+
+    if (sFWG2_t.general_parameter.code3_wind_1 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code3_wind_1 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code3_wind_1 = 30;
+    }
+
+    if (sFWG2_t.general_parameter.code3_time_1 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code3_time_1 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code3_time_1 = 6;
+    }
+
+    if (sFWG2_t.general_parameter.code3_temp_2 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code3_temp_2 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code3_temp_2 = 380;
+    }
+
+    if (sFWG2_t.general_parameter.code3_wind_2 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code3_wind_2 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code3_wind_2 = 40;
+    }
+
+    if (sFWG2_t.general_parameter.code3_time_2 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code3_time_2 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code3_time_2 = 4;
+    }
+
+    if (sFWG2_t.general_parameter.code3_temp_3 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code3_temp_3 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code3_temp_3 = 260;
+    }
+
+    if (sFWG2_t.general_parameter.code3_wind_3 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code3_wind_3 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code3_wind_3 = 40;
+    }
+
+    if (sFWG2_t.general_parameter.code3_time_3 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code3_time_3 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code3_time_3 = 5;
+    }
+
+    if (sFWG2_t.general_parameter.code3_temp_4 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code3_temp_4 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code3_temp_4 = 100;
+    }
+
+    if (sFWG2_t.general_parameter.code3_wind_4 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code3_wind_4 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code3_wind_4 = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code3_time_4 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code3_time_4 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code3_time_4 = 60;
+    }
+
+    /* code 4 data */
+    if (sFWG2_t.general_parameter.code4_pre_temp > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code4_pre_temp < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code4_pre_temp = 100;
+    }
+
+    if (sFWG2_t.general_parameter.code4_pre_wind > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code4_pre_wind < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code4_pre_wind = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code4_pre_time > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code4_pre_time < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code4_pre_time = 60;
+    }
+
+    if (sFWG2_t.general_parameter.code4_temp_1 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code4_temp_1 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code4_temp_1 = 100;
+    }
+
+    if (sFWG2_t.general_parameter.code4_wind_1 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code4_wind_1 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code4_wind_1 = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code4_time_1 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code4_time_1 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code4_time_1 = 60;
+    }
+
+    if (sFWG2_t.general_parameter.code4_temp_2 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code4_temp_2 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code4_temp_2 = 100;
+    }
+
+    if (sFWG2_t.general_parameter.code4_wind_2 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code4_wind_2 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code4_wind_2 = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code4_time_2 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code4_time_2 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code4_time_2 = 60;
+    }
+
+    if (sFWG2_t.general_parameter.code4_temp_3 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code4_temp_3 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code4_temp_3 = 100;
+    }
+
+    if (sFWG2_t.general_parameter.code4_wind_3 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code4_wind_3 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code4_wind_3 = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code4_time_3 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code4_time_3 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code4_time_3 = 60;
+    }
+
+    if (sFWG2_t.general_parameter.code4_temp_4 > MAX_SET_TEMP_VAL
+            || sFWG2_t.general_parameter.code4_temp_4 < MIN_SET_TEMP_VAL)
+    {
+        sFWG2_t.general_parameter.code4_temp_4 = 100;
+    }
+
+    if (sFWG2_t.general_parameter.code4_wind_4 > MAX_SET_WIND_VAL
+            || sFWG2_t.general_parameter.code4_wind_4 < MIN_SET_WIND_VAL)
+    {
+        sFWG2_t.general_parameter.code4_wind_4 = 20;
+    }
+
+    if (sFWG2_t.general_parameter.code4_time_4 > MAX_SET_TIME_VAL
+            || sFWG2_t.general_parameter.code4_time_4 < MIN_SET_TIME_VAL)
+    {
+        sFWG2_t.general_parameter.code4_time_4 = 60;
+    }
 }

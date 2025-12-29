@@ -225,10 +225,13 @@ fwg2_code_mode_handle_select_e;
 typedef struct
 {
     uint32_t actual_temp;
+	
+	uint32_t show_temp;
+	
 	uint32_t last_actual_temp;
     uint32_t actual_temp_f_display;
     uint32_t actual_wind;
-
+    uint32_t show_wind;
     uint16_t set_temp;
 	uint16_t last_set_temp;
     uint16_t set_temp_f_display;
@@ -279,7 +282,18 @@ typedef struct
     bool reset_fwg2_flag;
     bool relay_open_flag;
     bool countdown_flag;
-
+    
+	bool setting_temp_flag;
+	uint8_t setting_temp_time;
+	bool setting_wind_flag;
+	uint8_t setting_wind_time;
+	bool setting_time_flag;
+	
+	bool key_setting_flag;
+	uint8_t setting_time;
+	
+    float pid_out;
+    
     char  software_version[20];
     char  hardware_version[20];
 
@@ -317,40 +331,49 @@ typedef struct
 
     /* code 0 set */
     uint16_t code0_pre_temp;
+	uint16_t code0_pre_temp_f_display;
     uint16_t code0_pre_wind;
     uint16_t code0_pre_time;
 
     uint16_t code0_temp_1;
+	uint16_t code0_temp_1_f_display;
     uint16_t code0_wind_1;
     uint16_t code0_time_1;
 
     uint16_t code0_temp_2;
+	uint16_t code0_temp_2_f_display;
     uint16_t code0_wind_2;
     uint16_t code0_time_2;
 
     uint16_t code0_temp_3;
+	uint16_t code0_temp_3_f_display;
     uint16_t code0_wind_3;
     uint16_t code0_time_3;
 
     uint16_t code0_temp_4;
+	uint16_t code0_temp_4_f_display;
     uint16_t code0_wind_4;
     uint16_t code0_time_4;
 
 
     /* code 1 set */
     uint16_t code1_pre_temp;
+	uint16_t code1_pre_temp_f_display;
     uint16_t code1_pre_wind;
     uint16_t code1_pre_time;
 
     uint16_t code1_temp_1;
+	uint16_t code1_temp_1_f_display;
     uint16_t code1_wind_1;
     uint16_t code1_time_1;
 
     uint16_t code1_temp_2;
+	uint16_t code1_temp_2_f_display;
     uint16_t code1_wind_2;
     uint16_t code1_time_2;
 
     uint16_t code1_temp_3;
+	uint16_t code1_temp_3_f_display;
     uint16_t code1_wind_3;
     uint16_t code1_time_3;
 
@@ -363,18 +386,22 @@ typedef struct
 
     /* code 2 set */
     uint16_t code2_pre_temp;
+	uint16_t code2_pre_temp_f_display;
     uint16_t code2_pre_wind;
     uint16_t code2_pre_time;
 
     uint16_t code2_temp_1;
+	uint16_t code2_temp_1_f_display;
     uint16_t code2_wind_1;
     uint16_t code2_time_1;
 
     uint16_t code2_temp_2;
+	uint16_t code2_temp_2_f_display;
     uint16_t code2_wind_2;
     uint16_t code2_time_2;
 
     uint16_t code2_temp_3;
+	uint16_t code2_temp_3_f_display;
     uint16_t code2_wind_3;
     uint16_t code2_time_3;
 
@@ -385,18 +412,22 @@ typedef struct
 
     /* code 3 set */
     uint16_t code3_pre_temp;
+	uint16_t code3_pre_temp_f_display;
     uint16_t code3_pre_wind;
     uint16_t code3_pre_time;
 
     uint16_t code3_temp_1;
+	uint16_t code3_temp_1_f_display;
     uint16_t code3_wind_1;
     uint16_t code3_time_1;
 
     uint16_t code3_temp_2;
+	uint16_t code3_temp_2_f_display;
     uint16_t code3_wind_2;
     uint16_t code3_time_2;
 
     uint16_t code3_temp_3;
+	uint16_t code3_temp_3_f_display;
     uint16_t code3_wind_3;
     uint16_t code3_time_3;
 

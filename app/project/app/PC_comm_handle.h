@@ -15,7 +15,8 @@
 
 #define PC_MAX_SEND_SIZE 22
 #define PC_MAX_RECV_SIZE 22
-#define LOCAL_DEVECE_ID  0x01
+#define LOCAL_DEVECE_ID_1 0x01
+#define LOCAL_DEVECE_ID_2 0x00
 #define PC_CHECK_HEAD(A,B)         ((A==0xD1)&&(B==0xF0)?TRUE:FALSE)
 
 #define PC_HEAD1                0x00

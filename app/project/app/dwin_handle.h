@@ -10,6 +10,10 @@
 #define WHITE_COLOR 0xFFFF
 #define GREEN_COLOR 0x4750
 
+#define HANDELE_SETTING_TIME 50
+
+#define OUTPUT_VALUE_FRESH_TIME 15
+
 #define SHOW_DIRECT_HANDLE_SET_TEMP_TIME 50
 #define SHOW_DIRECT_HANDLE_SET_WIND_TIME 50
 
@@ -45,9 +49,9 @@
 #define DWIN_DATA_BITS 2
 #define DWIN_DATA_BITS_1 0B
 
-#define rxbuff_length 1024
+#define rxbuff_length 128
 
-#define txbuff_length 1024
+#define txbuff_length 128
 
 typedef enum
 {
@@ -278,48 +282,10 @@ typedef struct DwinObject
 } DwinObjectType;
 
 extern DwinObjectType sdwin;
-extern uint16_t show_direct_set_temp_time;
-extern uint16_t show_direct_set_wind_time;
-
-void DwinInitialization(DwinObjectType *dwin);
-void Page_General_Heartbeat_Packet(void);
-void Page_Set_Heartbeat_Packet(void);
-void Page_Direct_Work_Heartbeat_Packet(void);
-void Page_Cyclone_Work_Heartbeat_Packet(void);
-
-void Page_Direct_Curve_Heartbeat_Packet(void);
-void Page_Cyclone_Curve_Heartbeat_Packet(void);
-void Page_Code_Heartbeat_Packet(void);
-
-void Page_Switch(void);
-
-typedef enum
-{
-    SHOW_SET_TEMP = 0,
-    SHOW_ACTUAL_TEMP,
-
-} show_temp_e;
-
-typedef enum
-{
-    SHOW_SET_WIND = 0,
-    SHOW_ACTUAL_WIND,
-    SHOW_SET_COLD_MODE_WIND,
-
-} show_wind_e;
-
-typedef struct
-{
-
-    show_temp_e show_temp;
-    show_wind_e show_wind;
-
-} show_state_t;
-
-extern show_state_t show_state;
+ 
 extern uint8_t page_switch[10];
 
-void show_temp_in_page_work(show_state_t *state);
-
+void DwinInitialization(DwinObjectType *dwin);
+void DwinRun(void);
 #endif
 /*********** (C) COPYRIGHT 1999-2019 Moonan Technology *********END OF FILE****/
