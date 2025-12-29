@@ -141,10 +141,9 @@ void pc_event_handle(void)
 	
         pc_data.tx_buff[PC_DATA1_LEN_H] = 0x01;
         pc_data.tx_buff[PC_DATA1_LEN_L] = 0x04;
-	
         pc_data.tx_buff[PC_DATA2_LEN_H] = 0x02;
-        pc_data.tx_buff[PC_DATA2_LEN_L] = 0x01;
 	
+        pc_data.tx_buff[PC_DATA2_LEN_L] = 0x01;
         pc_data.tx_buff[PC_DATA3_LEN_H] = 0x00;
         pc_data.tx_buff[PC_DATA3_LEN_L] = 0x00;
 	
@@ -158,6 +157,7 @@ void pc_event_handle(void)
         convert_data(pc_data.tx_buff, pc_data.check_crc_buff, PC_CMD1, PC_DATA5_LEN_L);
         crc_value = crc_block_calculate(pc_data.check_crc_buff, 4);
         crc_data_reset();
+		
         pc_data.tx_buff[PC_CRC32_1] = ((crc_value >> 24) & 0xff);
         pc_data.tx_buff[PC_CRC32_2] = ((crc_value >> 16) & 0xff);
         pc_data.tx_buff[PC_CRC32_3] = ((crc_value >> 8) & 0xff);
@@ -165,8 +165,7 @@ void pc_event_handle(void)
         pc_data.tx_buff[PC_HEAD2] = PC_HEAD_2;
 		/* send data */
         usart_sendData(PC_USART, pc_data.tx_buff, PC_MAX_SEND_SIZE);
-        //        WriteDataToPC(&pc_data, 0x01, 0x01, LOCAL_DEVECE_ID_1, 0x0A, 256, 0x01, 0x00, 0x00, 0x00);
-        //        __NOP();
+ 
         pc_event = PC_END_EVENT;
         break;
 
@@ -401,9 +400,10 @@ void send_heartbeat_data(PC_DATA_t * pc, FWG2_Handle * FWG2)
 #if 1
     static uint32_t crc_value;
     static uint32_t convert_result;
+	
     pc->tx_buff[0]        = PC_HEAD_1;
     pc->tx_buff[1]        = 0x01;
-    pc->tx_buff[2]        = 0x00;
+    pc->tx_buff[2]        = 0x02;
     pc->tx_buff[3]        = LOCAL_DEVECE_ID_2;
     pc->tx_buff[4]        = LOCAL_DEVECE_ID_1;
     pc->tx_buff[5]        = 0x00;
@@ -416,7 +416,7 @@ void send_heartbeat_data(PC_DATA_t * pc, FWG2_Handle * FWG2)
     pc->tx_buff[12]       = 0x00;
     memset(pc->check_crc_buff, 0, PC_CRC_BUFF_SIZE);
     convert_data(pc->tx_buff, pc->check_crc_buff, 1, 12);
-    crc_value = crc_block_calculate(pc->check_crc_buff, 12);
+    crc_value = crc_block_calculate(pc->check_crc_buff,3);
     crc_data_reset();
     pc->tx_buff[13] = ((crc_value >> 24) & 0xff);
     pc->tx_buff[14] = ((crc_value >> 16) & 0xff);

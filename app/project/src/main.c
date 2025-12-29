@@ -111,9 +111,9 @@ void uart5_comm_task(void);
 int main(void)
 {
   /* add user code begin 1 */
-    /* config vector table offset */
-    nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x4000);
-    /* add user code end 1 */
+  /* config vector table offset */
+  nvic_vector_table_set(NVIC_VECTTAB_FLASH, 0x4000);
+  /* add user code end 1 */
 
   /* system clock config. */
   wk_system_clock_config();
