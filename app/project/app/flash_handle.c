@@ -1041,7 +1041,7 @@ static void get_data_from_b(void)
 static void get_reset_data(void)
 {
     sFWG2_t.Direct_handle_parameter.set_temp       = 380;
-    sFWG2_t.Direct_handle_parameter.set_wind       = 40;
+    sFWG2_t.Direct_handle_parameter.set_wind       = 60;
     sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = 100;
     sFWG2_t.Direct_handle_parameter.set_calibration_temp = 0;
     sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
@@ -1170,7 +1170,7 @@ static void check_all_data(void)
     if (sFWG2_t.Direct_handle_parameter.set_wind > MAX_SET_WIND_VAL
             || sFWG2_t.Direct_handle_parameter.set_wind < MIN_SET_WIND_VAL)
     {
-        sFWG2_t.Direct_handle_parameter.set_wind  = 40;
+        sFWG2_t.Direct_handle_parameter.set_wind  = 60;
     }
 
     if (sFWG2_t.Direct_handle_parameter.quick_work_temp >= 100)

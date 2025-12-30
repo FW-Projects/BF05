@@ -1857,7 +1857,7 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                     /* reset direct handle's value */
                     sFWG2_t.Direct_handle_parameter.set_temp = 380;
                     sFWG2_t.Direct_handle_parameter.set_temp_f_display = 716;
-                    sFWG2_t.Direct_handle_parameter.set_wind = 40;
+                    sFWG2_t.Direct_handle_parameter.set_wind = 60;
                     sFWG2_t.Direct_handle_parameter.set_time = 10;
                     sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = 100;
                     sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
