@@ -13,7 +13,7 @@ uint8_t page_switch[10] = {0x5a, 0xa5, 0x07, 0x82, 0x00, 0x84, 0x5a, 0x01, 0x00,
 static uint8_t software_buff[9] = {0x5A, 0xA5, 0x06, 0x82, 0x50, 0x39, 0x00, 0x00, 0x00};
 static uint8_t hardware_buff[9] = {0x5A, 0xA5, 0x06, 0x82, 0x50, 0x47, 0x00, 0x00, 0x00};
 
- 
+
 
 uint16_t show_direct_curve_set_temp_time;
 uint16_t show_direct_curve_set_wind_time;
@@ -1857,7 +1857,7 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                     /* reset direct handle's value */
                     sFWG2_t.Direct_handle_parameter.set_temp = 380;
                     sFWG2_t.Direct_handle_parameter.set_temp_f_display = 716;
-                    sFWG2_t.Direct_handle_parameter.set_wind = 40;
+                    sFWG2_t.Direct_handle_parameter.set_wind = 60;
                     sFWG2_t.Direct_handle_parameter.set_time = 10;
                     sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = 100;
                     sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
@@ -2147,7 +2147,6 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                     {
                         sFWG2_t.general_parameter.key_setting_flag = true;
                         sFWG2_t.general_parameter.setting_time = 0;
-                         
 
                         if (sFWG2_t.Direct_handle_parameter.cold_mode_set_wind <= MIN_SET_WIND_VAL)
                         {
@@ -2183,7 +2182,6 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                     {
                         sFWG2_t.general_parameter.key_setting_flag = true;
                         sFWG2_t.general_parameter.setting_time = 0;
-                        
 
                         if (sFWG2_t.Direct_handle_parameter.cold_mode_set_wind >= MAX_SET_WIND_VAL)
                         {
@@ -2225,7 +2223,7 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                     {
                         sFWG2_t.general_parameter.key_setting_flag = true;
                         sFWG2_t.general_parameter.setting_time = 0;
-                         
+
                         if (sFWG2_t.Direct_handle_parameter.cold_mode_set_wind - 5 <= MIN_SET_WIND_VAL)
                         {
                             sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = MIN_SET_WIND_VAL;
@@ -2260,9 +2258,8 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                     {
                         sFWG2_t.general_parameter.key_setting_flag = true;
                         sFWG2_t.general_parameter.setting_time = 0;
-                         
 
-                        if (sFWG2_t.Direct_handle_parameter.cold_mode_set_wind +5 >= MAX_SET_WIND_VAL)
+                        if (sFWG2_t.Direct_handle_parameter.cold_mode_set_wind + 5 >= MAX_SET_WIND_VAL)
                         {
                             sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = MAX_SET_WIND_VAL;
                         }
@@ -2497,13 +2494,16 @@ uint8_t get_page(void)
 
     if (sFWG2_t.general_parameter.reset_fwg2_flag == true)
     {
-        time++;
+        if (sFWG2_t.general_parameter.fwg2_page == PAGE_SET_RESET_FWG2)
+        {
+            time++;
+        }
 
         if (1 == time)
         {
             show_step = 2;
         }
-        else if (time >= MES_SHOW_TIME)
+        else if (time >= MES_SHOW_TIME || sFWG2_t.general_parameter.fwg2_page != PAGE_SET_RESET_FWG2)
         {
             time = 0;
             show_step = 2;
@@ -2576,8 +2576,8 @@ void show_page(void)
 
         /* show software version */
         software_buff[8] = 2;
-        software_buff[7] = 2;
-        software_buff[6] = 2;
+        software_buff[7] = 4;
+        software_buff[6] = 1;
         usart_sendData(DWIN_USART, software_buff, 9);
         show_step = 1;
         break;
@@ -2667,7 +2667,8 @@ static uint8_t check_channel(void)
     uint8_t show_step = 0;
     static uint8_t last_direct_ch = 10;
     static fwg2_temp_unit_e last_temp_unit = 10;
-static bool last_reset_flag = false;
+    static bool last_reset_flag = false;
+
     //直风手柄的通道选择发生变化
     if (last_direct_ch != sFWG2_t.general_parameter.ch)
     {
@@ -2723,18 +2724,17 @@ static bool last_reset_flag = false;
             }
         }
     }
-	 
     //当温度显示单位发生变化时要同步刷新显示
     else if (last_temp_unit != sFWG2_t.general_parameter.temp_uint)
     {
         show_step = 1;
         last_temp_unit = sFWG2_t.general_parameter.temp_uint;
     }
-	else if(last_reset_flag != sFWG2_t.general_parameter.reset_fwg2_flag)
-	{
-	    show_step = 1;
-		last_reset_flag = sFWG2_t.general_parameter.reset_fwg2_flag;
-	}
+    else if (last_reset_flag != sFWG2_t.general_parameter.reset_fwg2_flag)
+    {
+        show_step = 1;
+        last_reset_flag = sFWG2_t.general_parameter.reset_fwg2_flag;
+    }
 
     return show_step;
 }
@@ -3201,6 +3201,7 @@ static uint8_t get_direct_wind_state(void)
     static uint8_t last_set_wind = 0;
     static uint8_t last_stop_set_wind = 0;
     static handle_state_e last_direct_handle_state = 10;
+	static handle_position_e last_handle_position = 10;
     static bool setting_flag = false;
     static bool change_color_flag = false;
     static uint8_t setting_time = 0;
@@ -3257,6 +3258,26 @@ static uint8_t get_direct_wind_state(void)
                 show_step = 3;
                 sFWG2_t.Direct_handle_parameter.last_set_wind = sFWG2_t.Direct_handle_parameter.set_wind;
             }
+            else if (last_stop_set_wind != sFWG2_t.Direct_handle_parameter.stop_set_wind &&
+                     setting_flag == false)
+            {
+                show_step = 3;
+                last_stop_set_wind = sFWG2_t.Direct_handle_parameter.stop_set_wind;
+            }
+            else if (last_direct_handle_state != sFWG2_t.Direct_handle_state)
+            {
+                if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
+                {
+                    show_step = 3;
+                }
+
+                last_direct_handle_state = sFWG2_t.Direct_handle_state;
+            }
+			else if(last_handle_position != sFWG2_t.Direct_handle_position)
+			{
+			    show_step = 3;
+				last_handle_position = sFWG2_t.Direct_handle_position;
+			}
         }
     }
     else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
@@ -3392,7 +3413,10 @@ static void show_direct_wind(void)
                 {
                     if (handle_move)
                     {
+						if(sFWG2_t.general_parameter.setting_wind_flag == false)
                         sFWG2_t.Direct_handle_parameter.show_wind = sFWG2_t.Direct_handle_parameter.stop_set_wind;
+						else
+							sFWG2_t.Direct_handle_parameter.show_wind = sFWG2_t.Direct_handle_parameter.set_wind;
                     }
                     else
                     {
@@ -3628,6 +3652,7 @@ static uint8_t get_code_mode_value(void)
     static fwg2_page_e last_page = 0;
     static uint8_t last_code_ch = 10;
     static fwg2_temp_unit_e last_temp_unit = 10;
+
     if (last_page != sFWG2_t.general_parameter.fwg2_page)
     {
         if (sFWG2_t.general_parameter.fwg2_page == PAGE_SET_CODE_MODE &&
@@ -3674,14 +3699,14 @@ static uint8_t get_code_mode_value(void)
 
         last_code_ch = sFWG2_t.general_parameter.code_ch;
     }
+    else if (last_temp_unit != sFWG2_t.general_parameter.temp_uint)
+    {
+        last_page = 0;
+        last_code_ch = 10;
+        last_temp_unit = sFWG2_t.general_parameter.temp_uint;
+    }
 
-    else if(last_temp_unit != sFWG2_t.general_parameter.temp_uint)
-	{
-		last_page = 0;
-		last_code_ch = 10;
-	    last_temp_unit = sFWG2_t.general_parameter.temp_uint;
-	}
-	return show_step;
+    return show_step;
 }
 
 static void show_code_mode_value(void)
@@ -4140,7 +4165,7 @@ static uint8_t check_menu_setting(void)
     uint8_t show_step = 0;
     static fwg2_page_e              last_page             = 0;
     static fwg2_work_e              last_work_mode        = 10;
-	static bool last_reset_flag                           = false;
+    static bool last_reset_flag                           = false;
     static fwg2_temp_unit_e         last_temp_unit        = 10;
     static fwg2_speaker_state_e     last_speaker_state    = 10;
     static fwg2_temp_lock_state_e   last_temp_lock_state  = 10;
@@ -4152,12 +4177,11 @@ static uint8_t check_menu_setting(void)
     static fwg2_enhance_state_e     last_enhance_state    = 10;
 
     if (last_work_mode != sFWG2_t.general_parameter.work_mode ||
-		last_reset_flag != sFWG2_t.general_parameter.reset_fwg2_flag)
+            last_reset_flag != sFWG2_t.general_parameter.reset_fwg2_flag)
     {
         show_step = 1;
         last_work_mode = sFWG2_t.general_parameter.work_mode;
-		last_reset_flag  = sFWG2_t.general_parameter.reset_fwg2_flag;
-		 
+        last_reset_flag  = sFWG2_t.general_parameter.reset_fwg2_flag;
     }
     else if (last_temp_unit != sFWG2_t.general_parameter.temp_uint)
     {
@@ -4331,7 +4355,7 @@ static void show_menu_setting(void)
 
     case 10:
         /* show software version  */
-        software_buff[8] = 0;
+        software_buff[8] = 2;
         software_buff[7] = 4;
         software_buff[6] = 1;
         usart_sendData(DWIN_USART, software_buff, 9);
@@ -4811,7 +4835,7 @@ static uint8_t get_code_mode_state(void)
 static void show_code_mode_state(void)
 {
     static uint8_t state = 0;
- 
+
     if (sFWG2_t.general_parameter.fwg2_page == PAGE_SHOW_CODE_WORK)
     {
         switch (state)
@@ -4875,10 +4899,6 @@ static void show_code_mode_state(void)
             break;
 
         case 5:
-			
-		
-        
-		
             /* show direct handle temp */
             sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SHOW_CODE_MODE_TEMP), DWIN_DATA_BITS,
                             sFWG2_t.Direct_handle_parameter.show_temp);

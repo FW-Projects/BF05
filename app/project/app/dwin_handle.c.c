@@ -2494,8 +2494,10 @@ uint8_t get_page(void)
 
     if (sFWG2_t.general_parameter.reset_fwg2_flag == true)
     {
-		if(sFWG2_t.general_parameter.fwg2_page == PAGE_SET_RESET_FWG2)
-        time++;
+        if (sFWG2_t.general_parameter.fwg2_page == PAGE_SET_RESET_FWG2)
+        {
+            time++;
+        }
 
         if (1 == time)
         {
@@ -3199,6 +3201,7 @@ static uint8_t get_direct_wind_state(void)
     static uint8_t last_set_wind = 0;
     static uint8_t last_stop_set_wind = 0;
     static handle_state_e last_direct_handle_state = 10;
+    static handle_position_e last_handle_position = 10;
     static bool setting_flag = false;
     static bool change_color_flag = false;
     static uint8_t setting_time = 0;
@@ -3255,27 +3258,26 @@ static uint8_t get_direct_wind_state(void)
                 show_step = 3;
                 sFWG2_t.Direct_handle_parameter.last_set_wind = sFWG2_t.Direct_handle_parameter.set_wind;
             }
-			
- 
-    else if (last_stop_set_wind != sFWG2_t.Direct_handle_parameter.stop_set_wind &&
-             setting_flag == false)
-    {
-        show_step = 3;
-        last_stop_set_wind = sFWG2_t.Direct_handle_parameter.stop_set_wind;
-    }
-    else if (last_direct_handle_state != sFWG2_t.Direct_handle_state)
-    {
-        if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
-        {
-            show_step = 3;
-        }
+            else if (last_stop_set_wind != sFWG2_t.Direct_handle_parameter.stop_set_wind &&
+                     setting_flag == false)
+            {
+                show_step = 3;
+                last_stop_set_wind = sFWG2_t.Direct_handle_parameter.stop_set_wind;
+            }
+            else if (last_direct_handle_state != sFWG2_t.Direct_handle_state)
+            {
+                if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
+                {
+                    show_step = 3;
+                }
 
-        last_direct_handle_state = sFWG2_t.Direct_handle_state;
-    }
-			
-			
-			
-			
+                last_direct_handle_state = sFWG2_t.Direct_handle_state;
+            }
+            else if (last_handle_position != sFWG2_t.Direct_handle_position)
+            {
+                show_step = 3;
+                last_handle_position = sFWG2_t.Direct_handle_position;
+            }
         }
     }
     else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
@@ -3411,7 +3413,14 @@ static void show_direct_wind(void)
                 {
                     if (handle_move)
                     {
-                        sFWG2_t.Direct_handle_parameter.show_wind = sFWG2_t.Direct_handle_parameter.stop_set_wind;
+                        if (sFWG2_t.general_parameter.setting_wind_flag == false)
+                        {
+                            sFWG2_t.Direct_handle_parameter.show_wind = sFWG2_t.Direct_handle_parameter.stop_set_wind;
+                        }
+                        else
+                        {
+                            sFWG2_t.Direct_handle_parameter.show_wind = sFWG2_t.Direct_handle_parameter.set_wind;
+                        }
                     }
                     else
                     {
