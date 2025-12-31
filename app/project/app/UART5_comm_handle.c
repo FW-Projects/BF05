@@ -189,16 +189,15 @@ void RecvDataFromUART5(UART5_DATA_t *uart5)
                         }
                     }
                 }
-                
-				if (uart5->rx_buff[UART5_CMD1] == UART5_GENERAL)
+
+                if (uart5->rx_buff[UART5_CMD1] == UART5_GENERAL)
                 {
-					if (uart5->rx_buff[UART5_CMD2] == 0x00)
+                    if (uart5->rx_buff[UART5_CMD2] == 0x00)
                     {
-						uart5_event = UART5_FACTORY_EVENT;
-					}
-				}
-                    
-				/* other cmd */
+                        uart5_event = UART5_FACTORY_EVENT;
+                    }
+                }
+                /* other cmd */
                 else
                 {
                     __NOP();
@@ -236,9 +235,8 @@ static void WriteDataToUART5(UART5_DATA_t * uart5,
     uart5->tx_buff[UART5_DATA4_LEN_L] = (uint8_t)((data_4 & 0XFF));
     uart5->tx_buff[UART5_DATA5_LEN_H] = (uint8_t)((data_5 >> 8) & 0xff);
     uart5->tx_buff[UART5_DATA5_LEN_L] = (uint8_t)((data_5 & 0XFF));
-
-	/* crc check */
-	memset(uart5->check_crc_buff,0,256);
+    /* crc check */
+    memset(uart5->check_crc_buff, 0, 256);
     convert_data(uart5->tx_buff, uart5->check_crc_buff, UART5_CMD1, UART5_DATA5_LEN_L);
     crc_value = crc_block_calculate(uart5->check_crc_buff, UART5_CRC_SIZE);
     crc_data_reset();
@@ -256,6 +254,10 @@ void uart5_event_handle(void)
     switch (uart5_event)
     {
     case UART5_SET_TEMP_ADD_EVENT:
+        sFWG2_t.general_parameter.key_setting_flag = true;
+        sFWG2_t.general_parameter.setting_time = 0;
+        sFWG2_t.general_parameter.setting_temp_flag = true;
+        sFWG2_t.general_parameter.setting_temp_time = 0;
         sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
 
         if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
@@ -289,8 +291,10 @@ void uart5_event_handle(void)
 
         if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
         {
-			if(sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-            sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+            if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
+            {
+                sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+            }
         }
         else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
         {
@@ -302,6 +306,10 @@ void uart5_event_handle(void)
         break;
 
     case UART5_SET_TEMP_REDUCE_EVENT:
+        sFWG2_t.general_parameter.key_setting_flag = true;
+        sFWG2_t.general_parameter.setting_time = 0;
+        sFWG2_t.general_parameter.setting_temp_flag = true;
+        sFWG2_t.general_parameter.setting_temp_time = 0;
         sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
 
         if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
@@ -335,8 +343,10 @@ void uart5_event_handle(void)
 
         if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
         {
-			if(sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-            sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+            if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
+            {
+                sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+            }
         }
         else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
         {
@@ -348,6 +358,10 @@ void uart5_event_handle(void)
         break;
 
     case UART5_SET_WIND_ADD_EVENT:
+        sFWG2_t.general_parameter.key_setting_flag = true;
+        sFWG2_t.general_parameter.setting_time = 0;
+        sFWG2_t.general_parameter.setting_wind_flag = true;
+        sFWG2_t.general_parameter.setting_wind_time = 0;
         sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
 
         if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
@@ -376,8 +390,10 @@ void uart5_event_handle(void)
 
         if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
         {
-			if(sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-            sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+            if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
+            {
+                sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+            }
         }
         else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
         {
@@ -389,6 +405,10 @@ void uart5_event_handle(void)
         break;
 
     case UART5_SET_WIND_REDUCE_EVENT:
+        sFWG2_t.general_parameter.key_setting_flag = true;
+        sFWG2_t.general_parameter.setting_time = 0;
+        sFWG2_t.general_parameter.setting_wind_flag = true;
+        sFWG2_t.general_parameter.setting_wind_time = 0;
         sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
 
         if (sFWG2_t.Direct_handle_work_mode  ==  NORMAL_MODE)
@@ -418,8 +438,10 @@ void uart5_event_handle(void)
 
         if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
         {
-			if(sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-            sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+            if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
+            {
+                sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+            }
         }
         else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
         {
@@ -431,6 +453,13 @@ void uart5_event_handle(void)
         break;
 
     case UART5_GET_CHANNEL_1_EVENT:
+        sFWG2_t.general_parameter.key_setting_flag = true;
+        sFWG2_t.general_parameter.setting_time = 0;
+        sFWG2_t.general_parameter.setting_temp_flag =  true;
+        sFWG2_t.general_parameter.setting_temp_time =  0;
+        sFWG2_t.general_parameter.setting_wind_flag =  true;
+        sFWG2_t.general_parameter.setting_wind_time =  0;
+
         if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN                 || \
                 sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
         {
@@ -443,8 +472,10 @@ void uart5_event_handle(void)
 
             if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
             {
-				if(sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-                sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+                if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
+                {
+                    sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+                }
             }
             else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
             {
@@ -460,20 +491,29 @@ void uart5_event_handle(void)
         break;
 
     case UART5_GET_CHANNEL_2_EVENT:
+        sFWG2_t.general_parameter.key_setting_flag = true;
+        sFWG2_t.general_parameter.setting_time = 0;
+        sFWG2_t.general_parameter.setting_temp_flag =  true;
+        sFWG2_t.general_parameter.setting_temp_time =  0;
+        sFWG2_t.general_parameter.setting_wind_flag =  true;
+        sFWG2_t.general_parameter.setting_wind_time =  0;
+
         if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN                 || \
                 sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
         {
             /* show channel value */
             sFWG2_t.general_parameter.countdown_time  = sFWG2_t.general_parameter.ch2_set_time;
-                sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch2_set_temp;
-                sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch2_set_wind;
+            sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch2_set_temp;
+            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch2_set_wind;
             /* show channel state */
             sFWG2_t.general_parameter.ch = 2;
 
             if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
             {
-				if(sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-                sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+                if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
+                {
+                    sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+                }
             }
             else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
             {
@@ -489,20 +529,29 @@ void uart5_event_handle(void)
         break;
 
     case UART5_GET_CHANNEL_3_EVENT:
+        sFWG2_t.general_parameter.key_setting_flag = true;
+        sFWG2_t.general_parameter.setting_time = 0;
+        sFWG2_t.general_parameter.setting_temp_flag =  true;
+        sFWG2_t.general_parameter.setting_temp_time =  0;
+        sFWG2_t.general_parameter.setting_wind_flag =  true;
+        sFWG2_t.general_parameter.setting_wind_time =  0;
+
         if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN                 || \
                 sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
         {
             /* show channel value */
-                sFWG2_t.general_parameter.countdown_time  = sFWG2_t.general_parameter.ch3_set_time;
-                sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch3_set_temp;
-                sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch3_set_wind;
+            sFWG2_t.general_parameter.countdown_time  = sFWG2_t.general_parameter.ch3_set_time;
+            sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch3_set_temp;
+            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch3_set_wind;
             /* show channel state */
             sFWG2_t.general_parameter.ch = 3;
 
             if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
             {
-				if(sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-                sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+                if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
+                {
+                    sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+                }
             }
             else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
             {
@@ -518,20 +567,29 @@ void uart5_event_handle(void)
         break;
 
     case UART5_GET_CHANNEL_4_EVENT:
+        sFWG2_t.general_parameter.key_setting_flag = true;
+        sFWG2_t.general_parameter.setting_time = 0;
+        sFWG2_t.general_parameter.setting_temp_flag =  true;
+        sFWG2_t.general_parameter.setting_temp_time =  0;
+        sFWG2_t.general_parameter.setting_wind_flag =  true;
+        sFWG2_t.general_parameter.setting_wind_time =  0;
+
         if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN                 || \
                 sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
         {
             /* show channel value */
             sFWG2_t.general_parameter.countdown_time  = sFWG2_t.general_parameter.ch4_set_time;
-                sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch4_set_temp;
-                sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch4_set_wind;
+            sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch4_set_temp;
+            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch4_set_wind;
             /* show channel state */
             sFWG2_t.general_parameter.ch = 4;
 
             if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
             {
-				if(sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-                sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+                if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
+                {
+                    sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+                }
             }
             else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
             {
@@ -593,11 +651,11 @@ void uart5_event_handle(void)
         uart5_event = UART5_END_EVENT;
         break;
 
-		case UART5_FACTORY_EVENT:
-	    WriteDataToUART5(&UART5_data, 0x01, 0x01, 0x01, 0x0A, 258, 256, 0x00, 0x00, 0x00);
-	    uart5_event = UART5_END_EVENT;
+    case UART5_FACTORY_EVENT:
+        WriteDataToUART5(&UART5_data, 0x01, 0x01, 0x01, 0x0A, 258, 256, 0x00, 0x00, 0x00);
+        uart5_event = UART5_END_EVENT;
         break;
-	
+
     case UART5_END_EVENT:
         break;
     }
