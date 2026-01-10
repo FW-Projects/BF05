@@ -4596,6 +4596,11 @@ static uint8_t get_direct_run_state(void)
                     {
                         out_value =  sFWG2_t.Direct_handle_parameter.set_temp -  actual_temp;
                     }
+					
+					if(actual_temp == sFWG2_t.Direct_handle_parameter.set_temp)
+					{
+					     out_value = 1;
+					}
                 }
                 else if (actual_temp > sFWG2_t.Direct_handle_parameter.set_temp)
                 {
