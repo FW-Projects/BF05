@@ -463,32 +463,34 @@ void uart4_event_handle(void)
         sFWG2_t.general_parameter.setting_wind_flag =  true;
         sFWG2_t.general_parameter.setting_wind_time =  0;
 
-        if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN || \
-                sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
+        if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
         {
-            /* show channel value */
-            sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch1_set_temp;
-            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch1_set_wind ;
-            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch1_set_time;
-            /* show channel state */
+            sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+            sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
             sFWG2_t.general_parameter.ch = 1;
 
-            if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
+            if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
             {
-                if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-                {
-                    sFWG2_t.Direct_handle_state = HANDLE_WORKING;
-                }
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch1_set_temp_f_display;
+                sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
+                sFWG2_t.general_parameter.ch1_set_temp = (sFWG2_t.general_parameter.ch1_set_temp_f_display - 32) * 5 / 9;
             }
-            else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
+            else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
             {
-                sFWG2_t.Direct_handle_parameter.sleep_time = 0;
+                sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch1_set_temp;
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
+                sFWG2_t.general_parameter.ch1_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch1_set_temp / 5 + 32;
             }
+
+            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch1_set_wind;
+            sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch1_set_time;
+            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch1_set_time;
+            sFWG2_t.general_parameter.countdown_flag = false;
+            /* show select channel */
+            sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
+                            sFWG2_t.general_parameter.ch);
         }
 
-        /* show select channel */
-        sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
-                        sFWG2_t.general_parameter.ch);
         sbeep.status = BEEP_SHORT;
         uast4_event = UART4_END_EVENT;
         break;
@@ -501,32 +503,34 @@ void uart4_event_handle(void)
         sFWG2_t.general_parameter.setting_wind_flag =  true;
         sFWG2_t.general_parameter.setting_wind_time =  0;
 
-        if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN                 || \
-                sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
+        if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
         {
-            /* show channel value */
-            sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch2_set_temp;
-            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch2_set_wind ;
-            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch2_set_time;
-            /* show channel state */
+            sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+            sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
             sFWG2_t.general_parameter.ch = 2;
 
-            if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
+            if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
             {
-                if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-                {
-                    sFWG2_t.Direct_handle_state = HANDLE_WORKING;
-                }
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch2_set_temp_f_display;
+                sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
+                sFWG2_t.general_parameter.ch2_set_temp = (sFWG2_t.general_parameter.ch2_set_temp_f_display - 32) * 5 / 9;
             }
-            else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
+            else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
             {
-                sFWG2_t.Direct_handle_parameter.sleep_time = 0;
+                sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch2_set_temp;
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
+                sFWG2_t.general_parameter.ch2_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch2_set_temp / 5 + 32;
             }
+
+            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch2_set_wind;
+            sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch2_set_time;
+            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch2_set_time;
+            sFWG2_t.general_parameter.countdown_flag = false;
+            /* show select channel */
+            sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
+                            sFWG2_t.general_parameter.ch);
         }
 
-        /* show select channel */
-        sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
-                        sFWG2_t.general_parameter.ch);
         sbeep.status = BEEP_SHORT;
         uast4_event = UART4_END_EVENT;
         break;
@@ -539,33 +543,34 @@ void uart4_event_handle(void)
         sFWG2_t.general_parameter.setting_wind_flag =  true;
         sFWG2_t.general_parameter.setting_wind_time =  0;
 
-        if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN                 ||
-                sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE
-           )
+        if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
         {
-            /* show channel value */
-            sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch3_set_temp;
-            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch3_set_wind ;
-            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch3_set_time;
-            /* show channel state */
+            sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+            sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
             sFWG2_t.general_parameter.ch = 3;
 
-            if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
+            if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
             {
-                if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-                {
-                    sFWG2_t.Direct_handle_state = HANDLE_WORKING;
-                }
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch3_set_temp_f_display;
+                sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
+                sFWG2_t.general_parameter.ch3_set_temp = (sFWG2_t.general_parameter.ch3_set_temp_f_display - 32) * 5 / 9;
             }
-            else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
+            else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
             {
-                sFWG2_t.Direct_handle_parameter.sleep_time = 0;
+                sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch3_set_temp;
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
+                sFWG2_t.general_parameter.ch3_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch3_set_temp / 5 + 32;
             }
+
+            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch3_set_wind;
+            sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch3_set_time;
+            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch3_set_time;
+            sFWG2_t.general_parameter.countdown_flag = false;
+            /* show select channel */
+            sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
+                            sFWG2_t.general_parameter.ch);
         }
 
-        /* show select channel */
-        sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
-                        sFWG2_t.general_parameter.ch);
         sbeep.status = BEEP_SHORT;
         uast4_event = UART4_END_EVENT;
         break;
@@ -578,32 +583,34 @@ void uart4_event_handle(void)
         sFWG2_t.general_parameter.setting_wind_flag =  true;
         sFWG2_t.general_parameter.setting_wind_time =  0;
 
-        if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN                 || \
-                sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
+        if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
         {
-            /* show channel value */
-            sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch4_set_temp;
-            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch4_set_wind ;
-            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch4_set_time;
-            /* show channel state */
+            sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+            sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
             sFWG2_t.general_parameter.ch = 4;
 
-            if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
+            if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
             {
-                if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
-                {
-                    sFWG2_t.Direct_handle_state = HANDLE_WORKING;
-                }
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch4_set_temp_f_display;
+                sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
+                sFWG2_t.general_parameter.ch4_set_temp = (sFWG2_t.general_parameter.ch4_set_temp_f_display - 32) * 5 / 9;
             }
-            else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
+            else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
             {
-                sFWG2_t.Direct_handle_parameter.sleep_time = 0;
+                sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch4_set_temp;
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
+                sFWG2_t.general_parameter.ch4_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch4_set_temp / 5 + 32;
             }
+
+            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch4_set_wind;
+            sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch4_set_time;
+            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch4_set_time;
+            sFWG2_t.general_parameter.countdown_flag = false;
+            /* show select channel */
+            sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
+                            sFWG2_t.general_parameter.ch);
         }
 
-        /* show select channel */
-        sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
-                        sFWG2_t.general_parameter.ch);
         sbeep.status = BEEP_SHORT;
         uast4_event = UART4_END_EVENT;
         break;

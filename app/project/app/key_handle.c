@@ -625,9 +625,9 @@ void KeyProc(void)
     {
         if (!set_done)
         {
-            if (key_ch == KE_PRESS)
+            if (key_ch == KE_PRESS && sFWG2_t.general_parameter.fwg2_page == PAGE_SHOW_CODE_WORK)
             {
-                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE )
                 {
                     if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_START)
                     {

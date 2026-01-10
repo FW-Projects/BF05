@@ -281,9 +281,9 @@ void feed_dog_task(void)
 
     if (first_in == false)
     {
-         first_in = true;
+        first_in = true;
         /* if enabled, please feed the dog through wdt_counter_reload() function */
-         wdt_enable();
+        wdt_enable();
     }
     wdt_counter_reload();
 } 

@@ -25,7 +25,7 @@ int8_t direct_handle_wind_20_cal_buff[41] = {12, 7, 7, 6, 4, 4, 3, 2, 0, -1,
 
 void fan_control(void)
 {
-	static bool run_flag = false;
+	static bool run_flag = true;
     /* start the Direct handle fan output of  */
     if (sFWG2_t.general_parameter.work_mode == NORMAL && sFWG2_t.Direct_handle_error_state == HANDLE_OK)
     {
@@ -84,6 +84,7 @@ void fan_control(void)
         {
             if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_START)
             {
+				run_flag = true;
                 if (sFWG2_t.general_parameter.code_ch == 0)
                 {
                     if (sFWG2_t.general_parameter.code_mode_step == CODE_PRE_HEAT)
@@ -163,7 +164,7 @@ void fan_control(void)
             }
             else if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_STOP)
             {
-				run_flag = true;
+				
                 if (sFWG2_t.Direct_handle_parameter.actual_temp >= 250)
                 {
                     sFWG2_t.Direct_handle_parameter.stop_set_wind = 100;
@@ -172,18 +173,31 @@ void fan_control(void)
                 }
                 else if (sFWG2_t.Direct_handle_parameter.actual_temp >= 70 && sFWG2_t.Direct_handle_parameter.actual_temp < 250)
                 {
-                    /* open fan output with actual temp change*/
-                    sFWG2_t.Direct_handle_parameter.stop_set_wind = sFWG2_t.Direct_handle_parameter.actual_temp * 0.4;
-                    tmr_channel_value_set(TMR9, TMR_SELECT_CHANNEL_2, sFWG2_t.Direct_handle_parameter.stop_set_wind * 1.13 + 30);
+					if(run_flag)
+					{
+					    /* open fan output with actual temp change*/
+                        sFWG2_t.Direct_handle_parameter.stop_set_wind = sFWG2_t.Direct_handle_parameter.actual_temp * 0.4;
+                        tmr_channel_value_set(TMR9, TMR_SELECT_CHANNEL_2, sFWG2_t.Direct_handle_parameter.stop_set_wind * 1.13 + 30);
+					}
+					else
+					{
+					     sFWG2_t.Direct_handle_parameter.stop_set_wind = 0;
+					}
+                    
                 }
                 /* keep fan output until the temp below 60 */
                 else if (sFWG2_t.Direct_handle_parameter.actual_temp >= 60 && sFWG2_t.Direct_handle_parameter.actual_temp < 70)
                 {
 					if(run_flag)
                     tmr_channel_value_set(TMR9, TMR_SELECT_CHANNEL_2, 20 * 1.13 + 30);
+					else
+					{
+					     sFWG2_t.Direct_handle_parameter.stop_set_wind = 0;
+					}
                 }
                 else
                 {
+					
 					if(run_flag)
 					{
 					    run_flag = false;

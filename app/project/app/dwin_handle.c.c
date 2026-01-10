@@ -45,22 +45,14 @@ static void WriteDataToLCD(DwinObjectType *dwim, uint16_t startAddress, uint16_t
 static void RecvDataFromLCD(DwinObjectType *dwim)
 {
     static uint16_t cal_temp = 0;
-    static uint16_t ch1_press_time = 0;
-    static uint16_t ch1_long_press_time = 0;
-    static uint16_t ch2_press_time = 0;
-    static uint16_t ch2_long_press_time = 0;
-    static uint16_t ch3_press_time = 0;
-    static uint16_t ch3_long_press_time = 0;
-    static uint16_t ch4_press_time = 0;
-    static uint16_t ch4_long_press_time = 0;
-    static bool ch1_short_press_flag = false;
-    static bool ch1_long_press_flag = false;
-    static bool ch2_short_press_flag = false;
-    static bool ch2_long_press_flag = false;
-    static bool ch3_short_press_flag = false;
-    static bool ch3_long_press_flag = false;
-    static bool ch4_short_press_flag = false;
-    static bool ch4_long_press_flag = false;
+    static bool channel_1_long_press_flag = false;
+    static bool channel_2_long_press_flag = false;
+    static bool channel_3_long_press_flag = false;
+    static bool channel_4_long_press_flag = false;
+    static uint8_t channel_1_long_press_time = 0;
+    static uint8_t channel_2_long_press_time = 0;
+    static uint8_t channel_3_long_press_time = 0;
+    static uint8_t channel_4_long_press_time = 0;
     static fwg2_fn_key_long_set_e   last_fn_key_long_set;
     static fwg2_fn_key_short_set_e  last_fn_key_short_set;
     dwim->read_size = usart_receiveData(DWIN_USART, dwim->rx_buff);
@@ -247,8 +239,6 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                     {
                         sFWG2_t.Direct_handle_parameter.sleep_time = 0;
                     }
-
-                    ch1_short_press_flag = true;
                 }
 
                 break;
@@ -258,16 +248,12 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                 {
                     if (dwim->rx_buff[FRAME_VAL_L] == 0)
                     {
-                        if (ch1_long_press_flag == FALSE)
-                        {
-                            ch1_short_press_flag = false;
-                            ch1_long_press_time++;
-                        }
+                        channel_1_long_press_time++;
 
-                        if (ch1_long_press_time >= 10)
+                        if (channel_1_long_press_time >= 10 && channel_1_long_press_flag == false)
                         {
-                            ch1_long_press_time = 0;
-                            ch1_long_press_flag = true;
+                            channel_1_long_press_time = 0;
+                            channel_1_long_press_flag = true;
                             sbeep.status = BEEP_LONG;
                             sFWG2_t.general_parameter.ch1_set_wind = sFWG2_t.Direct_handle_parameter.set_wind;
                             sFWG2_t.general_parameter.ch1_set_time = sFWG2_t.general_parameter.countdown_time;
@@ -295,11 +281,44 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                             show_popup_flag = true;
                         }
                     }
-
-                    if (dwim->rx_buff[FRAME_VAL_L] == 1)
+                    else if (dwim->rx_buff[FRAME_VAL_L] == 1)
                     {
-                        ch1_long_press_time = 0;
-                        ch1_long_press_flag = false;
+                        if (channel_1_long_press_flag == false)
+                        {
+                            sFWG2_t.general_parameter.key_setting_flag = true;
+                            sFWG2_t.general_parameter.setting_time = 0;
+                            sFWG2_t.general_parameter.setting_temp_flag =  true;
+                            sFWG2_t.general_parameter.setting_temp_time =  0;
+                            sFWG2_t.general_parameter.setting_wind_flag =  true;
+                            sFWG2_t.general_parameter.setting_wind_time =  0;
+                            sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+                            sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
+                            sFWG2_t.general_parameter.ch = 1;
+
+                            if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
+                            {
+                                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch1_set_temp_f_display;
+                                sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
+                                sFWG2_t.general_parameter.ch1_set_temp = (sFWG2_t.general_parameter.ch1_set_temp_f_display - 32) * 5 / 9;
+                            }
+                            else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
+                            {
+                                sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch1_set_temp;
+                                sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
+                                sFWG2_t.general_parameter.ch1_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch1_set_temp / 5 + 32;
+                            }
+
+                            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch1_set_wind;
+                            sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch1_set_time;
+                            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch1_set_time;
+                            sFWG2_t.general_parameter.countdown_flag = false;
+                            /* show select channel */
+                            sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
+                                            sFWG2_t.general_parameter.ch);
+                        }
+
+                        channel_1_long_press_flag = false;
+                        channel_1_long_press_time = 0;
                     }
                 }
 
@@ -322,8 +341,6 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                     {
                         sFWG2_t.Direct_handle_parameter.sleep_time = 0;
                     }
-
-                    ch2_short_press_flag = true;
                 }
 
                 break;
@@ -333,16 +350,12 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                 {
                     if (dwim->rx_buff[FRAME_VAL_L] == 0)
                     {
-                        if (ch2_long_press_flag == FALSE)
-                        {
-                            ch2_short_press_flag = false;
-                            ch2_long_press_time++;
-                        }
+                        channel_2_long_press_time++;
 
-                        if (ch2_long_press_time >= 10)
+                        if (channel_2_long_press_time >= 10 && channel_2_long_press_flag == false)
                         {
-                            ch2_long_press_time = 0;
-                            ch2_long_press_flag = true;
+                            channel_2_long_press_time = 0;
+                            channel_2_long_press_flag = true;
                             sbeep.status = BEEP_LONG;
                             sFWG2_t.general_parameter.ch2_set_wind = sFWG2_t.Direct_handle_parameter.set_wind;
                             sFWG2_t.general_parameter.ch2_set_time = sFWG2_t.general_parameter.countdown_time;
@@ -370,11 +383,44 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                             show_popup_flag = true;
                         }
                     }
-
-                    if (dwim->rx_buff[FRAME_VAL_L] == 1)
+                    else if (dwim->rx_buff[FRAME_VAL_L] == 1)
                     {
-                        ch2_long_press_time = 0;
-                        ch2_long_press_flag = false;
+                        if (channel_2_long_press_flag == false)
+                        {
+                            sFWG2_t.general_parameter.key_setting_flag = true;
+                            sFWG2_t.general_parameter.setting_time = 0;
+                            sFWG2_t.general_parameter.setting_temp_flag =  true;
+                            sFWG2_t.general_parameter.setting_temp_time =  0;
+                            sFWG2_t.general_parameter.setting_wind_flag =  true;
+                            sFWG2_t.general_parameter.setting_wind_time =  0;
+                            sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+                            sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
+                            sFWG2_t.general_parameter.ch = 2;
+
+                            if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
+                            {
+                                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch2_set_temp_f_display;
+                                sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
+                                sFWG2_t.general_parameter.ch2_set_temp = (sFWG2_t.general_parameter.ch2_set_temp_f_display - 32) * 5 / 9;
+                            }
+                            else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
+                            {
+                                sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch2_set_temp;
+                                sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
+                                sFWG2_t.general_parameter.ch2_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch2_set_temp / 5 + 32;
+                            }
+
+                            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch2_set_wind;
+                            sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch2_set_time;
+                            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch2_set_time;
+                            sFWG2_t.general_parameter.countdown_flag = false;
+                            /* show select channel */
+                            sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
+                                            sFWG2_t.general_parameter.ch);
+                        }
+
+                        channel_2_long_press_flag = false;
+                        channel_2_long_press_time = 0;
                     }
                 }
 
@@ -397,8 +443,6 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                     {
                         sFWG2_t.Direct_handle_parameter.sleep_time = 0;
                     }
-
-                    ch3_short_press_flag = true;
                 }
 
                 break;
@@ -408,16 +452,12 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                 {
                     if (dwim->rx_buff[FRAME_VAL_L] == 0)
                     {
-                        if (ch3_long_press_flag == FALSE)
-                        {
-                            ch3_short_press_flag = false;
-                            ch3_long_press_time++;
-                        }
+                        channel_3_long_press_time++;
 
-                        if (ch3_long_press_time >= 10)
+                        if (channel_3_long_press_time >= 10 && channel_3_long_press_flag == false)
                         {
-                            ch3_long_press_time = 0;
-                            ch3_long_press_flag = true;
+                            channel_3_long_press_time = 0;
+                            channel_3_long_press_flag = true;
                             sbeep.status = BEEP_LONG;
                             sFWG2_t.general_parameter.ch3_set_wind = sFWG2_t.Direct_handle_parameter.set_wind;
                             sFWG2_t.general_parameter.ch3_set_time = sFWG2_t.general_parameter.countdown_time;
@@ -445,11 +485,44 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                             show_popup_flag = true;
                         }
                     }
-
-                    if (dwim->rx_buff[FRAME_VAL_L] == 1)
+                    else if (dwim->rx_buff[FRAME_VAL_L] == 1)
                     {
-                        ch3_long_press_time = 0;
-                        ch3_long_press_flag = false;
+                        if (channel_3_long_press_flag == false)
+                        {
+                            sFWG2_t.general_parameter.key_setting_flag = true;
+                            sFWG2_t.general_parameter.setting_time = 0;
+                            sFWG2_t.general_parameter.setting_temp_flag =  true;
+                            sFWG2_t.general_parameter.setting_temp_time =  0;
+                            sFWG2_t.general_parameter.setting_wind_flag =  true;
+                            sFWG2_t.general_parameter.setting_wind_time =  0;
+                            sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+                            sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
+                            sFWG2_t.general_parameter.ch = 3;
+
+                            if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
+                            {
+                                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch3_set_temp_f_display;
+                                sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
+                                sFWG2_t.general_parameter.ch3_set_temp = (sFWG2_t.general_parameter.ch3_set_temp_f_display - 32) * 5 / 9;
+                            }
+                            else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
+                            {
+                                sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch3_set_temp;
+                                sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
+                                sFWG2_t.general_parameter.ch3_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch3_set_temp / 5 + 32;
+                            }
+
+                            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch3_set_wind;
+                            sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch3_set_time;
+                            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch3_set_time;
+                            sFWG2_t.general_parameter.countdown_flag = false;
+                            /* show select channel */
+                            sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
+                                            sFWG2_t.general_parameter.ch);
+                        }
+
+                        channel_3_long_press_flag = false;
+                        channel_3_long_press_time = 0;
                     }
                 }
 
@@ -472,8 +545,6 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                     {
                         sFWG2_t.Direct_handle_parameter.sleep_time = 0;
                     }
-
-                    ch4_short_press_flag = true;
                 }
 
                 break;
@@ -483,16 +554,12 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                 {
                     if (dwim->rx_buff[FRAME_VAL_L] == 0)
                     {
-                        if (ch4_long_press_flag == FALSE)
-                        {
-                            ch4_short_press_flag = false;
-                            ch4_long_press_time++;
-                        }
+                        channel_4_long_press_time++;
 
-                        if (ch4_long_press_time >= 10)
+                        if (channel_4_long_press_time >= 10 && channel_4_long_press_flag == false)
                         {
-                            ch4_long_press_time = 0;
-                            ch4_long_press_flag = true;
+                            channel_4_long_press_time = 0;
+                            channel_4_long_press_flag = true;
                             sbeep.status = BEEP_LONG;
                             sFWG2_t.general_parameter.ch4_set_wind = sFWG2_t.Direct_handle_parameter.set_wind;
                             sFWG2_t.general_parameter.ch4_set_time = sFWG2_t.general_parameter.countdown_time;
@@ -520,11 +587,44 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                             show_popup_flag = true;
                         }
                     }
-
-                    if (dwim->rx_buff[FRAME_VAL_L] == 1)
+                    else if (dwim->rx_buff[FRAME_VAL_L] == 1)
                     {
-                        ch4_long_press_time = 0;
-                        ch4_long_press_flag = false;
+                        if (channel_4_long_press_flag == false)
+                        {
+                            sFWG2_t.general_parameter.key_setting_flag = true;
+                            sFWG2_t.general_parameter.setting_time = 0;
+                            sFWG2_t.general_parameter.setting_temp_flag =  true;
+                            sFWG2_t.general_parameter.setting_temp_time =  0;
+                            sFWG2_t.general_parameter.setting_wind_flag =  true;
+                            sFWG2_t.general_parameter.setting_wind_time =  0;
+                            sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+                            sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
+                            sFWG2_t.general_parameter.ch = 4;
+
+                            if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
+                            {
+                                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch4_set_temp_f_display;
+                                sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
+                                sFWG2_t.general_parameter.ch4_set_temp = (sFWG2_t.general_parameter.ch4_set_temp_f_display - 32) * 5 / 9;
+                            }
+                            else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
+                            {
+                                sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch4_set_temp;
+                                sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
+                                sFWG2_t.general_parameter.ch4_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch4_set_temp / 5 + 32;
+                            }
+
+                            sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch4_set_wind;
+                            sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch4_set_time;
+                            sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch4_set_time;
+                            sFWG2_t.general_parameter.countdown_flag = false;
+                            /* show select channel */
+                            sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
+                                            sFWG2_t.general_parameter.ch);
+                        }
+
+                        channel_4_long_press_flag = false;
+                        channel_4_long_press_time = 0;
                     }
                 }
 
@@ -1891,7 +1991,7 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
                     sFWG2_t.general_parameter.ch4_set_temp = 450;
                     sFWG2_t.general_parameter.ch4_set_temp_f_display = 842;
                     sFWG2_t.general_parameter.ch4_set_wind = 60;
-                    sFWG2_t.general_parameter.ch4_set_time = 10;
+                    sFWG2_t.general_parameter.ch4_set_time = 30;
 #if 1
                     sFWG2_t.general_parameter.code0_pre_temp = 150;
                     sFWG2_t.general_parameter.code0_pre_wind = 40;
@@ -2275,210 +2375,6 @@ static void RecvDataFromLCD(DwinObjectType *dwim)
         }
 
         dwim->read_size = 0;
-    }
-
-    if (ch1_short_press_flag)
-    {
-        if (ch1_long_press_flag == false)
-        {
-            ch1_press_time++;
-
-            if (ch1_press_time > 200) // over 200ms
-            {
-                sFWG2_t.general_parameter.key_setting_flag = true;
-                sFWG2_t.general_parameter.setting_time = 0;
-                sFWG2_t.general_parameter.setting_temp_flag =  true;
-                sFWG2_t.general_parameter.setting_temp_time =  0;
-                sFWG2_t.general_parameter.setting_wind_flag =  true;
-                sFWG2_t.general_parameter.setting_wind_time =  0;
-                ch1_short_press_flag = false;
-                ch1_press_time = 0;
-
-                if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
-                {
-                    sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
-                    sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
-                    sFWG2_t.general_parameter.ch = 1;
-
-                    if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
-                    {
-                        sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch1_set_temp_f_display;
-                        sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
-                        sFWG2_t.general_parameter.ch1_set_temp = (sFWG2_t.general_parameter.ch1_set_temp_f_display - 32) * 5 / 9;
-                    }
-                    else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
-                    {
-                        sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch1_set_temp;
-                        sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
-                        sFWG2_t.general_parameter.ch1_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch1_set_temp / 5 + 32;
-                    }
-
-                    sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch1_set_wind;
-                    sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch1_set_time;
-                    sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch1_set_time;
-                    /* show select channel */
-                    sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
-                                    sFWG2_t.general_parameter.ch);
-                }
-            }
-        }
-        else
-        {
-            ch1_press_time = 0;
-        }
-    }
-
-    if (ch2_short_press_flag)
-    {
-        if (ch2_long_press_flag == false)
-        {
-            ch2_press_time++;
-
-            if (ch2_press_time > 200) // over 200ms
-            {
-                sFWG2_t.general_parameter.key_setting_flag = true;
-                sFWG2_t.general_parameter.setting_time = 0;
-                sFWG2_t.general_parameter.setting_temp_flag =  true;
-                sFWG2_t.general_parameter.setting_temp_time =  0;
-                sFWG2_t.general_parameter.setting_wind_flag =  true;
-                sFWG2_t.general_parameter.setting_wind_time =  0;
-                ch2_short_press_flag = false;
-                ch2_press_time = 0;
-
-                if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
-                {
-                    sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
-                    sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
-                    sFWG2_t.general_parameter.ch = 2;
-
-                    if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
-                    {
-                        sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch2_set_temp_f_display;
-                        sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
-                        sFWG2_t.general_parameter.ch2_set_temp = (sFWG2_t.general_parameter.ch2_set_temp_f_display - 32) * 5 / 9;
-                    }
-                    else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
-                    {
-                        sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch2_set_temp;
-                        sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
-                        sFWG2_t.general_parameter.ch2_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch2_set_temp / 5 + 32;
-                    }
-
-                    sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch2_set_wind;
-                    sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch2_set_time;
-                    sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch2_set_time;
-                    /* show select channel */
-                    sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
-                                    sFWG2_t.general_parameter.ch);
-                }
-            }
-        }
-        else
-        {
-            ch2_press_time = 0;
-        }
-    }
-
-    if (ch3_short_press_flag)
-    {
-        if (ch3_long_press_flag == false)
-        {
-            ch3_press_time++;
-
-            if (ch3_press_time > 200) // over 200ms
-            {
-                sFWG2_t.general_parameter.key_setting_flag = true;
-                sFWG2_t.general_parameter.setting_time = 0;
-                sFWG2_t.general_parameter.setting_temp_flag =  true;
-                sFWG2_t.general_parameter.setting_temp_time =  0;
-                sFWG2_t.general_parameter.setting_wind_flag =  true;
-                sFWG2_t.general_parameter.setting_wind_time =  0;
-                ch3_short_press_flag = false;
-                ch3_press_time = 0;
-
-                if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
-                {
-                    sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
-                    sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
-                    sFWG2_t.general_parameter.ch = 3;
-
-                    if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
-                    {
-                        sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch3_set_temp_f_display;
-                        sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
-                        sFWG2_t.general_parameter.ch3_set_temp = (sFWG2_t.general_parameter.ch3_set_temp_f_display - 32) * 5 / 9;
-                    }
-                    else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
-                    {
-                        sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch3_set_temp;
-                        sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
-                        sFWG2_t.general_parameter.ch3_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch3_set_temp / 5 + 32;
-                    }
-
-                    sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch3_set_wind;
-                    sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch3_set_time;
-                    sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch3_set_time;
-                    /* show select channel */
-                    sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
-                                    sFWG2_t.general_parameter.ch);
-                }
-            }
-        }
-        else
-        {
-            ch3_press_time = 0;
-        }
-    }
-
-    if (ch4_short_press_flag)
-    {
-        if (ch4_long_press_flag == false)
-        {
-            ch4_press_time++;
-
-            if (ch4_press_time > 200) // over 200ms
-            {
-                sFWG2_t.general_parameter.key_setting_flag = true;
-                sFWG2_t.general_parameter.setting_time = 0;
-                sFWG2_t.general_parameter.setting_temp_flag =  true;
-                sFWG2_t.general_parameter.setting_temp_time =  0;
-                sFWG2_t.general_parameter.setting_wind_flag =  true;
-                sFWG2_t.general_parameter.setting_wind_time =  0;
-                ch4_short_press_flag = false;
-                ch4_press_time = 0;
-
-                if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
-                {
-                    sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
-                    sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
-                    sFWG2_t.general_parameter.ch = 4;
-
-                    if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
-                    {
-                        sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch4_set_temp_f_display;
-                        sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
-                        sFWG2_t.general_parameter.ch4_set_temp = (sFWG2_t.general_parameter.ch4_set_temp_f_display - 32) * 5 / 9;
-                    }
-                    else if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
-                    {
-                        sFWG2_t.Direct_handle_parameter.set_temp = sFWG2_t.general_parameter.ch4_set_temp;
-                        sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
-                        sFWG2_t.general_parameter.ch4_set_temp_f_display = 9 * sFWG2_t.general_parameter.ch4_set_temp / 5 + 32;
-                    }
-
-                    sFWG2_t.Direct_handle_parameter.set_wind = sFWG2_t.general_parameter.ch4_set_wind;
-                    sFWG2_t.Direct_handle_parameter.set_time = sFWG2_t.general_parameter.ch4_set_time;
-                    sFWG2_t.general_parameter.countdown_time = sFWG2_t.general_parameter.ch4_set_time;
-                    /* show select channel */
-                    sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + CHANNEL_STATE), DWIN_DATA_BITS,
-                                    sFWG2_t.general_parameter.ch);
-                }
-            }
-        }
-        else
-        {
-            ch4_press_time = 0;
-        }
     }
 
 #endif
@@ -3146,7 +3042,7 @@ static void show_direct_temp(void)
         if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
         {
             sFWG2_t.Direct_handle_parameter.show_temp = (sFWG2_t.Direct_handle_position == IN_POSSITION &&
-                sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN)
+                sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN&&sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE)  
                 ? sFWG2_t.Direct_handle_parameter.actual_temp
                 : base_temp_c;
 
@@ -3657,10 +3553,10 @@ static uint8_t get_code_mode_value(void)
     static uint8_t last_code_ch = 10;
     static fwg2_temp_unit_e last_temp_unit = 10;
 
-    if (last_page != sFWG2_t.general_parameter.fwg2_page)
+    if (last_page != sFWG2_t.general_parameter.fwg2_page || sFWG2_t.general_parameter.reset_fwg2_flag)
     {
-        if (sFWG2_t.general_parameter.fwg2_page == PAGE_SET_CODE_MODE &&
-                sFWG2_t.general_parameter.code_ch == 0)
+        if ((sFWG2_t.general_parameter.fwg2_page == PAGE_SET_CODE_MODE &&
+                sFWG2_t.general_parameter.code_ch == 0))
         {
             show_step = 1;
         }
@@ -3678,6 +3574,11 @@ static uint8_t get_code_mode_value(void)
                  sFWG2_t.general_parameter.code_ch == 3)
         {
             show_step = 37;
+        }
+
+        if (sFWG2_t.general_parameter.reset_fwg2_flag)
+        {
+            show_step = 1;
         }
 
         last_page = sFWG2_t.general_parameter.fwg2_page;
@@ -3828,7 +3729,16 @@ static void show_code_mode_value(void)
     case 12:
         sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SET_WORK_TIME3), DWIN_DATA_BITS,
                         sFWG2_t.general_parameter.code0_time_3);
-        state = 0;
+
+        if (sFWG2_t.general_parameter.reset_fwg2_flag)
+        {
+            state = 13;
+        }
+        else
+        {
+            state = 0;
+        }
+
         break;
 
     case 13:
@@ -3936,7 +3846,16 @@ static void show_code_mode_value(void)
     case 24:
         sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SET_WORK_TIME3), DWIN_DATA_BITS,
                         sFWG2_t.general_parameter.code1_time_3);
-        state = 0;
+
+        if (sFWG2_t.general_parameter.reset_fwg2_flag)
+        {
+            state = 25;
+        }
+        else
+        {
+            state = 0;
+        }
+
         break;
 
     case 25:
@@ -4044,7 +3963,16 @@ static void show_code_mode_value(void)
     case 36:
         sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SET_WORK_TIME3), DWIN_DATA_BITS,
                         sFWG2_t.general_parameter.code2_time_3);
-        state = 0;
+
+        if (sFWG2_t.general_parameter.reset_fwg2_flag)
+        {
+            state = 37;
+        }
+        else
+        {
+            state = 0;
+        }
+
         break;
 
     case 37:
@@ -4631,7 +4559,7 @@ static void show_curve(void)
 }
 
 
-
+static uint8_t out_value = 0;
 static uint8_t get_direct_run_state(void)
 {
     uint8_t show_step = 0;
@@ -4643,6 +4571,51 @@ static uint8_t get_direct_run_state(void)
     static uint8_t last_output = 0;
     static uint8_t output_refresh_time = 0;
     output_refresh_time++;
+    static uint8_t last_out_value = 0;
+    static int16_t actual_temp;
+	
+	
+	actual_temp = sFWG2_t.Direct_handle_parameter.actual_temp +
+                              sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
+                              sFWG2_t.Direct_handle_parameter.set_calibration_temp;
+	
+    if (sFWG2_t.general_parameter.work_mode == NORMAL)
+    {
+        if (sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE)
+        {
+            if (sFWG2_t.Direct_handle_position == NOT_IN_POSSITION || sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_CLOSE)
+            {
+                if (actual_temp <= sFWG2_t.Direct_handle_parameter.set_temp + PID_RANGE &&
+                       actual_temp >= sFWG2_t.Direct_handle_parameter.set_temp - PID_RANGE)
+                {
+                    if ((float)sFWG2_t.Direct_handle_parameter.set_temp - actual_temp <= 0)
+                    {
+                        out_value =  actual_temp - sFWG2_t.Direct_handle_parameter.set_temp;
+                    }
+                    else
+                    {
+                        out_value =  sFWG2_t.Direct_handle_parameter.set_temp -  actual_temp;
+                    }
+                }
+                else if (actual_temp > sFWG2_t.Direct_handle_parameter.set_temp)
+                {
+                    out_value = 0;
+                }
+                else if (actual_temp < sFWG2_t.Direct_handle_parameter.set_temp - PID_RANGE)
+                {
+                    out_value = 100;
+                }
+            }
+            else
+            {
+                out_value = 0;
+            }
+        }
+        else
+        {
+            out_value = 0;
+        }
+    }
 
     if (last_direct_handle_state != sFWG2_t.Direct_handle_state)
     {
@@ -4672,7 +4645,22 @@ static uint8_t get_direct_run_state(void)
 
         last_fan_run_flag = fan_run_flag;
     }
-    else if (last_output != (uint16_t)sFWG2_t.general_parameter.pid_out / 599)
+    else if (last_out_value != out_value)
+    {
+        if (output_refresh_time > OUTPUT_VALUE_FRESH_TIME)
+        {
+            output_refresh_time = 0;
+
+            if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN)
+            {
+                show_step = 6;
+            }
+        }
+
+ 
+        last_out_value = out_value;
+    }
+   else if (last_output != (uint16_t)sFWG2_t.general_parameter.pid_out / 599)
     {
         if (output_refresh_time > OUTPUT_VALUE_FRESH_TIME)
         {
@@ -4749,9 +4737,6 @@ static void show_direct_run_state(void)
                             2);
         }
 
-        //        /* show handele's work mode */
-        //        sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SHOW_DIRECT_HANDLE_MODE), DWIN_DATA_BITS,
-        //                        sFWG2_t.Direct_handle_work_mode);
         show_step = 0;
         break;
 
@@ -4765,20 +4750,18 @@ static void show_direct_run_state(void)
     case 6:
         /* show direct handle's outpot value */
         sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SHOW_DIRECT_TPME_OUTPUT_POWER), DWIN_DATA_BITS,
-                        (sFWG2_t.general_parameter.pid_out / 599));
+                        out_value);
         show_step = 7;
         break;
 
     case 7:
-        /* show direct handle's outpot bar */
+        /* show direct handle's outpot value */
         sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SHOW_DIRECT_TPME_OUTPUT_POWER_BAR), DWIN_DATA_BITS,
-                        (sFWG2_t.general_parameter.pid_out / 599));
+                        out_value);
         show_step = 0;
         break;
     }
 }
-
-
 
 static uint8_t get_code_mode_state(void)
 {
@@ -4834,7 +4817,6 @@ static uint8_t get_code_mode_state(void)
 
     return show_step;
 }
-
 
 static void show_code_mode_state(void)
 {
@@ -4962,7 +4944,6 @@ static void show_code_mode_state(void)
     }
 }
 
-
 void DwinRun(void)
 {
 #if 1
@@ -5059,9 +5040,4 @@ void DwinRun(void)
 #endif
 }
 
-
 /*********** (C) COPYRIGHT 1999-2019 Moonan Technology *********END OF FILE****/
-
-
-
-

@@ -1050,7 +1050,7 @@ static void get_reset_data(void)
     sFWG2_t.general_parameter.countdown_time       = 10;
     sFWG2_t.general_parameter.temp_uint		       = CELSIUS;
     sFWG2_t.general_parameter.speak_state          = SPEAKER_OPEN;
-    sFWG2_t.general_parameter.display_lock_state   = LOCK;
+    sFWG2_t.general_parameter.display_lock_state   = UNLOCK;
     sFWG2_t.general_parameter.fn_key_long_set      = L_COLD_WIN_MODE;
     sFWG2_t.general_parameter.fn_key_short_set     = S_CHANNEL_SWITCH;
     sFWG2_t.general_parameter.adjust_key_set       = SELECT_TEMP;
@@ -1073,7 +1073,7 @@ static void get_reset_data(void)
     sFWG2_t.general_parameter.ch4_set_temp = 450;
     sFWG2_t.general_parameter.ch4_set_temp_f_display = 842;
     sFWG2_t.general_parameter.ch4_set_wind = 60;
-    sFWG2_t.general_parameter.ch4_set_time = 10;
+    sFWG2_t.general_parameter.ch4_set_time = 30;
     sFWG2_t.general_parameter.code0_pre_temp = 150;
     sFWG2_t.general_parameter.code0_pre_wind = 40;
     sFWG2_t.general_parameter.code0_pre_time = 10;

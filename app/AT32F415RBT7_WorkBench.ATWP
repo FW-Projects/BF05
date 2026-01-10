@@ -149,6 +149,7 @@
         </MEMTOMEM0>
     </DMA>
     <NVIC>
+        <ShowType>1</ShowType>
         <SysTick_Handler>1;15;0;0;0</SysTick_Handler>
         <FLASH_IRQHandler>0;0;0;0;0</FLASH_IRQHandler>
         <CRM_IRQHandler>0;0;0;0;0</CRM_IRQHandler>
@@ -156,13 +157,13 @@
         <ADC1_IRQHandler>0;0;0;0;0</ADC1_IRQHandler>
         <TMR1_BRK_TMR9_IRQHandler>0;0;0;0;0</TMR1_BRK_TMR9_IRQHandler>
         <TMR2_GLOBAL_IRQHandler>1;0;0;0;0</TMR2_GLOBAL_IRQHandler>
-        <TMR3_GLOBAL_IRQHandler>1;0;0;0;0</TMR3_GLOBAL_IRQHandler>
+        <TMR3_GLOBAL_IRQHandler>1;1;0;0;0</TMR3_GLOBAL_IRQHandler>
         <SPI1_IRQHandler>0;0;0;0;0</SPI1_IRQHandler>
-        <USART1_IRQHandler>1;0;0;0;0</USART1_IRQHandler>
-        <USART2_IRQHandler>1;0;0;0;0</USART2_IRQHandler>
-        <USART3_IRQHandler>1;0;0;0;0</USART3_IRQHandler>
-        <UART4_IRQHandler>1;0;0;0;0</UART4_IRQHandler>
-        <UART5_IRQHandler>1;0;0;0;0</UART5_IRQHandler>
+        <USART1_IRQHandler>1;1;0;0;0</USART1_IRQHandler>
+        <USART2_IRQHandler>1;1;0;0;0</USART2_IRQHandler>
+        <USART3_IRQHandler>1;1;0;0;0</USART3_IRQHandler>
+        <UART4_IRQHandler>1;1;0;0;0</UART4_IRQHandler>
+        <UART5_IRQHandler>1;1;0;0;0</UART5_IRQHandler>
     </NVIC>
     <GPIO>
         <Signal SignalName="ADC1_IN10" PinName="PC0">
@@ -261,7 +262,7 @@
     </PINInfo>
     <ProjectInfomation>
         <ProjectName>AT32F415RBT7_WorkBench</ProjectName>
-        <ProjectLocation>D:/Work Area/Code For WorkBench/FWG1/app</ProjectLocation>
+        <ProjectLocation>C:/Users/Administrator/Desktop/FWG1 shiiy code/app</ProjectLocation>
         <ToolchainIDE>MDK_V5</ToolchainIDE>
         <ARMCompiler>0</ARMCompiler>
         <KeepUserCode>true</KeepUserCode>
