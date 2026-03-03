@@ -161,6 +161,14 @@ typedef enum
 
 typedef enum
 {
+	TOUCH_CLICK= 1,
+    TOUCH_SLIDE = 0,
+    
+} fwg2_touch_set_temp_state_e;
+
+
+typedef enum
+{
 
     PAGE_MAIN = 1,                          
 	PAGE_DIRECT_CURVE,
@@ -262,8 +270,8 @@ typedef struct
     fwg2_speaker_state_e              speak_state;
     fwg2_temp_lock_state_e            display_lock_state;
 	
-    fwg2_fn_key_long_set_e   fn_key_long_set;
-    fwg2_fn_key_short_set_e  fn_key_short_set;
+    fwg2_fn_key_long_set_e            fn_key_long_set;
+    fwg2_fn_key_short_set_e           fn_key_short_set;
 	
 	fwg2_adjust_key_set_e             adjust_key_set;
 	fwg2_adjust_key_temporary_set_e   adjust_key_temporary_set;
@@ -271,7 +279,9 @@ typedef struct
     fwg2_touch_key_set_e              touch_key_set;
 	
 	fwg2_sleep_state_e                fwg2_sleep_state;
+	
     fwg2_uart_state_e                 uart_state;
+	fwg2_touch_set_temp_state_e       touch_set_temp_state;
 	fwg2_enhance_state_e              enhance_state;
     fwg2_page_e                       fwg2_page;
     fwg2_code_mode_step_e             code_mode_step;

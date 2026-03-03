@@ -3,22 +3,25 @@
 #include "FWG2_handle.h"
 #include "beep_handle.h"
 UART4_DATA_t UART4_data;
-uart4_event_e uast4_event = UART4_END_EVENT;
+uart4_event_e uart4_event = UART4_END_EVENT;
+
+static float change_temp = 0;
+static float change_temp_f_display = 0;
+static float change_wind = 0;
+
 void uart4_event_handle(void);
 static void RecvDataFromUART4(UART4_DATA_t *uart4);
-static void WriteDataToUART4(UART4_DATA_t * uart4,
-                             uint16_t cmd_1,   uint16_t cmd_2,
-                             uint16_t id,     uint16_t data_len,
+static void WriteDataToUART4(UART4_DATA_t *uart4,
+                             uint16_t cmd_1, uint16_t cmd_2,
+                             uint16_t id, uint16_t data_len,
                              uint16_t data_1, uint16_t data_2,
                              uint16_t data_3, uint16_t data_4,
                              uint16_t data_5);
-
 
 void uart4_comm_handle(void)
 {
     RecvDataFromUART4(&UART4_data);
     uart4_event_handle();
-    __NOP();
 }
 
 void RecvDataFromUART4(UART4_DATA_t *uart4)
@@ -28,20 +31,22 @@ void RecvDataFromUART4(UART4_DATA_t *uart4)
 
     if (uart4->read_size == UART4_MAX_RECV_SIZE)
     {
+
         if (UART4_CHECK_HEAD(uart4->rx_buff[UART4_HEAD1], uart4->rx_buff[UART4_HEAD2]))
         {
             convert_data(uart4->rx_buff, uart4->check_crc_buff, UART4_CMD1, UART4_DATA5_LEN_L);
             crc_value = crc_block_calculate(uart4->check_crc_buff, UART4_CRC_SIZE);
             crc_data_reset();
 
-            if (uart4->rx_buff[UART4_CRC32_1] == ((crc_value >> 24) & 0xff)  &&
-                    uart4->rx_buff[UART4_CRC32_2] == ((crc_value >> 16) & 0xff)  &&
-                    uart4->rx_buff[UART4_CRC32_3] == ((crc_value >> 8)  & 0xff)   &&
-                    uart4->rx_buff[UART4_CRC32_4] == (crc_value & 0xff))
+            if (uart4->rx_buff[UART4_CRC32_1] == ((crc_value >> 24) & 0xff) &&
+                uart4->rx_buff[UART4_CRC32_2] == ((crc_value >> 16) & 0xff) &&
+                uart4->rx_buff[UART4_CRC32_3] == ((crc_value >> 8) & 0xff) &&
+                uart4->rx_buff[UART4_CRC32_4] == (crc_value & 0xff))
             {
                 /* app cmd */
                 if (uart4->rx_buff[UART4_CMD1] == UART4_GENERAL)
                 {
+
                     if (uart4->rx_buff[UART4_CMD2] == UART4_GENERAL_WRITE)
                     {
                         /* 433 cmd */
@@ -50,141 +55,193 @@ void RecvDataFromUART4(UART4_DATA_t *uart4)
                             /* get channel 1 data */
                             if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x01)
                             {
-                                uast4_event = UART4_GET_CHANNEL_1_EVENT;
+                                uart4_event = UART4_GET_CHANNEL_1_EVENT;
                             }
                             /* get channel 2 data */
                             else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x02)
                             {
-                                uast4_event = UART4_GET_CHANNEL_2_EVENT;
+                                uart4_event = UART4_GET_CHANNEL_2_EVENT;
                             }
                             /* get channel 3 data */
                             else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x03)
                             {
-                                uast4_event = UART4_GET_CHANNEL_3_EVENT;
+                                uart4_event = UART4_GET_CHANNEL_3_EVENT;
                             }
                             /* get channel 4 data */
                             else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x04)
                             {
-                                uast4_event = UART4_GET_CHANNEL_4_EVENT;
+                                uart4_event = UART4_GET_CHANNEL_4_EVENT;
                             }
                             /*  add set temp  */
                             else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x05)
                             {
-                                uast4_event = UART4_SET_TEMP_ADD_EVENT;
+                                uart4_event = UART4_SET_TEMP_ADD_EVENT;
                             }
                             /*  reduce set temp  */
                             else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x06)
                             {
-                                uast4_event = UART4_SET_TEMP_REDUCE_EVENT;
+                                uart4_event = UART4_SET_TEMP_REDUCE_EVENT;
                             }
                             /*  add set wind  */
                             else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x07)
                             {
-                                uast4_event = UART4_SET_WIND_ADD_EVENT;
+                                uart4_event = UART4_SET_WIND_ADD_EVENT;
                             }
                             /* reduce set wind  */
                             else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x08)
                             {
-                                uast4_event = UART4_SET_WIND_REDUCE_EVENT;
+                                uart4_event = UART4_SET_WIND_REDUCE_EVENT;
                             }
                             /* select handle */
                             else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x09)
                             {
-                                uast4_event = UART4_SELECT_HANDLE_EVENT;
+                                uart4_event = UART4_SELECT_HANDLE_EVENT;
                             }
                         }
                         /* speaker cmd */
                         else if (uart4->rx_buff[UART4_ID_L] == 0x06)
                         {
-                            /* get channel 1 data */
-                            if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x01)
+                            if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x01 &&
+                                uart4->rx_buff[UART4_DATA3_LEN_L] == 0x01)
                             {
-                                uast4_event = UART4_GET_CHANNEL_1_EVENT;
+                                /* temp add  */
+                                if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
+                                {
+                                    change_temp = uart4->rx_buff[UART4_DATA4_LEN_L];
+                                    change_temp_f_display = 9 * change_temp / 5 + 32;
+                                }
+                                else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
+                                {
+                                    change_temp_f_display = uart4->rx_buff[UART4_DATA4_LEN_L];
+                                    change_temp = (change_temp_f_display - 32) * 5 / 9;
+                                }
+                                uart4_event = UART4_SET_TEMP_ADD_EVENT;
                             }
-                            /* get channel 2 data */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x02)
+
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x01 &&
+                                     uart4->rx_buff[UART4_DATA3_LEN_L] == 0x02)
                             {
-                                uast4_event = UART4_GET_CHANNEL_2_EVENT;
+                                /* temp recuce */
+                                if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
+                                {
+                                    change_temp = (uart4->rx_buff[UART4_DATA4_LEN_L]);
+                                    change_temp_f_display = (9 * change_temp / 5 + 32);
+                                }
+                                else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
+                                {
+                                    change_temp_f_display = (uart4->rx_buff[UART4_DATA4_LEN_L]);
+                                    change_temp = ((change_temp_f_display - 32) * 5 / 9);
+                                }
+                                uart4_event = UART4_SET_TEMP_REDUCE_EVENT;
                             }
-                            /* get channel 3 data */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x03)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x01 &&
+                                     uart4->rx_buff[UART4_DATA3_LEN_L] == 0x00)
                             {
-                                uast4_event = UART4_GET_CHANNEL_3_EVENT;
+                                /* temp change with value*/
+                                change_temp = uart4->rx_buff[UART4_DATA4_LEN_H] * 256 +
+                                              uart4->rx_buff[UART4_DATA4_LEN_L];
+
+                                change_temp_f_display = uart4->rx_buff[UART4_DATA4_LEN_H] * 256 +
+                                                        uart4->rx_buff[UART4_DATA4_LEN_L];
+								
+								uart4_event = UART4_SET_TEMP_EVENT;
+								
                             }
-                            /* get channel 4 data */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x04)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x02 &&
+                                     uart4->rx_buff[UART4_DATA3_LEN_L] == 0x01)
                             {
-                                uast4_event = UART4_GET_CHANNEL_4_EVENT;
+                                /* wind add  */
+                                change_wind = (uart4->rx_buff[UART4_DATA4_LEN_L]);
+                                uart4_event = UART4_SET_WIND_ADD_EVENT;
                             }
-                            /*  add set temp  */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x05)
+
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x02 &&
+                                     uart4->rx_buff[UART4_DATA3_LEN_L] == 0x02)
                             {
-                                uast4_event = UART4_SET_TEMP_ADD_EVENT;
+                                /* wind recuce */
+                                change_wind = (uart4->rx_buff[UART4_DATA4_LEN_L]);
+                                uart4_event = UART4_SET_WIND_REDUCE_EVENT;
                             }
-                            /*  reduce set temp  */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x06)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x02 &&
+                                     uart4->rx_buff[UART4_DATA3_LEN_L] == 0x00)
                             {
-                                uast4_event = UART4_SET_TEMP_REDUCE_EVENT;
+                                /* wind change with value*/
+                                change_wind = uart4->rx_buff[UART4_DATA4_LEN_H] * 256 +
+                                              uart4->rx_buff[UART4_DATA4_LEN_L];
+                                uart4_event = UART4_SET_WIND_EVENT;
                             }
-                            /*  add set wind  */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x07)
+
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x01)
                             {
-                                uast4_event = UART4_SET_WIND_ADD_EVENT;
+                                /* get channel 1 value */
+                                uart4_event = UART4_GET_CHANNEL_1_EVENT;
                             }
-                            /* reduce set wind  */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x08)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x02)
                             {
-                                uast4_event = UART4_SET_WIND_REDUCE_EVENT;
+                                /* get channel 2 value */
+                                uart4_event = UART4_GET_CHANNEL_2_EVENT;
                             }
-                            /* enter cold mode */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x09)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x03)
                             {
-                                uast4_event = UART4_ENTER_COLD_MODE_EVENT;
+                                /* get channel 3 value */
+                                uart4_event = UART4_GET_CHANNEL_3_EVENT;
                             }
-                            /* enter normal mode */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x0A)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x04)
                             {
-                                uast4_event = UART4_ENTER_NORMAL_MODE_EVENT;
+                                /* get channel 4 value */
+                                uart4_event = UART4_GET_CHANNEL_4_EVENT;
                             }
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x0B)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x05)
                             {
+                                /* set mode to enhance mode  */
+                                uart4_event = UART4_ENTER_ENHANCE_MODE_EVENT;
                             }
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x0C)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x06)
                             {
+                                /* set mode to cold wind mode  */
+                                uart4_event = UART4_ENTER_COLD_MODE_EVENT;
                             }
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x0D)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x07)
                             {
+                                /* set mode to normal mode  */
+                                uart4_event = UART4_ENTER_NORMAL_MODE_EVENT;
                             }
-                            /* show curve page */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x0E)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x08)
                             {
-                                uast4_event = UART4_SHOW_CURVE_PAGE_EVENT;
+                                /* set page to curve */
+                                uart4_event = UART4_SHOW_CURVE_PAGE_EVENT;
                             }
-                            /* show normal page */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x0F)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x09)
                             {
-                                uast4_event = UART4_SHOW_NORMAL_PAGE_EVENT;
+                                /* set page to value */
+                                uart4_event = UART4_SHOW_NORMAL_PAGE_EVENT;
                             }
-                            /* set temp unit f */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x10)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x0A)
                             {
-                                uast4_event =  UART4_SET_TEMP_UNIT_F;
+                                /* set temp unit to celsius */
+                                uart4_event = UART4_SET_TEMP_UNIT_F;
                             }
-                            /* set temp unit c */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x11)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x0B)
                             {
-                                uast4_event =  UART4_SET_TEMP_UNIT_C;
+                                /* set temp unit to fahrenheit */
+                                uart4_event = UART4_SET_TEMP_UNIT_C;
                             }
-                            /* select handle */
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x12)
+                            else if (uart4->rx_buff[UART4_DATA3_LEN_H] == 0x00 &&
+                                     uart4->rx_buff[UART4_DATA4_LEN_L] == 0x0C)
                             {
-                                uast4_event = UART4_SELECT_HANDLE_EVENT;
-                            }
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x13)
-                            {
-                            }
-                            else if (uart4->rx_buff[UART4_DATA4_LEN_L] == 0x14)
-                            {
+                                /* switch select handle */
+                                uart4_event = UART4_SELECT_HANDLE_EVENT;
                             }
                         }
                     }
@@ -195,7 +252,7 @@ void RecvDataFromUART4(UART4_DATA_t *uart4)
                 {
                     if (uart4->rx_buff[UART4_CMD2] == 0x00)
                     {
-                        uast4_event = UART4_FACTORY_EVENT;
+                        uart4_event = UART4_FACTORY_EVENT;
                     }
                 }
                 /* other cmd */
@@ -210,10 +267,9 @@ void RecvDataFromUART4(UART4_DATA_t *uart4)
     }
 }
 
-
-static void WriteDataToUART4(UART4_DATA_t * uart4,
-                             uint16_t cmd_1,   uint16_t cmd_2,
-                             uint16_t id,     uint16_t data_len,
+static void WriteDataToUART4(UART4_DATA_t *uart4,
+                             uint16_t cmd_1, uint16_t cmd_2,
+                             uint16_t id, uint16_t data_len,
                              uint16_t data_1, uint16_t data_2,
                              uint16_t data_3, uint16_t data_4,
                              uint16_t data_5)
@@ -249,12 +305,9 @@ static void WriteDataToUART4(UART4_DATA_t * uart4,
     usart_sendData(UART4_USART, uart4->tx_buff, UART4_MAX_SEND_SIZE);
 }
 
-
-
-
 void uart4_event_handle(void)
 {
-    switch (uast4_event)
+    switch (uart4_event)
     {
     case UART4_SET_TEMP_ADD_EVENT:
         sFWG2_t.general_parameter.key_setting_flag = true;
@@ -265,28 +318,22 @@ void uart4_event_handle(void)
 
         if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
         {
-            if ((sFWG2_t.Direct_handle_parameter.set_temp + 10) >= MAX_SET_TEMP_VAL)
+            sFWG2_t.Direct_handle_parameter.set_temp += change_temp;
+            if (sFWG2_t.Direct_handle_parameter.set_temp >= MAX_SET_TEMP_VAL)
             {
                 sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
                 sFWG2_t.Direct_handle_parameter.set_temp = MAX_SET_TEMP_VAL;
             }
-            else
-            {
-                sFWG2_t.Direct_handle_parameter.set_temp += 10;
-            }
 
-            sFWG2_t.Direct_handle_parameter.set_temp_f_display  =  9 * sFWG2_t.Direct_handle_parameter.set_temp  / 5  + 32;
+            sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
         }
         else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
         {
-            if ((sFWG2_t.Direct_handle_parameter.set_temp_f_display + 50) >= MAX_SET_TEMP_F_VAL)
+            sFWG2_t.Direct_handle_parameter.set_temp_f_display += change_temp_f_display;
+            if (sFWG2_t.Direct_handle_parameter.set_temp_f_display >= MAX_SET_TEMP_F_VAL)
             {
                 sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
                 sFWG2_t.Direct_handle_parameter.set_temp_f_display = MAX_SET_TEMP_F_VAL;
-            }
-            else
-            {
-                sFWG2_t.Direct_handle_parameter.set_temp_f_display += 50;
             }
 
             sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
@@ -305,7 +352,7 @@ void uart4_event_handle(void)
         }
 
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_SET_TEMP_REDUCE_EVENT:
@@ -317,28 +364,22 @@ void uart4_event_handle(void)
 
         if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
         {
-            if ((sFWG2_t.Direct_handle_parameter.set_temp - 10) <= MIN_SET_TEMP_VAL)
+            sFWG2_t.Direct_handle_parameter.set_temp -= change_temp;
+            if (sFWG2_t.Direct_handle_parameter.set_temp <= MIN_SET_TEMP_VAL)
             {
                 sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
                 sFWG2_t.Direct_handle_parameter.set_temp = MIN_SET_TEMP_VAL;
             }
-            else
-            {
-                sFWG2_t.Direct_handle_parameter.set_temp -= 10;
-            }
-
-            sFWG2_t.Direct_handle_parameter.set_temp_f_display  =  9 * sFWG2_t.Direct_handle_parameter.set_temp  / 5  + 32;
+            sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
         }
         else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
         {
-            if ((sFWG2_t.Direct_handle_parameter.set_temp_f_display - 50) <= MIN_SET_TEMP_F_VAL)
+            sFWG2_t.Direct_handle_parameter.set_temp_f_display -= change_temp_f_display;
+
+            if ((sFWG2_t.Direct_handle_parameter.set_temp_f_display) <= MIN_SET_TEMP_F_VAL)
             {
                 sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
                 sFWG2_t.Direct_handle_parameter.set_temp_f_display = MIN_SET_TEMP_F_VAL;
-            }
-            else
-            {
-                sFWG2_t.Direct_handle_parameter.set_temp_f_display -= 50;
             }
 
             sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
@@ -357,7 +398,46 @@ void uart4_event_handle(void)
         }
 
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
+        break;
+    case UART4_SET_TEMP_EVENT:
+        sFWG2_t.general_parameter.key_setting_flag = true;
+        sFWG2_t.general_parameter.setting_time = 0;
+        sFWG2_t.general_parameter.setting_temp_flag = true;
+        sFWG2_t.general_parameter.setting_temp_time = 0;
+        sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+        if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
+        {
+            sFWG2_t.Direct_handle_parameter.set_temp = change_temp;
+            if (sFWG2_t.Direct_handle_parameter.set_temp <= MIN_SET_TEMP_VAL)
+            {
+                sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+                sFWG2_t.Direct_handle_parameter.set_temp = MIN_SET_TEMP_VAL;
+            }
+            else if (sFWG2_t.Direct_handle_parameter.set_temp >= MAX_SET_TEMP_VAL)
+            {
+                sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+                sFWG2_t.Direct_handle_parameter.set_temp = MAX_SET_TEMP_VAL;
+            }
+            sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
+        }
+        else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
+        {
+            sFWG2_t.Direct_handle_parameter.set_temp_f_display = change_temp_f_display;
+            if (sFWG2_t.Direct_handle_parameter.set_temp_f_display <= MIN_SET_TEMP_F_VAL)
+            {
+                sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display = MIN_SET_TEMP_F_VAL;
+            }
+            else if (sFWG2_t.Direct_handle_parameter.set_temp_f_display >= MAX_SET_TEMP_F_VAL)
+            {
+                sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display = MAX_SET_TEMP_F_VAL;
+            }
+            sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
+        }
+		sbeep.status = BEEP_SHORT;
+		uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_SET_WIND_ADD_EVENT:
@@ -369,26 +449,22 @@ void uart4_event_handle(void)
 
         if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
         {
-            if ((sFWG2_t.Direct_handle_parameter.set_wind + 10) >= MAX_SET_WIND_VAL)
+			sFWG2_t.Direct_handle_parameter.set_wind+=change_wind;
+            if ((sFWG2_t.Direct_handle_parameter.set_wind) >= MAX_SET_WIND_VAL)
             {
                 sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
                 sFWG2_t.Direct_handle_parameter.set_wind = MAX_SET_WIND_VAL;
             }
-            else
-            {
-                sFWG2_t.Direct_handle_parameter.set_wind += 10;
-            }
+             
         }
         else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
         {
-            if ((sFWG2_t.Direct_handle_parameter.cold_mode_set_wind + 10) >= MAX_SET_WIND_VAL)
+			sFWG2_t.Direct_handle_parameter.cold_mode_set_wind += change_wind;
+            if ((sFWG2_t.Direct_handle_parameter.cold_mode_set_wind ) >= MAX_SET_WIND_VAL)
             {
                 sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = MAX_SET_WIND_VAL;
             }
-            else
-            {
-                sFWG2_t.Direct_handle_parameter.cold_mode_set_wind += 10;
-            }
+             
         }
 
         if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
@@ -404,7 +480,7 @@ void uart4_event_handle(void)
         }
 
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_SET_WIND_REDUCE_EVENT:
@@ -414,28 +490,76 @@ void uart4_event_handle(void)
         sFWG2_t.general_parameter.setting_wind_time = 0;
         sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
 
-        if (sFWG2_t.Direct_handle_work_mode  ==  NORMAL_MODE)
+        if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
         {
-            if ((sFWG2_t.Direct_handle_parameter.set_wind - 10) <= MIN_SET_WIND_VAL)
+			sFWG2_t.Direct_handle_parameter.set_wind -= change_wind;
+            if ((sFWG2_t.Direct_handle_parameter.set_wind ) <= MIN_SET_WIND_VAL)
             {
                 sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
                 sFWG2_t.Direct_handle_parameter.set_wind = MIN_SET_WIND_VAL;
             }
-            else
-            {
-                sFWG2_t.Direct_handle_parameter.set_wind -= 10;
-            }
+             
         }
-        else if (sFWG2_t.Direct_handle_work_mode  ==  COLD_WIND_MODE)
+        else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
         {
-            if ((sFWG2_t.Direct_handle_parameter.cold_mode_set_wind - 10) <= MIN_SET_WIND_VAL)
+			sFWG2_t.Direct_handle_parameter.cold_mode_set_wind -= change_wind;
+            if ((sFWG2_t.Direct_handle_parameter.cold_mode_set_wind ) <= MIN_SET_WIND_VAL)
             {
                 sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
                 sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = MIN_SET_WIND_VAL;
             }
-            else
+             
+        }
+
+        if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
+        {
+            if (sFWG2_t.general_parameter.fwg2_page != PAGE_DIRECT_CURVE)
             {
-                sFWG2_t.Direct_handle_parameter.cold_mode_set_wind -= 10;
+                sFWG2_t.Direct_handle_state = HANDLE_WORKING;
+            }
+        }
+        else if (sFWG2_t.Direct_handle_state == HANDLE_WORKING)
+        {
+            sFWG2_t.Direct_handle_parameter.sleep_time = 0;
+        }
+
+        sbeep.status = BEEP_SHORT;
+        uart4_event = UART4_END_EVENT;
+        break;
+
+    case UART4_SET_WIND_EVENT:
+        sFWG2_t.general_parameter.key_setting_flag = true;
+        sFWG2_t.general_parameter.setting_time = 0;
+        sFWG2_t.general_parameter.setting_wind_flag = true;
+        sFWG2_t.general_parameter.setting_wind_time = 0;
+        sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
+
+        if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
+        {
+            sFWG2_t.Direct_handle_parameter.set_wind = change_wind;
+            if ((sFWG2_t.Direct_handle_parameter.set_wind) <= MIN_SET_WIND_VAL)
+            {
+                sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
+                sFWG2_t.Direct_handle_parameter.set_wind = MIN_SET_WIND_VAL;
+            }
+            else if ((sFWG2_t.Direct_handle_parameter.set_wind) >= MAX_SET_WIND_VAL)
+            {
+                sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
+                sFWG2_t.Direct_handle_parameter.set_wind = MAX_SET_WIND_VAL;
+            }
+        }
+        else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
+        {
+            sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = change_wind;
+            if (sFWG2_t.Direct_handle_parameter.cold_mode_set_wind <= MIN_SET_WIND_VAL)
+            {
+                sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
+                sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = MIN_SET_WIND_VAL;
+            }
+            else if (sFWG2_t.Direct_handle_parameter.cold_mode_set_wind >= MAX_SET_WIND_VAL)
+            {
+                sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
+                sFWG2_t.Direct_handle_parameter.cold_mode_set_wind = MAX_SET_WIND_VAL;
             }
         }
 
@@ -452,16 +576,16 @@ void uart4_event_handle(void)
         }
 
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_GET_CHANNEL_1_EVENT:
         sFWG2_t.general_parameter.key_setting_flag = true;
         sFWG2_t.general_parameter.setting_time = 0;
-        sFWG2_t.general_parameter.setting_temp_flag =  true;
-        sFWG2_t.general_parameter.setting_temp_time =  0;
-        sFWG2_t.general_parameter.setting_wind_flag =  true;
-        sFWG2_t.general_parameter.setting_wind_time =  0;
+        sFWG2_t.general_parameter.setting_temp_flag = true;
+        sFWG2_t.general_parameter.setting_temp_time = 0;
+        sFWG2_t.general_parameter.setting_wind_flag = true;
+        sFWG2_t.general_parameter.setting_wind_time = 0;
 
         if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
         {
@@ -471,7 +595,7 @@ void uart4_event_handle(void)
 
             if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
             {
-                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch1_set_temp_f_display;
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display = sFWG2_t.general_parameter.ch1_set_temp_f_display;
                 sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
                 sFWG2_t.general_parameter.ch1_set_temp = (sFWG2_t.general_parameter.ch1_set_temp_f_display - 32) * 5 / 9;
             }
@@ -492,16 +616,16 @@ void uart4_event_handle(void)
         }
 
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_GET_CHANNEL_2_EVENT:
         sFWG2_t.general_parameter.key_setting_flag = true;
         sFWG2_t.general_parameter.setting_time = 0;
-        sFWG2_t.general_parameter.setting_temp_flag =  true;
-        sFWG2_t.general_parameter.setting_temp_time =  0;
-        sFWG2_t.general_parameter.setting_wind_flag =  true;
-        sFWG2_t.general_parameter.setting_wind_time =  0;
+        sFWG2_t.general_parameter.setting_temp_flag = true;
+        sFWG2_t.general_parameter.setting_temp_time = 0;
+        sFWG2_t.general_parameter.setting_wind_flag = true;
+        sFWG2_t.general_parameter.setting_wind_time = 0;
 
         if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
         {
@@ -511,7 +635,7 @@ void uart4_event_handle(void)
 
             if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
             {
-                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch2_set_temp_f_display;
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display = sFWG2_t.general_parameter.ch2_set_temp_f_display;
                 sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
                 sFWG2_t.general_parameter.ch2_set_temp = (sFWG2_t.general_parameter.ch2_set_temp_f_display - 32) * 5 / 9;
             }
@@ -532,16 +656,16 @@ void uart4_event_handle(void)
         }
 
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_GET_CHANNEL_3_EVENT:
         sFWG2_t.general_parameter.key_setting_flag = true;
         sFWG2_t.general_parameter.setting_time = 0;
-        sFWG2_t.general_parameter.setting_temp_flag =  true;
-        sFWG2_t.general_parameter.setting_temp_time =  0;
-        sFWG2_t.general_parameter.setting_wind_flag =  true;
-        sFWG2_t.general_parameter.setting_wind_time =  0;
+        sFWG2_t.general_parameter.setting_temp_flag = true;
+        sFWG2_t.general_parameter.setting_temp_time = 0;
+        sFWG2_t.general_parameter.setting_wind_flag = true;
+        sFWG2_t.general_parameter.setting_wind_time = 0;
 
         if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
         {
@@ -551,7 +675,7 @@ void uart4_event_handle(void)
 
             if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
             {
-                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch3_set_temp_f_display;
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display = sFWG2_t.general_parameter.ch3_set_temp_f_display;
                 sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
                 sFWG2_t.general_parameter.ch3_set_temp = (sFWG2_t.general_parameter.ch3_set_temp_f_display - 32) * 5 / 9;
             }
@@ -572,16 +696,16 @@ void uart4_event_handle(void)
         }
 
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_GET_CHANNEL_4_EVENT:
         sFWG2_t.general_parameter.key_setting_flag = true;
         sFWG2_t.general_parameter.setting_time = 0;
-        sFWG2_t.general_parameter.setting_temp_flag =  true;
-        sFWG2_t.general_parameter.setting_temp_time =  0;
-        sFWG2_t.general_parameter.setting_wind_flag =  true;
-        sFWG2_t.general_parameter.setting_wind_time =  0;
+        sFWG2_t.general_parameter.setting_temp_flag = true;
+        sFWG2_t.general_parameter.setting_temp_time = 0;
+        sFWG2_t.general_parameter.setting_wind_flag = true;
+        sFWG2_t.general_parameter.setting_wind_time = 0;
 
         if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
         {
@@ -591,7 +715,7 @@ void uart4_event_handle(void)
 
             if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
             {
-                sFWG2_t.Direct_handle_parameter.set_temp_f_display  = sFWG2_t.general_parameter.ch4_set_temp_f_display;
+                sFWG2_t.Direct_handle_parameter.set_temp_f_display = sFWG2_t.general_parameter.ch4_set_temp_f_display;
                 sFWG2_t.Direct_handle_parameter.set_temp = (sFWG2_t.Direct_handle_parameter.set_temp_f_display - 32) * 5 / 9;
                 sFWG2_t.general_parameter.ch4_set_temp = (sFWG2_t.general_parameter.ch4_set_temp_f_display - 32) * 5 / 9;
             }
@@ -612,21 +736,31 @@ void uart4_event_handle(void)
         }
 
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
+        break;
+
+    case UART4_ENTER_ENHANCE_MODE_EVENT:
+        /* enter normal mode */
+	    sFWG2_t.general_parameter.enhance_state = ENHANCE_OPEN;
+        //sFWG2_t.Direct_handle_work_mode = QUICK_MODE;
+        sbeep.status = BEEP_LONG;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_ENTER_NORMAL_MODE_EVENT:
         /* enter normal mode */
         sFWG2_t.Direct_handle_work_mode = NORMAL_MODE;
+	    sFWG2_t.general_parameter.enhance_state = ENHANCE_CLOSE;
+	    
         sbeep.status = BEEP_LONG;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_ENTER_COLD_MODE_EVENT:
         /* enter cold mode */
         sFWG2_t.Direct_handle_work_mode = COLD_WIND_MODE;
         sbeep.status = BEEP_LONG;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_SHOW_CURVE_PAGE_EVENT:
@@ -634,7 +768,7 @@ void uart4_event_handle(void)
         usart_sendData(DWIN_USART, page_switch, 10);
         sFWG2_t.general_parameter.fwg2_page = PAGE_DIRECT_CURVE;
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_SHOW_NORMAL_PAGE_EVENT:
@@ -642,40 +776,32 @@ void uart4_event_handle(void)
         usart_sendData(DWIN_USART, page_switch, 10);
         sFWG2_t.general_parameter.fwg2_page = PAGE_MAIN;
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_SET_TEMP_UNIT_C:
         sFWG2_t.general_parameter.temp_uint = CELSIUS;
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_SET_TEMP_UNIT_F:
         sFWG2_t.general_parameter.temp_uint = FAHRENHEIT;
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_SELECT_HANDLE_EVENT:
         sbeep.status = BEEP_SHORT;
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_FACTORY_EVENT:
         WriteDataToUART4(&UART4_data, 0x01, 0x01, 0x01, 0x0A, 258, 256, 0x00, 0x00, 0x00);
-        uast4_event = UART4_END_EVENT;
+        uart4_event = UART4_END_EVENT;
         break;
 
     case UART4_END_EVENT:
         break;
     }
 }
-
-
-
-
-
-
-
-

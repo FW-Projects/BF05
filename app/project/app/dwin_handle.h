@@ -192,7 +192,7 @@ typedef enum
     /* end the page 16 address of  */
 
     /* start the page 17 address of  */
-    SET_UART_FUNCTION = 0x38, // 设置串口功能
+    SET_TOUCH_SET_TEMP_MODE = 0x38, // 设置串口功能
     /* end the page 17 address of  */
 
     /* start the page 18 address of  */

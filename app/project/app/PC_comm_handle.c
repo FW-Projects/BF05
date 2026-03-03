@@ -5,7 +5,7 @@
 #include "FWG2_handle.h"
 PC_DATA_t pc_data;
 
-pc_event_e pc_event;
+pc_event_e pc_event = PC_END_EVENT;
 
 static void RecvDataFromPC(PC_DATA_t *pc);
 static void WriteDataToPC(PC_DATA_t * pc,

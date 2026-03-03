@@ -61,6 +61,7 @@ void FlashProc(void)
     static uint8_t  last_touch_key_set;
     static uint8_t  last_uart_state;
     static uint8_t  last_enhance_state;
+	static uint8_t last_set_touch_set_temp_state;
     static uint16_t last_ch1_set_temp;
     static uint16_t last_ch1_set_wind;
     static uint16_t last_ch1_set_time;
@@ -217,6 +218,7 @@ void FlashProc(void)
             last_touch_key_set                    = sFWG2_t.general_parameter.touch_key_set;
             last_uart_state                       = sFWG2_t.general_parameter.uart_state;
             last_enhance_state                    = sFWG2_t.general_parameter.enhance_state;
+			 last_set_touch_set_temp_state = sFWG2_t.general_parameter.touch_set_temp_state;
             last_ch1_set_temp                     = sFWG2_t.general_parameter.ch1_set_temp;
             last_ch1_set_wind                     = sFWG2_t.general_parameter.ch1_set_wind;
             last_ch1_set_time                     = sFWG2_t.general_parameter.ch1_set_time;
@@ -337,6 +339,7 @@ void FlashProc(void)
                 last_touch_key_set                    != sFWG2_t.general_parameter.touch_key_set || \
                 last_uart_state                       != sFWG2_t.general_parameter.uart_state || \
                 last_enhance_state                    != sFWG2_t.general_parameter.enhance_state || \
+		        last_set_touch_set_temp_state         != sFWG2_t.general_parameter.touch_set_temp_state|| \
                 last_ch1_set_temp                     != sFWG2_t.general_parameter.ch1_set_temp || \
                 last_ch1_set_wind                     != sFWG2_t.general_parameter.ch1_set_wind || \
                 last_ch1_set_time                     != sFWG2_t.general_parameter.ch1_set_time || \
@@ -473,6 +476,7 @@ void FlashProc(void)
             //flash_halfword_program(A_LAST_SLEEP_STATE, sFWG2_t.general_parameter.fwg2_sleep_state);
             flash_halfword_program(A_LAST_UART_STATE, sFWG2_t.general_parameter.uart_state);
             flash_halfword_program(A_LAST_ENHANCE_STATE, sFWG2_t.general_parameter.enhance_state);
+			flash_halfword_program(A_LAST_TOUCH_SET_TEMP_STATE, sFWG2_t.general_parameter.touch_set_temp_state);
             /* falsh ch data */
             flash_halfword_program(A_LAST_CH1_SET_TEMP, sFWG2_t.general_parameter.ch1_set_temp);
             flash_halfword_program(A_LAST_CH1_SET_WIND, sFWG2_t.general_parameter.ch1_set_wind);
@@ -588,6 +592,8 @@ void FlashProc(void)
             //flash_halfword_program(B_LAST_SLEEP_STATE, sFWG2_t.general_parameter.fwg2_sleep_state);
             flash_halfword_program(B_LAST_UART_STATE, sFWG2_t.general_parameter.uart_state);
             flash_halfword_program(B_LAST_ENHANCE_STATE, sFWG2_t.general_parameter.enhance_state);
+			flash_halfword_program(B_LAST_TOUCH_SET_TEMP_STATE, sFWG2_t.general_parameter.touch_set_temp_state);
+			
             /* falsh ch data */
             flash_halfword_program(B_LAST_CH1_SET_TEMP, sFWG2_t.general_parameter.ch1_set_temp);
             flash_halfword_program(B_LAST_CH1_SET_WIND, sFWG2_t.general_parameter.ch1_set_wind);
@@ -701,6 +707,7 @@ void FlashProc(void)
         last_touch_key_set                    = sFWG2_t.general_parameter.touch_key_set;
         last_uart_state                       = sFWG2_t.general_parameter.uart_state;
         last_enhance_state                    = sFWG2_t.general_parameter.enhance_state;
+		last_set_touch_set_temp_state =sFWG2_t.general_parameter.touch_set_temp_state;
         last_ch1_set_temp                     = sFWG2_t.general_parameter.ch1_set_temp;
         last_ch1_set_wind                     = sFWG2_t.general_parameter.ch1_set_wind;
         last_ch1_set_time                     = sFWG2_t.general_parameter.ch1_set_time;
@@ -836,6 +843,7 @@ static void get_data_from_a(void)
     sFWG2_t.general_parameter.touch_key_set        = flash_wred_halfword(A_LAST_TOUCH_KEY_SET);
     sFWG2_t.general_parameter.uart_state           = flash_wred_halfword(A_LAST_UART_STATE);
     sFWG2_t.general_parameter.enhance_state        = flash_wred_halfword(A_LAST_ENHANCE_STATE);
+	sFWG2_t.general_parameter.touch_set_temp_state = flash_wred_halfword(A_LAST_TOUCH_SET_TEMP_STATE);
     sFWG2_t.general_parameter.ch1_set_temp         = flash_wred_halfword(A_LAST_CH1_SET_TEMP);
     sFWG2_t.general_parameter.ch1_set_wind         = flash_wred_halfword(A_LAST_CH1_SET_WIND);
     sFWG2_t.general_parameter.ch1_set_time         = flash_wred_halfword(A_LAST_CH1_SET_TIME);
@@ -947,6 +955,7 @@ static void get_data_from_b(void)
     sFWG2_t.general_parameter.touch_key_set        = flash_wred_halfword(B_LAST_TOUCH_KEY_SET);
     sFWG2_t.general_parameter.uart_state           = flash_wred_halfword(B_LAST_UART_STATE);
     sFWG2_t.general_parameter.enhance_state        = flash_wred_halfword(B_LAST_ENHANCE_STATE);
+	sFWG2_t.general_parameter.touch_set_temp_state = flash_wred_halfword(B_LAST_TOUCH_SET_TEMP_STATE);
     sFWG2_t.general_parameter.ch1_set_temp         = flash_wred_halfword(B_LAST_CH1_SET_TEMP);
     sFWG2_t.general_parameter.ch1_set_wind         = flash_wred_halfword(B_LAST_CH1_SET_WIND);
     sFWG2_t.general_parameter.ch1_set_time         = flash_wred_halfword(B_LAST_CH1_SET_TIME);
@@ -1058,6 +1067,7 @@ static void get_reset_data(void)
     sFWG2_t.general_parameter.touch_key_set        = TOUCH_CLOSE;
     sFWG2_t.general_parameter.fwg2_sleep_state     = SLEEP_OPEN;
     sFWG2_t.general_parameter.uart_state           = UART_CLOSE;
+	sFWG2_t.general_parameter.touch_set_temp_state = TOUCH_CLICK;
     sFWG2_t.general_parameter.ch1_set_temp = 350;
     sFWG2_t.general_parameter.ch1_set_temp_f_display = 662;
     sFWG2_t.general_parameter.ch1_set_wind = 20;
@@ -1173,17 +1183,17 @@ static void check_all_data(void)
         sFWG2_t.Direct_handle_parameter.set_wind  = 60;
     }
 
-    if (sFWG2_t.Direct_handle_parameter.quick_work_temp >= 100)
+    if (sFWG2_t.Direct_handle_parameter.quick_work_temp > 100)
     {
         sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
     }
 
-    if (sFWG2_t.Direct_handle_parameter.quick_work_temp < 0)
+    if (sFWG2_t.Direct_handle_parameter.quick_work_temp <= 0)
     {
         sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
     }
 
-    if (sFWG2_t.Direct_handle_parameter.quick_work_time >= MAX_SET_TIME_VAL)
+    if (sFWG2_t.Direct_handle_parameter.quick_work_time > MAX_SET_TIME_VAL)
     {
         sFWG2_t.Direct_handle_parameter.quick_work_time = 30;
     }
@@ -1254,6 +1264,16 @@ static void check_all_data(void)
     {
         sFWG2_t.general_parameter.uart_state = UART_CLOSE;
     }
+	
+	if (sFWG2_t.general_parameter.enhance_state != ENHANCE_CLOSE && sFWG2_t.general_parameter.enhance_state != ENHANCE_OPEN)
+    {
+        sFWG2_t.general_parameter.enhance_state = ENHANCE_CLOSE;
+    }
+	
+	if(sFWG2_t.general_parameter.touch_set_temp_state != TOUCH_CLICK && sFWG2_t.general_parameter.touch_set_temp_state != TOUCH_SLIDE)
+	{
+	sFWG2_t.general_parameter.touch_set_temp_state  = TOUCH_CLICK;
+	}
 
     if (sFWG2_t.Direct_handle_parameter.set_calibration_temp > 100
             || sFWG2_t.Direct_handle_parameter.set_calibration_temp < -100)
@@ -1262,7 +1282,7 @@ static void check_all_data(void)
     }
 
     if (sFWG2_t.general_parameter.countdown_time > MAX_SET_TIME_VAL
-            || sFWG2_t.general_parameter.countdown_time <= MIN_SET_TEMP_VAL)
+            || sFWG2_t.general_parameter.countdown_time < MIN_SET_TIME_VAL)
     {
         sFWG2_t.general_parameter.countdown_time = 10;
     }

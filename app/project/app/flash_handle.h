@@ -3,7 +3,7 @@
 #include "flash.h"
 #define FLASH_HANDLE_TIME          10
 #define DATA_SIZE                  2
-#define FLASH_MENBER               109
+#define FLASH_MENBER               110
 
 
 
@@ -25,7 +25,8 @@
 #define A_LAST_TOUCH_KEY_SET                               A_LAST_OTA_STATE + DATA_SIZE 
 #define A_LAST_UART_STATE                                  A_LAST_TOUCH_KEY_SET + DATA_SIZE 
 #define A_LAST_ENHANCE_STATE                               A_LAST_UART_STATE + DATA_SIZE
-#define A_LAST_CH1_SET_TEMP                                A_LAST_ENHANCE_STATE + DATA_SIZE 
+#define A_LAST_TOUCH_SET_TEMP_STATE                        A_LAST_ENHANCE_STATE + DATA_SIZE
+#define A_LAST_CH1_SET_TEMP                                A_LAST_TOUCH_SET_TEMP_STATE + DATA_SIZE 
 #define A_LAST_CH1_SET_WIND                                A_LAST_CH1_SET_TEMP + DATA_SIZE 
 #define A_LAST_CH1_SET_TIME                                A_LAST_CH1_SET_WIND + DATA_SIZE 
 #define A_LAST_CH2_SET_TEMP                                A_LAST_CH1_SET_TIME + DATA_SIZE 
@@ -136,8 +137,9 @@
 #define B_LAST_OTA_STATE                                   B_LAST_ADJUST_KEY_SET + DATA_SIZE
 #define B_LAST_TOUCH_KEY_SET                               B_LAST_OTA_STATE + DATA_SIZE
 #define B_LAST_UART_STATE                                  B_LAST_TOUCH_KEY_SET + DATA_SIZE      
-#define B_LAST_ENHANCE_STATE                               B_LAST_UART_STATE + DATA_SIZE     
-#define B_LAST_CH1_SET_TEMP                                B_LAST_ENHANCE_STATE + DATA_SIZE
+#define B_LAST_ENHANCE_STATE                               B_LAST_UART_STATE + DATA_SIZE    
+#define B_LAST_TOUCH_SET_TEMP_STATE                        B_LAST_ENHANCE_STATE + DATA_SIZE
+#define B_LAST_CH1_SET_TEMP                                B_LAST_TOUCH_SET_TEMP_STATE + DATA_SIZE
 #define B_LAST_CH1_SET_WIND                                B_LAST_CH1_SET_TEMP + DATA_SIZE
 #define B_LAST_CH1_SET_TIME                                B_LAST_CH1_SET_WIND + DATA_SIZE
 #define B_LAST_CH2_SET_TEMP                                B_LAST_CH1_SET_TIME + DATA_SIZE
@@ -227,7 +229,7 @@
 #define B_LAST_FWG2_WORK_MODE                              B_LAST_CODE4_TIME_4 + DATA_SIZE
 #define B_LAST_CYCLONE_SET_CALIBRATION_TEMP                B_LAST_FWG2_WORK_MODE + DATA_SIZE
 #define B_LAST_SYSTEM_RUN_TIME                             B_LAST_CYCLONE_SET_CALIBRATION_TEMP + DATA_SIZE
-#define B_LAST_DIRECT_HOT_WORK_TIME                     B_LAST_SYSTEM_RUN_TIME + DATA_SIZE
+#define B_LAST_DIRECT_HOT_WORK_TIME                        B_LAST_SYSTEM_RUN_TIME + DATA_SIZE
 #define B_FLASH_VERSION_ADDRESS                            B_LAST_DIRECT_HOT_WORK_TIME + DATA_SIZE   
 						 
 typedef enum

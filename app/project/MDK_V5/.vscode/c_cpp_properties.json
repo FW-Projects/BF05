@@ -3,20 +3,20 @@
         {
             "name": "AT32F415RBT7_WorkBench",
             "includePath": [
-                "d:\\Work Area\\Code For WorkBench\\FWG1\\FWG1_220\\app\\libraries\\drivers\\inc",
-                "d:\\Work Area\\Code For WorkBench\\FWG1\\FWG1_220\\app\\libraries\\cmsis\\cm4\\core_support",
-                "d:\\Work Area\\Code For WorkBench\\FWG1\\FWG1_220\\app\\libraries\\cmsis\\cm4\\device_support",
-                "d:\\Work Area\\Code For WorkBench\\FWG1\\FWG1_220\\app\\project\\inc",
-                "d:\\Work Area\\Code For WorkBench\\FWG1\\FWG1_220\\app\\project\\system",
-                "d:\\Work Area\\Code For WorkBench\\FWG1\\FWG1_220\\app\\project\\app",
-                "d:\\Work Area\\Code For WorkBench\\FWG1\\FWG1_220\\app\\project\\device",
+                "c:\\Users\\Administrator\\Desktop\\FWG1 shiiy code\\app\\libraries\\drivers\\inc",
+                "c:\\Users\\Administrator\\Desktop\\FWG1 shiiy code\\app\\libraries\\cmsis\\cm4\\core_support",
+                "c:\\Users\\Administrator\\Desktop\\FWG1 shiiy code\\app\\libraries\\cmsis\\cm4\\device_support",
+                "c:\\Users\\Administrator\\Desktop\\FWG1 shiiy code\\app\\project\\inc",
+                "c:\\Users\\Administrator\\Desktop\\FWG1 shiiy code\\app\\project\\system",
+                "c:\\Users\\Administrator\\Desktop\\FWG1 shiiy code\\app\\project\\app",
+                "c:\\Users\\Administrator\\Desktop\\FWG1 shiiy code\\app\\project\\device",
                 "D:\\Work Program\\Keil_v5\\ARM\\ARMCLANG\\include",
                 "D:\\Work Program\\Keil_v5\\ARM\\ARMCLANG\\include\\arm_linux",
                 "D:\\Work Program\\Keil_v5\\ARM\\ARMCLANG\\include\\arm_linux_compat",
                 "D:\\Work Program\\Keil_v5\\ARM\\ARMCLANG\\include\\libcxx",
-                "d:\\Work Area\\Code For WorkBench\\FWG1\\FWG1_220\\app\\project\\src",
-                "d:\\Work Area\\Code For WorkBench\\FWG1\\FWG1_220\\app\\libraries\\drivers\\src",
-                "d:\\Work Area\\Code For WorkBench\\FWG1\\FWG1_220\\app\\project\\MDK_V5"
+                "c:\\Users\\Administrator\\Desktop\\FWG1 shiiy code\\app\\project\\src",
+                "c:\\Users\\Administrator\\Desktop\\FWG1 shiiy code\\app\\libraries\\drivers\\src",
+                "c:\\Users\\Administrator\\Desktop\\FWG1 shiiy code\\app\\project\\MDK_V5"
             ],
             "defines": [
                 "AT32F415RBT7",

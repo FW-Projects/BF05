@@ -255,7 +255,7 @@ void dwin_task(void)
      DwinRun();
 }
 
-void work_task(void)
+void work_task(void) 
 {
     Direct_handle_switch();
 }
@@ -283,9 +283,9 @@ void feed_dog_task(void)
     {
         first_in = true;
         /* if enabled, please feed the dog through wdt_counter_reload() function */
-        wdt_enable();
+         wdt_enable();
     }
-    wdt_counter_reload();
+     wdt_counter_reload();
 } 
 
 void record_task(void)
