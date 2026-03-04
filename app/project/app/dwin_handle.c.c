@@ -2832,7 +2832,9 @@ static uint8_t get_direct_temp_state(void)
     static uint8_t refresh_temp_time = 0;
     static bool last_setting_temp_state = false;
     static handle_position_e last_handle_position = 10;
-
+    static uint16_t refresh_setting_time = DIRECT_TEMP_REFIRSH_TIME;
+	
+	
     if (last_page != sFWG2_t.general_parameter.fwg2_page)
     {
         if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN ||
@@ -2862,22 +2864,31 @@ static uint8_t get_direct_temp_state(void)
     }
     else if (last_setting_temp_state != sFWG2_t.general_parameter.setting_temp_flag)
     {
-        if (sFWG2_t.general_parameter.setting_temp_flag == true)
-        {
-            show_step = 1;
-        }
-        else if (sFWG2_t.general_parameter.setting_temp_flag == false)
-        {
-            show_step = 4;
-        }
+
+            if (sFWG2_t.general_parameter.setting_temp_flag == true)
+            {
+				
+                show_step = 1;
+            }
+            else if (sFWG2_t.general_parameter.setting_temp_flag == false)
+            {
+                show_step = 4;
+            }
 
         last_setting_temp_state = sFWG2_t.general_parameter.setting_temp_flag;
     }
     else if (sFWG2_t.Direct_handle_parameter.last_set_temp != sFWG2_t.Direct_handle_parameter.set_temp &&
              sFWG2_t.general_parameter.setting_temp_flag == true)
     {
-        show_step = 3;
-        sFWG2_t.Direct_handle_parameter.last_set_temp = sFWG2_t.Direct_handle_parameter.set_temp;
+		refresh_setting_time--;
+		if(!refresh_setting_time)
+		{
+		    refresh_setting_time = DIRECT_TEMP_REFIRSH_TIME;
+		    show_step = 3;
+            sFWG2_t.Direct_handle_parameter.last_set_temp = sFWG2_t.Direct_handle_parameter.set_temp;
+		}
+		
+        
     }
     else if (sFWG2_t.general_parameter.setting_temp_flag == false)
     {
@@ -2901,7 +2912,8 @@ static void show_direct_temp(void)
 {
     static uint8_t show_step = 0;
     static uint16_t show_set_temp;
-
+    
+	
     switch (show_step)
     {
     case 0:
@@ -2933,7 +2945,7 @@ static void show_direct_temp(void)
         break;
 
     case 3:
-
+        
         /* show set temp */
         if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN)
         {
@@ -3138,7 +3150,8 @@ static uint8_t get_direct_wind_state(void)
     static uint8_t last_cold_mode_set_wind = 0;
     static bool last_setting_wind_state = false;
     static bool first_in_cold_wind_mode = false;
-
+    static uint16_t refresh_setting_time = DIRECT_WIND_REFIRSH_TIME;
+	
     if (last_page != sFWG2_t.general_parameter.fwg2_page)
     {
         if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN ||
@@ -3184,8 +3197,14 @@ static uint8_t get_direct_wind_state(void)
             else if (sFWG2_t.Direct_handle_parameter.last_set_wind != sFWG2_t.Direct_handle_parameter.set_wind &&
                      sFWG2_t.general_parameter.setting_wind_flag)
             {
-                show_step = 3;
-                sFWG2_t.Direct_handle_parameter.last_set_wind = sFWG2_t.Direct_handle_parameter.set_wind;
+				refresh_setting_time --;
+				if(!refresh_setting_time)
+				{
+					refresh_setting_time = DIRECT_WIND_REFIRSH_TIME;
+				    show_step = 3;
+                    sFWG2_t.Direct_handle_parameter.last_set_wind = sFWG2_t.Direct_handle_parameter.set_wind;
+				}
+                
             }
             else if (last_stop_set_wind != sFWG2_t.Direct_handle_parameter.stop_set_wind &&
                      setting_flag == false)
@@ -3230,8 +3249,15 @@ static uint8_t get_direct_wind_state(void)
         {
             if (last_cold_mode_set_wind != sFWG2_t.Direct_handle_parameter.cold_mode_set_wind)
             {
-                show_step = 3;
-                last_cold_mode_set_wind = sFWG2_t.Direct_handle_parameter.cold_mode_set_wind;
+				refresh_setting_time --;
+				if(!refresh_setting_time)
+				{
+					refresh_setting_time = DIRECT_WIND_REFIRSH_TIME;
+				    show_step = 3;
+                    last_cold_mode_set_wind = sFWG2_t.Direct_handle_parameter.cold_mode_set_wind;
+				}
+				
+                
             }
         }
     }
@@ -4202,7 +4228,7 @@ static uint8_t check_menu_setting(void)
     else if (last_enhance_state != sFWG2_t.general_parameter.enhance_state)
     {
         //show_step = 15;
-		show_step = 1;
+        show_step = 1;
         last_enhance_state  = sFWG2_t.general_parameter.enhance_state;
     }
     else
