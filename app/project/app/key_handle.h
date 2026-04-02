@@ -1,8 +1,8 @@
 #ifndef _KEY_HANDLE_H
 #define _KEY_HANDLE_H
 #include "key.h"
-#define KEY_HANDLE_TIME          30
-#define HEL_TIME                 90
+#define KEY_HANDLE_TIME          25
+
 
 typedef enum
 {

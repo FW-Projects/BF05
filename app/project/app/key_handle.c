@@ -4,84 +4,49 @@
 #include "dwin_handle.h"
 #include "FWG2_handle.h"
 static handle_event EVENT = END_EVENT;
+#define KEY_COUNT 3
 
 
-static KEY_VALUE get_key_up()
-{
-    if (READ_KEY_UP == 0)
-    {
-        return K_PRESS;
-    }
-    else
-    {
-        return K_RELEASE;
-    }
-}
+KEY_DEFINE(key_ch, GPIOB, GPIO_PINS_1, 0);
+KEY_DEFINE(key_up, GPIOC, GPIO_PINS_5, 0);
+KEY_DEFINE(key_down, GPIOB, GPIO_PINS_0, 0);
+ 
+key_obj *keys[KEY_COUNT] = {&key_ch, &key_down, &key_up };
 
-static KEY_VALUE get_key_down()
-{
-    if (READ_KEY_DOWN == 0)
-    {
-        return K_PRESS;
-    }
-    else
-    {
-        return K_RELEASE;
-    }
-}
-
-static KEY_VALUE get_key_ch()
-{
-    if (READ_KEY_CH == 0)
-    {
-        return K_PRESS;
-    }
-    else
-    {
-        return K_RELEASE;
-    }
-}
-
-static KEY_VALUE get_key_touch()
-{
-    if (READ_KEY_TOUCH == 0)
-    {
-        return K_PRESS;
-    }
-    else
-    {
-        return K_RELEASE;
-    }
-}
-
-static KEY keys[] =
-{
-    {KS_RELEASE, 0, KEY_CYCLE_TIME, get_key_ch},// function
-    {KS_RELEASE, 0, KEY_CYCLE_TIME, get_key_up},// add
-    {KS_RELEASE, 0, KEY_CYCLE_TIME, get_key_down},//reduce
-    {KS_RELEASE, 0, KEY_CYCLE_TIME, get_key_touch},//touch
-
-};
-
-static KEY_EVENT key_up, key_down, key_ch, key_touch;
+key_event_t key_event[KEY_COUNT];
 
 void KeyProc(void)
 {
+	static bool first_in = false;
     static bool set_done = false;
     static bool channel_switch_flag = false;
     static uint8_t channel_switch_time = 0;
 
-    if (get_key_up()         == K_RELEASE && \
-            get_key_down()       == K_RELEASE && \
-            get_key_ch()         == K_RELEASE)
+	
+	    if (first_in == false)
+    {
+        first_in = true;
+        key_set_scan_interval(KEY_HANDLE_TIME);
+        key_set_timing_simple(&key_ch, KEY_HANDLE_TIME, 600, 0, 0);
+        
+        key_set_timing_simple(&key_down, KEY_HANDLE_TIME, 600, 0,100);
+		key_set_timing_simple(&key_up, KEY_HANDLE_TIME, 600, 0, 100);
+
+    }
+	
+
+    if (key_event[0] == KEY_NONE &&
+        key_event[1] == KEY_NONE &&
+        key_event[2] == KEY_NONE)
     {
         set_done = false;
     }
 
     /* scan key begin */
-    key_ch   = key_event_check(&keys[0], LONG_PRESS_TIME);
-    key_up   = key_event_check(&keys[1], LONG_PRESS_TIME);
-    key_down = key_event_check(&keys[2], LONG_PRESS_TIME);
+    for (int i = 0; i < KEY_COUNT; i++)
+    {
+        key_event[i] = key_event_check(keys[i]);
+    }
 
     /* scan key end */
 
@@ -90,7 +55,7 @@ void KeyProc(void)
     {
         sFWG2_t.general_parameter.setting_temp_time++;
 
-        if (sFWG2_t.general_parameter.setting_temp_time >= 68)
+        if (sFWG2_t.general_parameter.setting_temp_time >= 120)
         {
             sFWG2_t.general_parameter.setting_temp_time = 0;
             sFWG2_t.general_parameter.setting_temp_flag = false;
@@ -106,7 +71,7 @@ void KeyProc(void)
     {
         sFWG2_t.general_parameter.setting_wind_time++;
 
-        if (sFWG2_t.general_parameter.setting_wind_time >= 68)
+        if (sFWG2_t.general_parameter.setting_wind_time >= 120)
         {
             sFWG2_t.general_parameter.setting_wind_time = 0;
             sFWG2_t.general_parameter.setting_wind_flag = false;
@@ -122,7 +87,7 @@ void KeyProc(void)
     {
         channel_switch_time ++;
 
-        if (channel_switch_time >= 68)
+        if (channel_switch_time >= 120)
         {
             channel_switch_flag = false;
             channel_switch_time = 0;
@@ -136,7 +101,7 @@ void KeyProc(void)
         if (!set_done)
         {
             /*get event*/
-            if (key_ch == KE_PRESS)
+            if (key_event[0] == KEY_SHORT_PRESS)
             {
                 sFWG2_t.general_parameter.key_setting_flag = true;
                 sFWG2_t.general_parameter.setting_time = 0;
@@ -219,7 +184,7 @@ void KeyProc(void)
                     set_done = TRUE;
                 }
             }
-            else if (key_down == KE_PRESS)
+            else if (key_event[1] == KEY_SHORT_PRESS)
             {
                 sFWG2_t.general_parameter.key_setting_flag = true;
                 sFWG2_t.general_parameter.setting_time = 0;
@@ -337,7 +302,7 @@ void KeyProc(void)
                     set_done = TRUE;
                 }
             }
-            else if (key_up == KE_PRESS)
+            else if (key_event[2] == KEY_SHORT_PRESS)
             {
                 sFWG2_t.general_parameter.key_setting_flag = true;
                 sFWG2_t.general_parameter.setting_time = 0;
@@ -460,7 +425,7 @@ void KeyProc(void)
             }
 
             /* key long perss */
-            if (key_ch == KE_LONG_PRESS)
+            if (key_event[0] == KEY_LONG_PRESS)
             {
                 if (sFWG2_t.general_parameter.fn_key_long_set == L_COLD_WIN_MODE)
                 {
@@ -513,7 +478,7 @@ void KeyProc(void)
                     set_done = TRUE;
                 }
             }
-            else  if (key_down == KE_LONG_PRESS)
+            else  if (key_event[1] == KEY_LONG_PRESS_CONTINUE)
             {
                 sFWG2_t.general_parameter.key_setting_flag = true;
                 sFWG2_t.general_parameter.setting_time = 0;
@@ -586,7 +551,7 @@ void KeyProc(void)
                     EVENT = DIRECT_WIND_REDUCE_FIVE_EVENT;
                 }
             }
-            else if (key_up == KE_LONG_PRESS)
+            else if (key_event[2] == KEY_LONG_PRESS_CONTINUE)
             {
                 sFWG2_t.general_parameter.key_setting_flag = true;
                 sFWG2_t.general_parameter.setting_time = 0;
@@ -665,7 +630,7 @@ void KeyProc(void)
     {
         if (!set_done)
         {
-            if (key_ch == KE_PRESS && sFWG2_t.general_parameter.fwg2_page == PAGE_SHOW_CODE_WORK)
+            if (key_event[0] == KEY_SHORT_PRESS && sFWG2_t.general_parameter.fwg2_page == PAGE_SHOW_CODE_WORK)
             {
                 if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
@@ -1234,9 +1199,9 @@ void key_handle(void)
     static  uint8_t time = 0;
 #if 1
 
-    if (get_key_up()     == K_PRESS || \
-            get_key_down()   == K_PRESS || \
-            get_key_ch()     == K_PRESS)
+    if (key_event[0] != KEY_NONE ||
+            key_event[1] != KEY_NONE ||
+            key_event[2] != KEY_NONE)
     {
         if (sFWG2_t.Direct_handle_state == HANDLE_SLEEP)
         {
@@ -1251,9 +1216,9 @@ void key_handle(void)
         }
     }
 
-    if (get_key_up() == K_RELEASE &&
-            get_key_down() == K_RELEASE &&
-            get_key_ch() == K_RELEASE)
+    if (key_event[0] == KEY_NONE ||
+            key_event[1] == KEY_NONE ||
+            key_event[2] == KEY_NONE)
     {
         if (sFWG2_t.general_parameter.key_setting_flag)
         {
