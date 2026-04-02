@@ -2486,7 +2486,7 @@ void show_page(void)
         }
 
         /* show software version */
-        software_buff[8] = 2;
+        software_buff[8] = 3;
         software_buff[7] = 4;
         software_buff[6] = 1;
         usart_sendData(DWIN_USART, software_buff, 9);
@@ -4358,7 +4358,7 @@ static void show_menu_setting(void)
 
     case 10:
         /* show software version  */
-        software_buff[8] = 2;
+        software_buff[8] = 3;
         software_buff[7] = 4;
         software_buff[6] = 1;
         usart_sendData(DWIN_USART, software_buff, 9);

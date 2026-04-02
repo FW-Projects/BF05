@@ -153,6 +153,7 @@ void KeyProc(void)
                     {
                         sFWG2_t.general_parameter.setting_temp_flag = false;
                     }
+
                     sbeep.status = BEEP_SHORT;
                     set_done = TRUE;
                 }
@@ -168,19 +169,20 @@ void KeyProc(void)
                         sFWG2_t.general_parameter.setting_wind_flag = false;
                         sFWG2_t.general_parameter.setting_temp_flag = true;
                     }
+
                     sbeep.status = BEEP_SHORT;
                     set_done = TRUE;
                 }
                 else if (sFWG2_t.general_parameter.fn_key_short_set == S_CHANNEL_SWITCH)
                 {
-					if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
-					{
-					   channel_switch_flag = true;
-                       channel_switch_time = 0;
-                       EVENT = DIRECT_CH_SWITCH_EVENT;
-                       sbeep.status = BEEP_LONG;
-                       set_done = TRUE; 
-					}
+                    if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
+                    {
+                        channel_switch_flag = true;
+                        channel_switch_time = 0;
+                        EVENT = DIRECT_CH_SWITCH_EVENT;
+                        sbeep.status = BEEP_LONG;
+                        set_done = TRUE;
+                    }
                 }
                 else if (sFWG2_t.general_parameter.fn_key_short_set == S_QUICK_MODE)
                 {
@@ -255,12 +257,11 @@ void KeyProc(void)
                         sFWG2_t.general_parameter.setting_temp_flag = true;
                     }
 
-                    
-					if (sFWG2_t.general_parameter.adjust_key_set == SELECT_CHANNEL)
+                    if (sFWG2_t.general_parameter.adjust_key_set == SELECT_CHANNEL)
                     {
                         if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN || sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
                         {
-							channel_switch_flag = true;
+                            channel_switch_flag = true;
                             channel_switch_time = 0;
                             EVENT = DIRECT_CH_REDUCE_EVENT;
                             set_done = TRUE;
@@ -270,39 +271,62 @@ void KeyProc(void)
                     {
                         if (channel_switch_flag)
                         {
-							channel_switch_flag = false;
-							channel_switch_time = 0; 
-							if(sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
-							{
-								sFWG2_t.general_parameter.setting_temp_flag = true;
-								sFWG2_t.general_parameter.setting_wind_flag = false;
-							    EVENT = DIRECT_TEMP_REDUCE_EVENT;
-                                set_done = TRUE;
-                                sFWG2_t.general_parameter.setting_temp_time = 0;
-							}
-							else if(sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
-							{
-								sFWG2_t.general_parameter.setting_temp_flag = false;
-								sFWG2_t.general_parameter.setting_wind_flag = true;
-							    EVENT = DIRECT_WIND_REDUCE_EVENT;
-                                set_done = TRUE;
-                                sFWG2_t.general_parameter.setting_wind_time = 0;
-							}
-                        }
-                        else
-                        {
-                            if (sFWG2_t.general_parameter.setting_temp_flag)
+                            channel_switch_flag = false;
+                            channel_switch_time = 0;
+
+                            if (sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
                             {
+                                sFWG2_t.general_parameter.setting_temp_flag = true;
+                                sFWG2_t.general_parameter.setting_wind_flag = false;
                                 EVENT = DIRECT_TEMP_REDUCE_EVENT;
                                 set_done = TRUE;
                                 sFWG2_t.general_parameter.setting_temp_time = 0;
                             }
-
-                            if (sFWG2_t.general_parameter.setting_wind_flag)
+                            else if (sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
                             {
+                                sFWG2_t.general_parameter.setting_temp_flag = false;
+                                sFWG2_t.general_parameter.setting_wind_flag = true;
                                 EVENT = DIRECT_WIND_REDUCE_EVENT;
                                 set_done = TRUE;
                                 sFWG2_t.general_parameter.setting_wind_time = 0;
+                            }
+                        }
+                        else
+                        {
+                            if (sFWG2_t.general_parameter.setting_temp_flag && sFWG2_t.general_parameter.setting_wind_flag)
+                            {
+                                if (sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
+                                {
+                                    sFWG2_t.general_parameter.setting_temp_flag = true;
+                                    sFWG2_t.general_parameter.setting_wind_flag = false;
+                                    EVENT = DIRECT_TEMP_ADD_EVENT;
+                                    set_done = TRUE;
+                                    sFWG2_t.general_parameter.setting_temp_time = 0;
+                                }
+                                else if (sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
+                                {
+                                    sFWG2_t.general_parameter.setting_temp_flag = false;
+                                    sFWG2_t.general_parameter.setting_wind_flag = true;
+                                    EVENT = DIRECT_WIND_ADD_EVENT;
+                                    set_done = TRUE;
+                                    sFWG2_t.general_parameter.setting_wind_time = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (sFWG2_t.general_parameter.setting_temp_flag)
+                                {
+                                    EVENT = DIRECT_TEMP_REDUCE_EVENT;
+                                    set_done = TRUE;
+                                    sFWG2_t.general_parameter.setting_temp_time = 0;
+                                }
+
+                                if (sFWG2_t.general_parameter.setting_wind_flag)
+                                {
+                                    EVENT = DIRECT_WIND_REDUCE_EVENT;
+                                    set_done = TRUE;
+                                    sFWG2_t.general_parameter.setting_wind_time = 0;
+                                }
                             }
                         }
                     }
@@ -358,7 +382,7 @@ void KeyProc(void)
                     {
                         if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN || sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
                         {
-							channel_switch_flag = true;
+                            channel_switch_flag = true;
                             channel_switch_time = 0;
                             EVENT = DIRECT_CH_ADD_EVENT;
                             set_done = TRUE;
@@ -368,42 +392,64 @@ void KeyProc(void)
                     {
                         if (channel_switch_flag)
                         {
-							channel_switch_flag = false;
-							channel_switch_time = 0; 
-							if(sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
-							{
-								sFWG2_t.general_parameter.setting_temp_flag = true;
-								sFWG2_t.general_parameter.setting_wind_flag = false;
-							    EVENT = DIRECT_TEMP_ADD_EVENT;
-                                set_done = TRUE;
-                                sFWG2_t.general_parameter.setting_temp_time = 0;
-							}
-							else if(sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
-							{
-								sFWG2_t.general_parameter.setting_temp_flag = false;
-								sFWG2_t.general_parameter.setting_wind_flag = true;
-							    EVENT = DIRECT_WIND_ADD_EVENT;
-                                set_done = TRUE;
-                                sFWG2_t.general_parameter.setting_wind_time = 0;
-							}
-                        }
-                        else
-                        {
-                            if (sFWG2_t.general_parameter.setting_temp_flag)
+                            channel_switch_flag = false;
+                            channel_switch_time = 0;
+
+                            if (sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
                             {
+                                sFWG2_t.general_parameter.setting_temp_flag = true;
+                                sFWG2_t.general_parameter.setting_wind_flag = false;
                                 EVENT = DIRECT_TEMP_ADD_EVENT;
                                 set_done = TRUE;
                                 sFWG2_t.general_parameter.setting_temp_time = 0;
                             }
-
-                            if (sFWG2_t.general_parameter.setting_wind_flag)
+                            else if (sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
                             {
+                                sFWG2_t.general_parameter.setting_temp_flag = false;
+                                sFWG2_t.general_parameter.setting_wind_flag = true;
                                 EVENT = DIRECT_WIND_ADD_EVENT;
                                 set_done = TRUE;
                                 sFWG2_t.general_parameter.setting_wind_time = 0;
                             }
                         }
-						
+                        else
+                        {
+                            if (sFWG2_t.general_parameter.setting_temp_flag && sFWG2_t.general_parameter.setting_wind_flag)
+                            {
+                                if (sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
+                                {
+                                    sFWG2_t.general_parameter.setting_temp_flag = true;
+                                    sFWG2_t.general_parameter.setting_wind_flag = false;
+                                    EVENT = DIRECT_TEMP_ADD_EVENT;
+                                    set_done = TRUE;
+                                    sFWG2_t.general_parameter.setting_temp_time = 0;
+                                }
+                                else if (sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
+                                {
+                                    sFWG2_t.general_parameter.setting_temp_flag = false;
+                                    sFWG2_t.general_parameter.setting_wind_flag = true;
+                                    EVENT = DIRECT_WIND_ADD_EVENT;
+                                    set_done = TRUE;
+                                    sFWG2_t.general_parameter.setting_wind_time = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (sFWG2_t.general_parameter.setting_temp_flag)
+                                {
+                                    EVENT = DIRECT_TEMP_ADD_EVENT;
+                                    set_done = TRUE;
+                                    sFWG2_t.general_parameter.setting_temp_time = 0;
+                                }
+
+                                if (sFWG2_t.general_parameter.setting_wind_flag)
+                                {
+                                    EVENT = DIRECT_WIND_ADD_EVENT;
+                                    set_done = TRUE;
+                                    sFWG2_t.general_parameter.setting_wind_time = 0;
+                                }
+                            }
+                        }
                     }
                 }
                 else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
@@ -485,58 +531,54 @@ void KeyProc(void)
                             sFWG2_t.general_parameter.setting_wind_flag = true;
                         }
                     }
-					
-					 if (channel_switch_flag)
-                        {
-							channel_switch_flag = false;
-							channel_switch_time = 0; 
-							if(sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
-							{
-								sFWG2_t.general_parameter.setting_temp_flag = true;
-								sFWG2_t.general_parameter.setting_wind_flag = false;
-							    EVENT = DIRECT_TEMP_REDUCE_FIVE_EVENT;
-                               
-                                sFWG2_t.general_parameter.setting_temp_time = 0;
-							}
-							else if(sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
-							{
-								sFWG2_t.general_parameter.setting_temp_flag = false;
-								sFWG2_t.general_parameter.setting_wind_flag = true;
-							    EVENT = DIRECT_WIND_REDUCE_FIVE_EVENT;
-                                 
-                                sFWG2_t.general_parameter.setting_wind_time = 0;
-							}
-                        }
-                        else
-                        {
-                            if (sFWG2_t.general_parameter.setting_temp_flag)
-                            {
-                                EVENT = DIRECT_TEMP_REDUCE_FIVE_EVENT;
-                                
-                                sFWG2_t.general_parameter.setting_temp_time = 0;
-                            }
 
-                            if (sFWG2_t.general_parameter.setting_wind_flag)
-                            {
-                                EVENT = DIRECT_WIND_REDUCE_FIVE_EVENT;
-                                
-                                sFWG2_t.general_parameter.setting_wind_time = 0;
-                            }
+                    if (channel_switch_flag)
+                    {
+                        channel_switch_flag = false;
+                        channel_switch_time = 0;
+
+                        if (sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
+                        {
+                            sFWG2_t.general_parameter.setting_temp_flag = true;
+                            sFWG2_t.general_parameter.setting_wind_flag = false;
+                            EVENT = DIRECT_TEMP_REDUCE_FIVE_EVENT;
+                            sFWG2_t.general_parameter.setting_temp_time = 0;
+                        }
+                        else if (sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
+                        {
+                            sFWG2_t.general_parameter.setting_temp_flag = false;
+                            sFWG2_t.general_parameter.setting_wind_flag = true;
+                            EVENT = DIRECT_WIND_REDUCE_FIVE_EVENT;
+                            sFWG2_t.general_parameter.setting_wind_time = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (sFWG2_t.general_parameter.setting_temp_flag)
+                        {
+                            EVENT = DIRECT_TEMP_REDUCE_FIVE_EVENT;
+                            sFWG2_t.general_parameter.setting_temp_time = 0;
                         }
 
-//                    if (sFWG2_t.general_parameter.setting_temp_flag  && channel_switch_flag == false)
-//                    {
-//                        //EVENT = DIRECT_TEMP_REDUCE_EVENT;
-//                        EVENT = DIRECT_TEMP_REDUCE_FIVE_EVENT;
-//                        sFWG2_t.general_parameter.setting_temp_time = 0;
-//                    }
+                        if (sFWG2_t.general_parameter.setting_wind_flag)
+                        {
+                            EVENT = DIRECT_WIND_REDUCE_FIVE_EVENT;
+                            sFWG2_t.general_parameter.setting_wind_time = 0;
+                        }
+                    }
 
-//                    if (sFWG2_t.general_parameter.setting_wind_flag  && channel_switch_flag == false)
-//                    {
-//                        EVENT = DIRECT_WIND_REDUCE_EVENT;
-//                        //EVENT = DIRECT_WIND_REDUCE_FIVE_EVENT;
-//                        sFWG2_t.general_parameter.setting_wind_time = 0;
-//                    }
+                    //                    if (sFWG2_t.general_parameter.setting_temp_flag  && channel_switch_flag == false)
+                    //                    {
+                    //                        //EVENT = DIRECT_TEMP_REDUCE_EVENT;
+                    //                        EVENT = DIRECT_TEMP_REDUCE_FIVE_EVENT;
+                    //                        sFWG2_t.general_parameter.setting_temp_time = 0;
+                    //                    }
+                    //                    if (sFWG2_t.general_parameter.setting_wind_flag  && channel_switch_flag == false)
+                    //                    {
+                    //                        EVENT = DIRECT_WIND_REDUCE_EVENT;
+                    //                        //EVENT = DIRECT_WIND_REDUCE_FIVE_EVENT;
+                    //                        sFWG2_t.general_parameter.setting_wind_time = 0;
+                    //                    }
                 }
                 else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
                 {
@@ -562,56 +604,54 @@ void KeyProc(void)
                             sFWG2_t.general_parameter.setting_wind_flag = true;
                         }
                     }
-					 if (channel_switch_flag)
-                        {
-							channel_switch_flag = false;
-							channel_switch_time = 0; 
-							if(sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
-							{
-								sFWG2_t.general_parameter.setting_temp_flag = true;
-								sFWG2_t.general_parameter.setting_wind_flag = false;
-							    EVENT = DIRECT_TEMP_ADD_FIVE_EVENT;
-                               
-                                sFWG2_t.general_parameter.setting_temp_time = 0;
-							}
-							else if(sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
-							{
-								sFWG2_t.general_parameter.setting_temp_flag = false;
-								sFWG2_t.general_parameter.setting_wind_flag = true;
-							    EVENT = DIRECT_WIND_ADD_FIVE_EVENT;
-                                 
-                                sFWG2_t.general_parameter.setting_wind_time = 0;
-							}
-                        }
-                        else
-                        {
-                            if (sFWG2_t.general_parameter.setting_temp_flag)
-                            {
-                                EVENT = DIRECT_TEMP_ADD_FIVE_EVENT;
-                                 
-                                sFWG2_t.general_parameter.setting_temp_time = 0;
-                            }
 
-                            if (sFWG2_t.general_parameter.setting_wind_flag)
-                            {
-                                EVENT = DIRECT_WIND_ADD_FIVE_EVENT;
-                                
-                                sFWG2_t.general_parameter.setting_wind_time = 0;
-                            }
-                        }
-//                    if (sFWG2_t.general_parameter.setting_temp_flag  && channel_switch_flag == false)
-//                    {
-//                        //EVENT = DIRECT_TEMP_ADD_EVENT;
-//                        EVENT = DIRECT_TEMP_ADD_FIVE_EVENT;
-//                        sFWG2_t.general_parameter.setting_temp_time = 0;
-//                    }
+                    if (channel_switch_flag)
+                    {
+                        channel_switch_flag = false;
+                        channel_switch_time = 0;
 
-//                    if (sFWG2_t.general_parameter.setting_wind_flag  && channel_switch_flag == false)
-//                    {
-//                        //EVENT = DIRECT_WIND_ADD_EVENT;
-//                        EVENT = DIRECT_WIND_ADD_FIVE_EVENT;
-//                        sFWG2_t.general_parameter.setting_wind_time = 0;
-//                    }
+                        if (sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
+                        {
+                            sFWG2_t.general_parameter.setting_temp_flag = true;
+                            sFWG2_t.general_parameter.setting_wind_flag = false;
+                            EVENT = DIRECT_TEMP_ADD_FIVE_EVENT;
+                            sFWG2_t.general_parameter.setting_temp_time = 0;
+                        }
+                        else if (sFWG2_t.general_parameter.adjust_key_set == SELECT_WIND)
+                        {
+                            sFWG2_t.general_parameter.setting_temp_flag = false;
+                            sFWG2_t.general_parameter.setting_wind_flag = true;
+                            EVENT = DIRECT_WIND_ADD_FIVE_EVENT;
+                            sFWG2_t.general_parameter.setting_wind_time = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (sFWG2_t.general_parameter.setting_temp_flag)
+                        {
+                            EVENT = DIRECT_TEMP_ADD_FIVE_EVENT;
+                            sFWG2_t.general_parameter.setting_temp_time = 0;
+                        }
+
+                        if (sFWG2_t.general_parameter.setting_wind_flag)
+                        {
+                            EVENT = DIRECT_WIND_ADD_FIVE_EVENT;
+                            sFWG2_t.general_parameter.setting_wind_time = 0;
+                        }
+                    }
+
+                    //                    if (sFWG2_t.general_parameter.setting_temp_flag  && channel_switch_flag == false)
+                    //                    {
+                    //                        //EVENT = DIRECT_TEMP_ADD_EVENT;
+                    //                        EVENT = DIRECT_TEMP_ADD_FIVE_EVENT;
+                    //                        sFWG2_t.general_parameter.setting_temp_time = 0;
+                    //                    }
+                    //                    if (sFWG2_t.general_parameter.setting_wind_flag  && channel_switch_flag == false)
+                    //                    {
+                    //                        //EVENT = DIRECT_WIND_ADD_EVENT;
+                    //                        EVENT = DIRECT_WIND_ADD_FIVE_EVENT;
+                    //                        sFWG2_t.general_parameter.setting_wind_time = 0;
+                    //                    }
                 }
                 else if (sFWG2_t.Direct_handle_work_mode == COLD_WIND_MODE)
                 {
@@ -627,7 +667,7 @@ void KeyProc(void)
         {
             if (key_ch == KE_PRESS && sFWG2_t.general_parameter.fwg2_page == PAGE_SHOW_CODE_WORK)
             {
-                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE )
+                if (sFWG2_t.general_parameter.code_mode_handle_select == SELECT_DIRECT_HANDLE)
                 {
                     if (sFWG2_t.general_parameter.code_mode_state == CODE_MODE_START)
                     {

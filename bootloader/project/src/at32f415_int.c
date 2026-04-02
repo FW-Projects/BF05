@@ -505,7 +505,7 @@ void usart1_connet_pc(void)
 	
     usart1_tx_buff[7] = 0x01;
     usart1_tx_buff[8] = 0x04;
-    usart1_tx_buff[9] = 0x02;
+    usart1_tx_buff[9] = 0x03;
 	
     usart1_tx_buff[10] = 0x01;
     usart1_tx_buff[11] = 0x00;

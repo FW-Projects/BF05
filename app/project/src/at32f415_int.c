@@ -281,6 +281,8 @@ void TMR2_GLOBAL_IRQHandler(void)
         {
             /* PWMÊä³ö */
             Direct_Handle_PWM_Out();
+			//sFWG2_t.general_parameter.pid_out = 0;
+			//sFWG2_t.Direct_handle_parameter.error_time = 0;
         }
 
         if (sFWG2_t.general_parameter.pid_out <= 0)
@@ -331,7 +333,7 @@ static void Direct_Handle_PWM_Out(void)
 	
 	static float hight_ki = 4;
     static float low_ki = 2;
-	
+	 
     static int16_t set_temp;
     static int16_t actual_temp;
     static uint16_t delay_time = 0;
@@ -405,7 +407,7 @@ static void Direct_Handle_PWM_Out(void)
             {
                 /* get actual temp */
                 sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL);
-                actual_temp = sFWG2_t.Direct_handle_parameter.actual_temp +
+				 actual_temp = sFWG2_t.Direct_handle_parameter.actual_temp +
                               sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
                               sFWG2_t.Direct_handle_parameter.set_calibration_temp;
 
@@ -421,6 +423,8 @@ static void Direct_Handle_PWM_Out(void)
                 if (actual_temp <= set_temp + PID_RANGE &&
                         actual_temp >= set_temp - PID_RANGE)
                 {
+					
+					
                     if (actual_temp <= (set_temp + 5) && actual_temp >= (set_temp - 5))
                     {
                         delay_time++;
