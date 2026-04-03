@@ -84,10 +84,9 @@ __WEAK void wk_timebase_init(void)
   /* get crm_clocks */
   crm_clocks_freq_get(&crm_clocks);
 
-  frequency = crm_clocks.ahb_freq / 8;
-
+  frequency = crm_clocks.ahb_freq;
   /* config systick clock source */
-  systick_clock_source_config(SYSTICK_CLOCK_SOURCE_AHBCLK_DIV8);
+  systick_clock_source_config(SYSTICK_CLOCK_SOURCE_AHBCLK_NODIV);
   /* system tick config */
   SysTick->LOAD  = (uint32_t)((frequency / 1000) - 1UL);
   SysTick->VAL   = 0UL;

@@ -3,7 +3,8 @@
   * @file     at32f415_usart.c
   * @brief    contains all the functions for the usart firmware library
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -90,7 +91,7 @@ void usart_reset(usart_type* usart_x)
   *         this parameter can be one of the following values:
   *         - USART_DATA_8BITS
   *         - USART_DATA_9BITS.
-  *         note：
+  *         note:
   *         - when parity check is disabled, the data bit width is the actual data bit number.
   *         - when parity check is enabled, the data bit width is the actual data bit number minus 1, and the MSB bit is replaced with the parity bit.
   * @param  stop_bit: stop bits transmitted
@@ -666,7 +667,6 @@ flag_status usart_interrupt_flag_get(usart_type* usart_x, uint32_t flag)
   *         - USART_PERR_FLAG, USART_FERR_FLAG, USART_NERR_FLAG, USART_ROERR_FLAG and USART_IDLEF_FLAG are cleared by software
   *           sequence: a read operation to usart sts register (usart_flag_get())
   *           followed by a read operation to usart dt register (usart_data_receive()).
-  *         - USART_RDBF_FLAG can be also cleared by a read to the usart dt register(usart_data_receive()).
   *         - USART_TDC_FLAG can be also cleared by software sequence: a read operation to usart sts register (usart_flag_get())
   *           followed by a write operation to usart dt register (usart_data_transmit()).
   *         - USART_TDBE_FLAG is cleared only by a write to the usart dt register(usart_data_transmit()).
@@ -674,7 +674,7 @@ flag_status usart_interrupt_flag_get(usart_type* usart_x, uint32_t flag)
   */
 void usart_flag_clear(usart_type* usart_x, uint32_t flag)
 {
-  if(flag & (USART_PERR_FLAG | USART_FERR_FLAG | USART_NERR_FLAG | USART_ROERR_FLAG | USART_IDLEF_FLAG))
+  if(flag & (USART_PERR_FLAG | USART_FERR_FLAG | USART_NERR_FLAG | USART_ROERR_FLAG | USART_IDLEF_FLAG | USART_RDBF_FLAG))
   {
     UNUSED(usart_x->sts);
     UNUSED(usart_x->dt);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
     <WorkBenchVersion>
-        <Version>V1.2.00</Version>
+        <Version>V1.2.03</Version>
     </WorkBenchVersion>
     <MCUInfo>
         <MCUSerials>AT32F415</MCUSerials>
@@ -39,7 +39,7 @@
             <ModeSub name="Mode" value="Asynchronous"/>
         </Mode>
         <Parameters>
-            <ParametersSub name="RealBaudRate" value="115200"/>
+            <ParametersSub name="RealBaudRate" value="115207"/>
         </Parameters>
     </USART1>
     <NVIC>
@@ -52,11 +52,11 @@
         <rtcsel>0</rtcsel>
         <hext>8.000000</hext>
         <pllhextdiv>0</pllhextdiv>
-        <pllrcs>1</pllrcs>
-        <pllmode>0</pllmode>
-        <pllmult>36</pllmult>
+        <pllrcs>0</pllrcs>
+        <pllmode>1</pllmode>
+        <pllmult>18</pllmult>
         <pllms>1</pllms>
-        <pllns>72</pllns>
+        <pllns>75</pllns>
         <pllfr>4</pllfr>
         <sclkselect>1</sclkselect>
         <ahbdiv>1</ahbdiv>
@@ -67,7 +67,7 @@
         <clkout>0</clkout>
         <clkoutdiv>1</clkoutdiv>
         <adcdiv>4</adcdiv>
-        <systicsel>8</systicsel>
+        <systicsel>1</systicsel>
     </ClockConfiguration>
     <PINInfo>
         <PinSub pinname="PD0/HEXT_IN" signalname="CRM_HEXT_IN" signaltype="2"/>
@@ -79,16 +79,17 @@
     </PINInfo>
     <ProjectInfomation>
         <ProjectName>AT32F415RBT7_WorkBench</ProjectName>
-        <ProjectLocation>D:/Work Area/Code For Debug/AT32F415RBT7 Template/bootloader</ProjectLocation>
+        <ProjectLocation>D:/Work Area/Code For WorkBench/FWG1/bootloader</ProjectLocation>
         <ToolchainIDE>MDK_V5</ToolchainIDE>
         <ARMCompiler>0</ARMCompiler>
+        <BackupCode>true</BackupCode>
         <KeepUserCode>true</KeepUserCode>
-        <NotUsedPinAnalog>false</NotUsedPinAnalog>
+        <NotUsedPinAnalog>true</NotUsedPinAnalog>
         <CodeSplitIP>true</CodeSplitIP>
         <AddNecessaryFileFlag>true</AddNecessaryFileFlag>
         <MinHeapSize>0x200</MinHeapSize>
         <MinStackSize>0x400</MinStackSize>
         <UseFirmware>true</UseFirmware>
-        <PackageVersion>V2.1.6</PackageVersion>
+        <PackageVersion>V2.1.8</PackageVersion>
     </ProjectInfomation>
 </Root>

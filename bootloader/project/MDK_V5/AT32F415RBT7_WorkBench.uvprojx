@@ -337,7 +337,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>AT32F415RBT7,USE_STDPERIPH_DRIVER</Define>
+              <Define>AT32F415RBT7, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
               <IncludePath>..\..\libraries\drivers\inc;..\..\libraries\cmsis\cm4\core_support;..\..\libraries\cmsis\cm4\device_support;..\inc</IncludePath>
             </VariousControls>
@@ -427,6 +427,11 @@
               <FileName>flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>wk_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\wk_gpio.c</FilePath>
             </File>
           </Files>
         </Group>

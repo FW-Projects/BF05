@@ -320,8 +320,8 @@ void TMR3_GLOBAL_IRQHandler(void)
   /* add user code begin TMR3_GLOBAL_IRQ 1 */
     /* add user code end TMR3_GLOBAL_IRQ 1 */
 }
-
  
+
 /* add user code begin 1 */
 static void Direct_Handle_PWM_Out(void)
 {

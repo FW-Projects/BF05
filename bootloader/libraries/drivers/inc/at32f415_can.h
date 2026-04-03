@@ -3,7 +3,8 @@
   * @file     at32f415_can.h
   * @brief    at32f415 can header file
   **************************************************************************
-  *                       Copyright notice & Disclaimer
+  *
+  * Copyright (c) 2025, Artery Technology, All rights reserved.
   *
   * The software Board Support Package (BSP) that is made available to
   * download from Artery official website is the copyrighted work of Artery.
@@ -707,7 +708,7 @@ typedef struct
     __IO uint32_t inten;
     struct
     {
-      __IO uint32_t tcien               : 1; /* [0] */
+      __IO uint32_t tcien                : 1; /* [0] */
       __IO uint32_t rf0mien              : 1; /* [1] */
       __IO uint32_t rf0fien              : 1; /* [2] */
       __IO uint32_t rf0oien              : 1; /* [3] */

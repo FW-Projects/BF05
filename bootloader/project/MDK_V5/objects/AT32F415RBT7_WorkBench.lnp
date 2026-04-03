@@ -8,6 +8,7 @@
 ".\objects\wk_usart.o"
 ".\objects\iap.o"
 ".\objects\flash.o"
+".\objects\wk_gpio.o"
 ".\objects\at32f415_crc.o"
 ".\objects\at32f415_crm.o"
 ".\objects\at32f415_debug.o"

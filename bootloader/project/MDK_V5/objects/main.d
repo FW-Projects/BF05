@@ -11,5 +11,5 @@
   ..\..\libraries\drivers\inc\at32f415_misc.h \
   ..\..\libraries\drivers\inc\at32f415_pwc.h \
   ..\..\libraries\drivers\inc\at32f415_usart.h ..\inc\wk_crc.h \
-  ..\inc\wk_debug.h ..\inc\wk_usart.h ..\inc\wk_system.h \
-  ..\inc\at32f415_int.h ..\inc\iap.h ..\inc\flash.h
+  ..\inc\wk_debug.h ..\inc\wk_usart.h ..\inc\wk_gpio.h \
+  ..\inc\wk_system.h ..\inc\at32f415_int.h ..\inc\iap.h ..\inc\flash.h
