@@ -7,6 +7,11 @@ PC_DATA_t pc_data;
 
 pc_event_e pc_event = PC_END_EVENT;
 
+
+static uint8_t sw_ver_major, sw_ver_minor, sw_ver_patch;
+static uint8_t hw_ver_major, hw_ver_minor, hw_ver_patch;
+
+
 static void RecvDataFromPC(PC_DATA_t *pc);
 static void WriteDataToPC(PC_DATA_t * pc,
                           uint16_t cmd_1,  uint16_t cmd_2,
@@ -16,6 +21,15 @@ static void WriteDataToPC(PC_DATA_t * pc,
                           uint16_t data_5);
 void pc_event_handle(void);
 void send_heartbeat_data(PC_DATA_t * pc, FWG2_Handle * FWG2);
+static int parse_version_string(const char *str, uint8_t *major, uint8_t *minor, uint8_t *patch);
+static void init_version_parse(void);
+
+
+
+
+
+
+
 
 void pc_comm_handle(void)
 {
@@ -124,7 +138,12 @@ static void WriteDataToPC(PC_DATA_t * pc,
 void pc_event_handle(void)
 {
     static uint32_t crc_value;
-
+	static bool first_in = true;
+	if(first_in)
+	{
+	    init_version_parse();
+		first_in = false;
+	}
     switch (pc_event)
     {
     case CONNECT_PC_EVENT:
@@ -139,13 +158,13 @@ void pc_event_handle(void)
         pc_data.tx_buff[PC_DATA_LEN_H] =  0x00;
         pc_data.tx_buff[PC_DATA_LEN_L] =  0x0A;
 	
-        pc_data.tx_buff[PC_DATA1_LEN_H] = 0x01;
-        pc_data.tx_buff[PC_DATA1_LEN_L] = 0x04;
-        pc_data.tx_buff[PC_DATA2_LEN_H] = 0x03;
+        pc_data.tx_buff[PC_DATA1_LEN_H] = sw_ver_major;
+        pc_data.tx_buff[PC_DATA1_LEN_L] = sw_ver_minor;
+        pc_data.tx_buff[PC_DATA2_LEN_H] = sw_ver_patch;
 	
-        pc_data.tx_buff[PC_DATA2_LEN_L] = 0x01;
-        pc_data.tx_buff[PC_DATA3_LEN_H] = 0x00;
-        pc_data.tx_buff[PC_DATA3_LEN_L] = 0x00;
+        pc_data.tx_buff[PC_DATA2_LEN_L] = hw_ver_major;
+        pc_data.tx_buff[PC_DATA3_LEN_H] = hw_ver_minor;
+        pc_data.tx_buff[PC_DATA3_LEN_L] = hw_ver_patch;
 	
         pc_data.tx_buff[PC_DATA4_LEN_H] = 0x00;
         pc_data.tx_buff[PC_DATA4_LEN_L] = 0x00;
@@ -430,12 +449,56 @@ void send_heartbeat_data(PC_DATA_t * pc, FWG2_Handle * FWG2)
 
 
 
+/**
+ * @brief 从版本字符串 "Vx.y.z" 中提取三个数字
+ * @param str   输入字符串，例如 "V1.0.4"
+ * @param major 输出主版本号
+ * @param minor 输出次版本号
+ * @param patch 输出修订号
+ * @return 0:成功，-1:格式错误
+ */
+static int parse_version_string(const char *str, uint8_t *major, uint8_t *minor, uint8_t *patch)
+{
+    if (str == NULL || str[0] != 'V') {
+        return -1;
+    }
+    
+    const char *p = str + 1;  // 跳过 'V'
+    
+    // 解析第一个数字
+    *major = 0;
+    while (*p >= '0' && *p <= '9') {
+        *major = *major * 10 + (*p - '0');
+        p++;
+    }
+    if (*p != '.') return -1;
+    p++; // 跳过 '.'
+    
+    // 解析第二个数字
+    *minor = 0;
+    while (*p >= '0' && *p <= '9') {
+        *minor = *minor * 10 + (*p - '0');
+        p++;
+    }
+    if (*p != '.') return -1;
+    p++; // 跳过 '.'
+    
+    // 解析第三个数字
+    *patch = 0;
+    while (*p >= '0' && *p <= '9') {
+        *patch = *patch * 10 + (*p - '0');
+        p++;
+    }
+    
+    // 允许后面有其它字符，忽略即可
+    return 0;
+}
 
-
-
-
-
-
+static void init_version_parse(void)
+{
+    parse_version_string(SOFTWARE_VERSTION, &sw_ver_major, &sw_ver_minor, &sw_ver_patch);
+    parse_version_string(HARDWARE_VERSTION, &hw_ver_major, &hw_ver_minor, &hw_ver_patch);
+}
 
 
 

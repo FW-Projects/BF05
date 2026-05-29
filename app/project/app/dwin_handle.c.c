@@ -20,6 +20,51 @@ uint16_t show_direct_curve_set_wind_time;
 
 bool show_popup_flag = false;
 
+static uint8_t sw_ver_major, sw_ver_minor, sw_ver_patch;
+static uint8_t hw_ver_major, hw_ver_minor, hw_ver_patch;
+
+static int parse_version_string(const char *str, uint8_t *major, uint8_t *minor, uint8_t *patch)
+{
+    if (str == NULL || str[0] != 'V') {
+        return -1;
+    }
+    
+    const char *p = str + 1;  // 跳过 'V'
+    
+    // 解析第一个数字
+    *major = 0;
+    while (*p >= '0' && *p <= '9') {
+        *major = *major * 10 + (*p - '0');
+        p++;
+    }
+    if (*p != '.') return -1;
+    p++; // 跳过 '.'
+    
+    // 解析第二个数字
+    *minor = 0;
+    while (*p >= '0' && *p <= '9') {
+        *minor = *minor * 10 + (*p - '0');
+        p++;
+    }
+    if (*p != '.') return -1;
+    p++; // 跳过 '.'
+    
+    // 解析第三个数字
+    *patch = 0;
+    while (*p >= '0' && *p <= '9') {
+        *patch = *patch * 10 + (*p - '0');
+        p++;
+    }
+    
+    // 允许后面有其它字符，忽略即可
+    return 0;
+}
+
+static void init_version_parse(void)
+{
+    parse_version_string(SOFTWARE_VERSTION, &sw_ver_major, &sw_ver_minor, &sw_ver_patch);
+    parse_version_string(HARDWARE_VERSTION, &hw_ver_major, &hw_ver_minor, &hw_ver_patch);
+}
 
 
 static void WriteDataToLCD(DwinObjectType *dwim, uint16_t startAddress, uint16_t length, uint16_t data);
@@ -2486,9 +2531,9 @@ void show_page(void)
         }
 
         /* show software version */
-        software_buff[8] = 3;
-        software_buff[7] = 4;
-        software_buff[6] = 1;
+        software_buff[8] = sw_ver_patch;
+        software_buff[7] = sw_ver_minor;
+        software_buff[6] = sw_ver_major;
         usart_sendData(DWIN_USART, software_buff, 9);
         show_step = 1;
         break;
@@ -3490,11 +3535,16 @@ static uint8_t get_direct_time_state(void)
     uint8_t show_step = 0;
     static fwg2_page_e last_page = 0;
     static bool last_countdown_flag = false;
+	static bool last_quick_mode_flag = false;
     static uint16_t last_show_time = 0;
 
     if (last_page != sFWG2_t.general_parameter.fwg2_page)
     {
-        if (sFWG2_t.general_parameter.countdown_flag == true)
+		if (sFWG2_t.Direct_handle_work_mode == QUICK_MODE)
+        {
+            show_step = 1;
+        }
+        else if (sFWG2_t.general_parameter.countdown_flag == true)
         {
             show_step = 1;
         }
@@ -3504,6 +3554,19 @@ static uint8_t get_direct_time_state(void)
         }
 
         last_page = sFWG2_t.general_parameter.fwg2_page;
+    }
+	    else if (last_quick_mode_flag != sFWG2_t.Direct_handle_work_mode)
+    {
+        if (sFWG2_t.Direct_handle_work_mode == QUICK_MODE)
+        {
+            show_step = 1;
+        }
+        else if (sFWG2_t.Direct_handle_work_mode != QUICK_MODE)
+        {
+            show_step = 3;
+        }
+
+        last_quick_mode_flag = sFWG2_t.Direct_handle_work_mode;
     }
     else if (last_countdown_flag != sFWG2_t.general_parameter.countdown_flag)
     {
@@ -3517,6 +3580,14 @@ static uint8_t get_direct_time_state(void)
         }
 
         last_countdown_flag = sFWG2_t.general_parameter.countdown_flag;
+    }
+	else if (sFWG2_t.Direct_handle_work_mode == QUICK_MODE)
+    {
+        if (last_show_time != sFWG2_t.Direct_handle_parameter.quick_work_time_display)
+        {
+            show_step = 2;
+            last_show_time = sFWG2_t.Direct_handle_parameter.quick_work_time_display;
+        }
     }
     else if (sFWG2_t.general_parameter.countdown_flag == true)
     {
@@ -3568,13 +3639,31 @@ static void show_direct_time(void)
     case 2:
         if (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN)
         {
-            sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SHOW_COUNTDOWN), DWIN_DATA_BITS,
+			if (sFWG2_t.Direct_handle_work_mode == QUICK_MODE)
+			{
+			    sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SHOW_COUNTDOWN), DWIN_DATA_BITS,
+                            sFWG2_t.Direct_handle_parameter.quick_work_time_display);
+			}
+			else
+			{
+			    sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SHOW_COUNTDOWN), DWIN_DATA_BITS,
                             sFWG2_t.general_parameter.countdown_time_display);
+			}
+            
         }
         else if (sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
         {
-            sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SHOW_CURVE_TIME), DWIN_DATA_BITS,
+			if (sFWG2_t.Direct_handle_work_mode == QUICK_MODE)
+			{
+			sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SHOW_CURVE_TIME), DWIN_DATA_BITS,
+                            sFWG2_t.Direct_handle_parameter.quick_work_time_display);
+			}
+			else
+			{
+			    sdwin.send_data(&sdwin, (DWIN_BASE_ADDRESS + SHOW_CURVE_TIME), DWIN_DATA_BITS,
                             sFWG2_t.general_parameter.countdown_time_display);
+			}
+            
         }
 
         show_step = 0;
@@ -4358,18 +4447,18 @@ static void show_menu_setting(void)
 
     case 10:
         /* show software version  */
-        software_buff[8] = 3;
-        software_buff[7] = 4;
-        software_buff[6] = 1;
+        software_buff[8] = sw_ver_patch;
+        software_buff[7] = sw_ver_minor;
+        software_buff[6] = sw_ver_major;
         usart_sendData(DWIN_USART, software_buff, 9);
         state = 11;
         break;
 
     case 11:
         /* show hardware version  */
-        hardware_buff[8] = 0;
-        hardware_buff[7] = 0;
-        hardware_buff[6] = 1;
+        hardware_buff[8] = hw_ver_patch;
+        hardware_buff[7] = hw_ver_minor;
+        hardware_buff[6] = hw_ver_major;
         usart_sendData(DWIN_USART, hardware_buff, 9);
         state = 0;
         break;
@@ -5088,6 +5177,8 @@ void DwinRun(void)
 
     if (first_in == false)
     {
+	    init_version_parse();
+ 
         sFWG2_t.Direct_handle_parameter.set_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.set_temp / 5 + 32;
         sFWG2_t.Direct_handle_parameter.quick_work_temp_f_display = 9 * sFWG2_t.Direct_handle_parameter.quick_work_temp / 5 +
             32;

@@ -9,6 +9,10 @@
  *     DIRECT  HANDLE HOT CHECK    (ADC_CHANNEL_10)
  */
  
+#define SOFTWARE_VERSTION "V1.4.4"
+#define HARDWARE_VERSTION "V1.0.0"
+ 
+ 
 #define MAX_PWM_OUTPUT (48000 - 1)
  
 #define OVER_TEMP_VAL    650

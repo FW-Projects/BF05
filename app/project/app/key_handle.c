@@ -155,6 +155,7 @@ void KeyProc(void)
                     if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
                     {
                         sFWG2_t.Direct_handle_work_mode = QUICK_MODE;
+						sFWG2_t.general_parameter.countdown_flag = false;
                     }
                     /* exit quick mode */
                     else if (sFWG2_t.Direct_handle_work_mode == QUICK_MODE)
@@ -449,6 +450,7 @@ void KeyProc(void)
                     if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
                     {
                         sFWG2_t.Direct_handle_work_mode = QUICK_MODE;
+						sFWG2_t.general_parameter.countdown_flag = false;
                     }
                     /* exit quick mode */
                     else if (sFWG2_t.Direct_handle_work_mode == QUICK_MODE)

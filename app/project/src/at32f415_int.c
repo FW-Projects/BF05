@@ -328,10 +328,11 @@ static void Direct_Handle_PWM_Out(void)
     static uint16_t Direct_handle_last_set_temp = 0;
     static fwg2_code_mode_step_e last_code_mode_step = CODE_WAIT;
     static uint16_t direct_hot_run_time_ms = 0;
-    static float hight_kd = 52000;
-    static uint32_t low_kd = 10000;
+    static float hight_kd = 22000;
+    static uint32_t low_kd = 22000;
 	
-	static float hight_ki = 4;
+	//static float hight_ki = 4;
+	static float hight_ki = 6;
     static float low_ki = 2;
 	 
     static int16_t set_temp;
