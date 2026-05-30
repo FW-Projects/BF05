@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "dwin_handle.h": "c",
+        "cstddef": "c",
+        "limits": "c",
+        "type_traits": "c"
+    }
+}

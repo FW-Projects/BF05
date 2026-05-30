@@ -1,0 +1,403 @@
+#ifndef _FWG2_HANDLE_H
+#define _FWG2_HANDLE_H
+#include "at32f415.h"
+#include "stdbool.h"
+
+/*     GPIO DEFINE
+ *     DIRECT  HANDLE HOT OUTPUT   (TMR3_CHANNEL_1)
+ *     DIRECT  HANDLE FAN OUTPUT   (TMR2_CHANNEL_2)
+ *
+ *     CYCLONE HANDLE HOT OUTPUT   (TMR3_CHANNEL_2)
+ *     CYCLONE HANDLE FAN OUTPUT   (TMR2_CHANNEL_1)
+ *
+ *     CYCLONE HANDLE HOT CHECK    (ADC_CHANNEL_10)
+ *     DIRECT HANDLE HOT CHECK     (ADC_CHANNEL_11)
+ */
+#define MAX_SET_TEMP_VAL 500
+#define MIN_SET_TEMP_VAL 100
+
+#define OVER_TEMP_VAL    650
+#define LOW_TEMP_VAL     45
+
+#define MAX_SET_WIND_VAL 200
+#define MIN_SET_WIND_VAL 1
+
+#define OVER_WIND_RATE   534
+#define LOW_WIND_RATE    10
+
+
+
+typedef enum
+{
+    FWG2_INIT = 0,
+    FWG2_WORKING,
+
+} fwg2_state_e;
+
+typedef enum
+{
+    HANDLE_OK = 0,
+    HANDLE_OVER_TEMP_ERR,
+    HANDLE_LOW_TEMP_ERR,
+    HANDLE_FAN_ERR,
+}
+handle_error_state_e;
+
+typedef enum
+{
+    NOT_IN_POSSITION = 0,
+    IN_POSSITION,
+}
+handle_position_e;
+
+typedef enum
+{
+    HANDLE_SLEEP = 0,
+    HANDLE_WORKING,
+} handle_state_e;
+
+typedef enum
+{
+    NORMAL_MODE = 0,
+    CODING_MODE,
+    EN_WORKING_MODE,
+    COLD_WIND_MODE,
+} handle_work_mode_e;
+typedef enum
+{
+    NORMAL = 0,
+    CODE,
+} fwg2_work_e;
+
+typedef enum
+{
+    CELSIUS = 0,
+    FAHRENHEIT,
+} fwg2_temp_unit_e;
+
+
+typedef enum
+{
+    SPEAKER_CLOSE = 0,
+    SPEAKER_OPEN,
+} fwg2_speaker_state_e;
+
+typedef enum
+{
+    UNLOCK = 0,
+    LOCK,
+} fwg2_temp_lock_state_e;
+
+typedef enum
+{
+    CLOSE = 0,
+    OPEN,
+} fwg2_relay_state_e;
+
+typedef enum
+{
+    OTA_OFF = 0,
+    OTA_ON,
+} fwg2_ota_state_e;
+
+
+typedef enum
+{
+    SELECT_ENHANCE_MODE = 0,
+    SELECT_COLD_WIN_MODE,
+    SELECT_COUNTDOWN_MODE,
+} fwg2_fn_key_set_e;
+typedef enum
+{
+    TOUCH_CLOSE = 0,
+    TOUCH_OPEN,
+
+} fwg2_touch_key_set_e;
+
+typedef enum
+{
+    UART_CLOSE = 0,
+    UART_OPEN = 0,
+
+} fwg2_uart_state_e;
+
+typedef enum
+{
+    PAGE_MAIN = 1,
+    PAGE_DIRECT_CYCLONE_CURVE,
+    PAGE_MENU_1,
+    PAGE_MENU_2,
+    PAGE_SET_WORK_MODE,
+    PAGE_SET_GENERAL_MODE,
+    PAGE_SET_CODE_MODE,
+    PAGE_SET_TEMP_UNIT,
+    PAGE_SET_SPEAKER,
+    PAGE_SET_ENHANCE_COLE_MODE,
+    PAGE_SET_ENHANCE_VAL,
+    PAGE_SET_BL,
+    PAGE_SET_CAL_TEMP,
+    PAGE_SET_COUNTDOWN_TIME,
+    PAGE_SET_TOUCH,
+    PAGE_SET_USART,
+    PAGE_SET_LANGGUAGE,
+    PAGE_SET_VER,
+    PAGE_SET_RESET_FWG2,
+    PAGE_SET_OTA,
+    PAGE_NOLL_1,
+    PAGE_NOLL_2,
+    PAGE_NOLL_3,
+    PAGE_SHOW_DIRECT_WORK,
+    PAGE_SHOW_DIRECT_CURVE,
+    PAGE_SHOW_CYCLONE_WORK,
+    PAGE_SHOW_CYCLONE_CURVE,
+    PAGE_SHOW_CODE_WORK = 0x1C
+} fwg2_page_e;
+
+
+typedef enum
+{
+    CODE_WAIT = 0,
+    CODE_PRE_HEAT,
+    CODE_STEUP_1,
+    CODE_STEUP_2,
+    CODE_STEUP_3,
+    CODE_END,
+} fwg2_code_mode_step_e;
+
+typedef enum
+{
+    CODE_MODE_STOP = 0,
+    CODE_MODE_START,
+}
+fwg2_code_mode_state_e;
+
+typedef enum
+{
+    SELECT_DIRECT_HANDLE = 0,
+    SELECT_CYCLONE_HANDLE,
+}
+fwg2_code_mode_handle_select_e;
+
+typedef struct
+{
+    uint32_t actual_temp;
+    uint32_t actual_temp_f_display;
+    uint32_t actual_wind;
+
+    uint16_t set_temp;
+    uint16_t set_temp_f_display;
+    uint8_t set_wind;
+
+    uint8_t cold_mode_set_wind;
+    uint8_t stop_set_wind;
+    uint16_t set_time;
+    uint16_t sleep_time;
+    uint16_t error_time;
+    handle_state_e last_state;
+
+
+
+    uint16_t en_work_temp;
+    uint16_t en_work_time;
+    int16_t  en_work_time_display;
+
+    int16_t set_calibration_temp;
+} handle_parameter_t;
+
+typedef struct
+{
+    fwg2_work_e              work_mode;
+    fwg2_temp_unit_e         temp_uint;
+    fwg2_speaker_state_e     speak_state;
+    fwg2_temp_lock_state_e   display_lock_state;
+    fwg2_fn_key_set_e        fn_key_set;
+    fwg2_ota_state_e         ota_state;
+    fwg2_touch_key_set_e     touch_key_set;
+    fwg2_uart_state_e        uart_state;
+
+    fwg2_page_e              fwg2_page;
+    fwg2_code_mode_step_e    code_mode_step;
+    fwg2_code_mode_state_e   code_mode_state;
+    fwg2_code_mode_handle_select_e    code_mode_handle_select;
+
+    bool reset_fwg2_flag;
+    bool relay_open_flag;
+    bool countdown_flag;
+
+    char  software_version[20];
+    char  hardware_version[20];
+
+
+
+    
+    uint8_t code_ch;
+    uint8_t ch;
+    uint16_t countdown_time;
+    int16_t  countdown_time_display;
+    int16_t  code_mode_countdown_time_display;
+
+    uint16_t mcu_temp;
+
+    /* ch set */
+    uint16_t ch1_set_temp;
+    uint16_t ch1_set_wind;
+    uint16_t ch1_set_time;
+
+    uint16_t ch2_set_temp;
+    uint16_t ch2_set_wind;
+    uint16_t ch2_set_time;
+
+    uint16_t ch3_set_temp;
+    uint16_t ch3_set_wind;
+    uint16_t ch3_set_time;
+
+    uint16_t ch4_set_temp;
+    uint16_t ch4_set_wind;
+    uint16_t ch4_set_time;
+
+    /* code 0 set */
+    uint16_t code0_pre_temp;
+    uint16_t code0_pre_wind;
+    uint16_t code0_pre_time;
+
+    uint16_t code0_temp_1;
+    uint16_t code0_wind_1;
+    uint16_t code0_time_1;
+
+    uint16_t code0_temp_2;
+    uint16_t code0_wind_2;
+    uint16_t code0_time_2;
+
+    uint16_t code0_temp_3;
+    uint16_t code0_wind_3;
+    uint16_t code0_time_3;
+
+    uint16_t code0_temp_4;
+    uint16_t code0_wind_4;
+    uint16_t code0_time_4;
+
+
+    /* code 1 set */
+    uint16_t code1_pre_temp;
+    uint16_t code1_pre_wind;
+    uint16_t code1_pre_time;
+
+    uint16_t code1_temp_1;
+    uint16_t code1_wind_1;
+    uint16_t code1_time_1;
+
+    uint16_t code1_temp_2;
+    uint16_t code1_wind_2;
+    uint16_t code1_time_2;
+
+    uint16_t code1_temp_3;
+    uint16_t code1_wind_3;
+    uint16_t code1_time_3;
+
+    uint16_t code1_temp_4;
+    uint16_t code1_wind_4;
+    uint16_t code1_time_4;
+
+
+
+
+    /* code 2 set */
+    uint16_t code2_pre_temp;
+    uint16_t code2_pre_wind;
+    uint16_t code2_pre_time;
+
+    uint16_t code2_temp_1;
+    uint16_t code2_wind_1;
+    uint16_t code2_time_1;
+
+    uint16_t code2_temp_2;
+    uint16_t code2_wind_2;
+    uint16_t code2_time_2;
+
+    uint16_t code2_temp_3;
+    uint16_t code2_wind_3;
+    uint16_t code2_time_3;
+
+    uint16_t code2_temp_4;
+    uint16_t code2_wind_4;
+    uint16_t code2_time_4;
+
+
+    /* code 3 set */
+    uint16_t code3_pre_temp;
+    uint16_t code3_pre_wind;
+    uint16_t code3_pre_time;
+
+    uint16_t code3_temp_1;
+    uint16_t code3_wind_1;
+    uint16_t code3_time_1;
+
+    uint16_t code3_temp_2;
+    uint16_t code3_wind_2;
+    uint16_t code3_time_2;
+
+    uint16_t code3_temp_3;
+    uint16_t code3_wind_3;
+    uint16_t code3_time_3;
+
+    uint16_t code3_temp_4;
+    uint16_t code3_wind_4;
+    uint16_t code3_time_4;
+
+
+    /* code 4 set */
+    uint16_t code4_pre_temp;
+    uint16_t code4_pre_wind;
+    uint16_t code4_pre_time;
+
+    uint16_t code4_temp_1;
+    uint16_t code4_wind_1;
+    uint16_t code4_time_1;
+
+    uint16_t code4_temp_2;
+    uint16_t code4_wind_2;
+    uint16_t code4_time_2;
+
+    uint16_t code4_temp_3;
+    uint16_t code4_wind_3;
+    uint16_t code4_time_3;
+
+    uint16_t code4_temp_4;
+    uint16_t code4_wind_4;
+    uint16_t code4_time_4;
+
+    uint16_t working_time;
+
+
+} general_parameter_t;
+
+
+typedef struct
+{
+    fwg2_state_e FWG2_STATE;
+
+    handle_parameter_t   	 Direct_handle_parameter;
+    handle_state_e       	 Direct_handle_state;
+    handle_position_e    	 Direct_handle_position;
+    handle_error_state_e     Direct_handle_error_state;
+    handle_work_mode_e   	 Direct_handle_work_mode;
+
+
+
+    handle_parameter_t   	 Cyclone_handle_parameter;
+    handle_state_e       	 Cyclone_handle_state;
+    handle_position_e    	 Cyclone_handle_position;
+    handle_error_state_e     Cyclone_handle_error_state;
+    handle_work_mode_e   	 Cyclone_handle_work_mode;
+
+    general_parameter_t   	 general_parameter;
+
+
+} FWG2_Handle;
+
+extern FWG2_Handle sFWG2_t;
+
+uint8_t FWG2_Init(FWG2_Handle * FWG2);
+
+#endif
+

@@ -1,0 +1,63 @@
+#include "FWG2_handle.h"
+
+FWG2_Handle sFWG2_t ;
+
+
+uint8_t FWG2_Init(FWG2_Handle * FWG2)
+{
+/* start the Cyclone handle init of  */
+FWG2->Cyclone_handle_state = HANDLE_INIT,
+FWG2->Cyclone_handle_parameter.set_temp             = 300,
+FWG2->Cyclone_handle_parameter.set_time             = 40,
+FWG2->Cyclone_handle_parameter.set_wind             = 20,
+/* end the  Cyclone handle init of*/
+/* start the Direct handle init of  */
+FWG2->Direct_handle_state = HANDLE_INIT,
+FWG2->Direct_handle_parameter.set_temp             = 300,
+FWG2->Direct_handle_parameter.set_time             = 40,
+FWG2->Direct_handle_parameter.set_wind             = 20,
+/* end the  Direct handle init of*/
+/* start the general init of  */
+FWG2->general_parameter.display_mode         = true,
+FWG2->general_parameter.speak_mode           = true,
+FWG2->general_parameter.lock_mode            = true,
+FWG2->general_parameter.cold_mode_set_wind   = 100,
+FWG2->general_parameter.set_calibration_temp = 0,
+FWG2->general_parameter.code_ch              = 0,
+FWG2->general_parameter.last_state           = 0,
+/* ch set */
+FWG2->general_parameter.ch1_set_temp         = 300,
+FWG2->general_parameter.ch1_set_wind         = 40,
+FWG2->general_parameter.ch1_set_time         = 30,
+FWG2->general_parameter.ch2_set_temp         = 320,
+FWG2->general_parameter.ch2_set_wind         = 50,
+FWG2->general_parameter.ch2_set_time         = 40,
+FWG2->general_parameter.ch3_set_temp         = 350,
+FWG2->general_parameter.ch3_set_wind         = 60,
+FWG2->general_parameter.ch3_set_time         = 50,
+FWG2->general_parameter.ch4_set_temp         = 380,
+FWG2->general_parameter.ch4_set_wind         = 80,
+FWG2->general_parameter.ch4_set_time         = 60,
+/* code 1 set */
+FWG2->general_parameter.code1_pre_temp       = 100,
+FWG2->general_parameter.code1_pre_wind       = 20,
+FWG2->general_parameter.code1_pre_time       = 60,
+FWG2->general_parameter.code1_temp_1         = 200,
+FWG2->general_parameter.code1_wind_1         = 50,
+FWG2->general_parameter.code1_time_1         = 10,
+FWG2->general_parameter.code1_temp_2         = 200,
+FWG2->general_parameter.code1_wind_2         = 50,
+FWG2->general_parameter.code1_time_2         = 10,
+FWG2->general_parameter.code1_temp_3         = 200,
+FWG2->general_parameter.code1_wind_3         = 50,
+FWG2->general_parameter.code1_time_3         = 10,
+FWG2->general_parameter.code1_temp_4         = 200,
+FWG2->general_parameter.code1_wind_4         = 50,
+FWG2->general_parameter.code1_time_4         = 10,
+FWG2->general_parameter.code1_temp_5         = 200,
+FWG2->general_parameter.code1_wind_5         = 50,
+FWG2->general_parameter.code1_time_5         = 10,
+/* end the  general init of*/
+FWG2->work_mode = NORMAL_MODE;
+return 0;
+}

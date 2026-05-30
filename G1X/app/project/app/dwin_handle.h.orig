@@ -1,0 +1,286 @@
+
+#ifndef __DWIN_HANDLE_H
+#define __DWIN_HANDLE_H
+
+#include "stdint.h"
+#include "at32_Usart.h"
+
+#define ORANGE_COLOR           0xFC60
+#define BLUE_COLOR             0x3C7F
+#define WHITE_COLOR            0xFFFF
+
+
+
+#define SHOW_DIRECT_HANDLE_SET_TEMP_TIME         45
+#define SHOW_DIRECT_HANDLE_SET_WIND_TIME         50
+
+#define SHOW_CYCLONE_HANDLE_SET_TEMP_TIME        45
+#define SHOW_CYCLONE_HANDLE_SET_WIND_TIME        50
+
+#define CURVE_REFIRSH_TIME                       1
+
+#define DWIN_HANDLE_TIME          1
+
+#define DWIN_USART                1
+
+#define MAX_RECV_LEN              9
+#define MAX_SEND_LEN              8
+#define CHECK_HEAD(A,B)         ((A==0x5A)&&(B==0xA5)?TRUE:FALSE)
+
+#define FRAME_HEAD1             0x00
+#define FRAME_HEAD2             0x01
+#define FRAME_DATA_LED          0x02
+#define FRAME_CMD               0x03
+#define FRAME_Address_H         0x04
+#define FRAME_Address_L         0x05
+#define FRAME_VAL_LEN           0x06
+#define FRAME_VAL_H             0x07
+#define FRAME_VAL_L             0x08
+
+
+
+#define DWIN_BASE_ADDRESS       0x5000   //temp
+#define DWIN_BASE_ADDRESS_1     0x300   //wind
+#define DWIN_DATA_BITS          2
+#define DWIN_DATA_BITS_1        0B
+#ifndef rxbuff_length
+#define rxbuff_length 100
+#endif
+
+#ifndef txbuff_length
+#define txbuff_length 100
+#endif
+
+typedef enum
+{
+    MAIN_PAGE = 1,
+    NAVIGATION_BAR1,
+    NAVIGATION_BAR2,
+} Dwin_Page_e;
+
+typedef enum
+{
+    /* start the page 1 address of  */
+    SHOW_DIRECT_ERROR_CODE = 0,     //直风警报弹窗显示 0（不显示） 1（风扇异常）2（低温警报）3（高温报警）
+    SHOW_CYCLONE_ERROR_CODE,        //旋风警报弹窗显示 0（不显示） 1（风扇异常）2（低温警报）3（高温报警）
+    SHOW_DIRECT_HANDLE_MODE,        //弹窗显示 0（不显示） 1 显示旋风加强模式弹框  2显示冷风模式弹框
+    SHOW_CYCLONE_HANDLE_MODE,       //弹窗显示 0（不显示） 1 显示直风加强模式弹框  2显示冷风模式弹框
+
+
+    SHOW_DIRECT_WORKING_STATE,      //直风工作状态
+    SHOW_CYCLONE_WORKING_STATE,     //旋风工作状态
+
+    SHOW_DIRECT_TEMP,               //直风温度显示  0：显示实时温度   1：显示设置温度
+    SHOW_DIRECT_WIND,               //直风风量显示  0：显示实时风量   1：显示设置风量
+
+    SHOW_CYCLONE_TEMP,              //旋风温度显示  0：显示实时温度   1：显示设置温度
+    SHOW_CYCLONE_WIND,              //旋风风量显示  0：显示实时风量   1：显示设置风量   
+
+
+    SHOW_DIRECT_FAN_GIF_H,          //直风风扇动画 高位 （0：关闭动画 1：开启动画）
+    SHOW_DIRECT_FAN_GIF_L,          //直风风扇动画 低位 （0：关闭动画 1：开启动画）
+    SHOW_CYCLONE_FAN_GIF_H,         //旋风风扇动画 高位 （0：关闭动画 1：开启动画）
+    SHOW_CYCLONE_FAN_GIF_L,         //旋风风扇动画 低位 （0：关闭动画 1：开启动画）
+
+    SHOW_DIRECT_CURRENT_TEMP_COLOUR, //直风当前温度颜色
+    SHOW_CYCLONE_CURRENT_TEMP_COLOUR,//旋风当前温度颜色
+
+    SHOW_DIRECT_SET_TEMP,           //直风设置温度
+    SHOW_DIRECT_SET_WIND,           //直风设置风量颜色
+
+    SHOW_CYCLONE_SET_TEMP,          //旋风设置温度
+    SHOW_CYCLONE_SET_WIND,          //旋风设置风量颜色
+
+    SET_CHANNEL,                    //选择通道  1~4
+    /* end the page 1 address of  */
+
+    /* start the page 3 and page 4 address of  */
+    PAGE_ID,
+    //页面ID                   \
+    1 （返回按钮）             \
+    2 （曲线）                 \
+    3 （菜单1）                \
+    4 （菜单2）                \
+    5 （工作模式设置）         \
+    6  通常模式设置            \
+    7  编程模式设置            \
+    8  温度单位设置            \
+    9  静音设置                \
+    10 温度锁定设置            \
+    11 加强模式 / 冷风模式选择 \
+    12 加强模式参数设置        \
+    13 亮度调节                \
+    14 温度校准设置            \
+    15 默认倒计时设置          \
+    16 触摸握把设置            \
+    17 串口设置                \
+    18 语言设置                \
+    19 版本号设置              \
+    20 恢复出厂设置            \
+    21 OTA升级设置             \
+    24 直风单工位              \
+    25 直风曲线                \
+    26 旋风单工位              \
+    27 旋风曲线
+    /* end the page 3 and page 4 address of  */
+
+    /* start the page 5 address of  */
+    FWG2_WORK_MODE,                  //通常、编程模式  0：正常模式 1：编程模式
+    /* end the page 5 address of  */
+
+    /* start the page 6 address of  */
+    SHOW_CH1_SET_TEMP,                    //通道1温度设置（显示）
+    SHOW_CH1_SET_WIND,                    //通道1风量设置（显示）
+    SHOW_CH1_SET_TIME,                    //通道1计时设置（显示）
+
+    SHOW_CH2_SET_TEMP,                    //通道2温度设置（显示）
+    SHOW_CH2_SET_WIND,                    //通道2风量设置（显示）
+    SHOW_CH2_SET_TIME,                    //通道2计时设置（显示）
+
+    SHOW_CH3_SET_TEMP,                    //通道3温度设置（显示）
+    SHOW_CH3_SET_WIND,                    //通道3风量设置（显示）
+    SHOW_CH3_SET_TIME,                    //通道3计时设置（显示）
+
+    SHOW_CH4_SET_TEMP,                    //通道4温度设置（显示）
+    SHOW_CH4_SET_WIND,                    //通道4风量设置（显示）
+    SHOW_CH4_SET_TIME,                    //通道4计时设置（显示）
+    /* end the page 6 address of  */
+
+    /* start the page 7 address of  */
+    CODE_CHANNEL,                    //编程通道              1~4
+    SET_PRE_TEMP,                    //预热温度设置
+    SET_PRE_WIND,                    //预热风速设置
+    SET_PRE_TIME,                    //预热拆焊时间
+    SET_WORK_TEMP1,                  //拆焊温度1设置
+    SET_WORK_WIND1,                  //拆焊风速1设置
+    SET_WORK_TIME1,                  //拆焊时间1设置
+    SET_WORK_TEMP2,                  //拆焊温度2设置
+    SET_WORK_WIND2,                  //拆焊风速2设置
+    SET_WORK_TIME2,                  //拆焊时间2设置
+    SET_WORK_TEMP3,                  //拆焊温度3设置
+    SET_WORK_WIND3,                  //拆焊风速3设置
+    SET_WORK_TIME3,                  //拆焊时间3设置
+    SHOW_CODE_STEP,                  //运行步骤指示          0~5
+    START_CODE_MODE,                 //开始运行编程模式按键
+    STOP_CODE_MODE,                  //停止运行编程模式按键
+    /* end the page 7 address of  */
+
+    /* start the page 8 address of  */
+    SET_TEMP_UNITS,                  //设置显示温度单位     0：华氏度 1:摄氏度
+    /* end the page 8 address of  */
+
+    /* start the page 9 address of  */
+    SET_SPEAKER_FUNCTION,            //设置蜂鸣器开启或关闭 0：关闭   1：开启
+    /* end the page 9 address of  */
+
+    /* start the page 10 address of  */
+    SET_DISPLAY_LOCK_MODE,           //设置温度显示锁定模式 0：不锁定 1：锁定
+    /* end the page 10 address of  */
+
+    /* start the page 11 address of  */
+    SET_FN_KEY_MODE,                 //设置加强、冷风模式   0：加强   1：冷风  2：倒计时
+    /* end the page 11 address of  */
+
+    /* start the page 12 address of  */
+    SET_ENHANCE_TEMP,                 //设置增强模式温度
+    SET_ENHANCE_COUNTDOWN_TIME,       //设置增强模式时间
+    /* end the page 12 address of  */
+
+    /* start the page 13 address of  */
+    /* end the page 13 address of  */
+
+    /* start the page 14 address of  */
+    SET_CALIBRATE_TEMP,                //校准温度值
+    SHOW_CURRENT_TEMP,                 //当前温度值
+    /* end the page 14 address of  */
+
+    /* start the page 15 address of  */
+    SET_TIME,                          //设置默认时间
+    /* end the page 15 address of  */
+
+    /* start the page 16 address of  */
+    SET_TOUCH_FUNCTION,                //设置手柄触摸功能
+    /* end the page 16 address of  */
+
+    /* start the page 17 address of  */
+    SET_UART_FUNCTION,                 //设置串口功能
+    /* end the page 17 address of  */
+
+    /* start the page 18 address of  */
+    /* end the page 18 address of  */
+
+    /* start the page 19 address of  */
+    SHOW_HARDWARE_VER,                 //设置硬件版本号
+    SHOW_SOFTWARE_VER,                 //设置软件版本号
+    /* end the page 19 address of  */
+
+    /* start the page 20 address of  */
+    RESET_FWG2,                        //恢复出厂设置
+    /* end the page 20 address of  */
+
+    /* start the page 21 address of  */
+    SET_OTA_FUNCTION,                  //设置OTA功能
+    /* end the page 21 address of  */
+
+
+    /* start the page 24 address of  */
+    SHOW_DIRECT_CURRENT_TEMP_BAR,     //直风当前温度进度条
+    SHOW_DIRECT_CURRENT_WIND_BAR,     //直风当前风量进度条
+    SHOW_DIRECT_TPME_OUTPUT_POWER,    //直风加热输出功率百分比
+    SHOW_DIRECT_TPME_OUTPUT_POWER_BAR,//直风加热输出功率百分比进度条
+    SHOW_DIRECT_CURRENT_TEMP,         //直风当前温度颜色
+    SHOW_DIRECT_CURRENT_WIND,         //直风当前风量颜色
+    SHOW_COUNTDOWN,                   //倒计时显示
+
+    SHOW_CYCLONE_CURRENT_TEMP_BAR,     //旋风当前温度进度条
+    SHOW_CYCLONE_CURRENT_WIND_BAR,     //旋风当前风量进度条
+    SHOW_CYCLONE_TPME_OUTPUT_POWER,    //旋风加热输出功率百分比
+    SHOW_CYCLONE_TPME_OUTPUT_POWER_BAR,//旋风加热输出功率百分比进度条
+    SHOW_CYCLONE_CURRENT_TEMP,         //旋风当前温度颜色
+    SHOW_CYCLONE_CURRENT_WIND,         //旋风当前风量颜色
+    /* end the page 24 address of  */
+
+
+
+} Dwin_Val_Address_e;
+
+typedef enum
+{
+    DwinNone,
+    DwinCRC16
+} DwinCheckCodeType;
+
+
+typedef enum
+{
+    FC_VAR_Write = ((uint8_t)0x82),
+    FC_VAR_Read = ((uint8_t)0x83),
+} DwinFunctionCode;
+
+
+typedef struct DwinObject
+{
+    DwinCheckCodeType checkMode;
+    uint8_t rx_buff[rxbuff_length];
+    uint8_t read_size;
+    uint8_t tx_buff[txbuff_length];
+    void (*send_data)(struct DwinObject *dwin, uint16_t startAddress, uint16_t length, uint16_t data);
+    void (*recv_data)(struct DwinObject *dwin);
+} DwinObjectType;
+
+extern DwinObjectType sdwin;
+
+void DwinInitialization(DwinObjectType *dwin);
+void Page_Main_Heartbeat_Packet(void);
+void Page_General_Heartbeat_Packet(void);
+void Page_Set_Heartbeat_Packet(void);
+void Page_Direct_Work_Heartbeat_Packet(void);
+void Page_Cyclone_Work_Heartbeat_Packet(void);
+
+void Page_Direct_Curve_Heartbeat_Packet(void);
+void Page_Cyclone_Curve_Heartbeat_Packet(void);
+
+void Page_ALL_Curve_Heartbeat_Packet(void);
+void Page_Switch(void);
+#endif
+/*********** (C) COPYRIGHT 1999-2019 Moonan Technology *********END OF FILE****/

@@ -1,0 +1,86 @@
+#include "beep_handle.h"
+
+static void beep_on(void)
+{
+    gpio_bits_set(BEEP_PORT, BEEP_PIN);
+}
+
+static void beep_off(void)
+{
+    gpio_bits_reset(BEEP_PORT, BEEP_PIN);
+}
+
+beep_t sbeep =
+{
+    .beep_work = BEEP_OPEN,
+    .name = "beep",
+    .status = BEEP_OFF,  //×´Ì¬
+    .on = beep_on,      //´ò¿ª
+    .off = beep_off,    //¹Ø±Õ
+};
+
+
+
+void BeepProc(beep_t *beep)
+{
+    static beep_handle_t s_tate =  BEEP_IDLE;
+    static uint64_t s_BeepStartTime = 0;
+
+    if (beep->beep_work == BEEP_OPEN)
+    {
+        switch (s_tate)
+        {
+        case BEEP_IDLE:
+            if (beep->status == BEEP_SHORT)
+            {
+                s_tate = BEEP_START_SHORT;
+            }
+            else if (beep->status == BEEP_LONG)
+            {
+                s_tate = BEEP_START_LONG;
+            }
+            else
+            {
+                s_tate = BEEP_IDLE;
+            }
+
+            break;
+
+        case BEEP_START_SHORT:
+            sbeep.on();
+            s_tate = BEEP_WAIT;
+            break;
+
+        case BEEP_START_LONG:
+            sbeep.on();
+
+            if (++s_BeepStartTime >= BEEP_HANDLE_TIME)
+            {
+                s_tate = BEEP_FINISH;
+                s_BeepStartTime = 0;
+            }
+
+            break;
+
+        case BEEP_WAIT:
+            if (++s_BeepStartTime >= BEEP_WAIT_TIME)
+            {
+                s_BeepStartTime = 0;
+                s_tate = BEEP_FINISH;
+            }
+
+            break;
+
+        case BEEP_FINISH:
+            sbeep.off();
+            beep->status = BEEP_OFF;
+            s_tate = BEEP_IDLE;
+            break;
+        }
+    }
+	else
+	{
+	    sbeep.off();
+		beep->status = BEEP_OFF;
+	}
+}
