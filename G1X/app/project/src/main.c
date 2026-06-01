@@ -146,7 +146,7 @@ int main(void)
                         DMA1_CHANNEL1_PERIPHERAL_BASE_ADDR, 
                         DMA1_CHANNEL1_MEMORY_BASE_ADDR, 
                         DMA1_CHANNEL1_BUFFER_SIZE);
-  dma_channel_enable(DMA1_CHANNEL1, TRUE);
+  dma_channel_enable(DMA1_CHANNEL1, FALSE);
 
   /* init usart1 function. */
   wk_usart1_init();

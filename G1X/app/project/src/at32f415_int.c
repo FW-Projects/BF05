@@ -530,7 +530,7 @@ static void Direct_Handle_PWM_Out(void)
                 if (sFWG2_t.general_parameter.relay_open_flag == true)
                 {
                     direct_pid.Kp = 1000;
-                    direct_pid.Ki = 0.6;
+                    direct_pid.Ki = 1.2;
                     direct_pid.Kd = 22000;
                     /* get actual temp */
                     sFWG2_t.Direct_handle_parameter.actual_temp = temp_get_filter_move_average(ADC_CHANNEL);
