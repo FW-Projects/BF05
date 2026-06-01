@@ -173,62 +173,22 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sdwin</ItemText>
+          <ItemText>sFWG2_t.general_parameter.code_mode_step</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t</ItemText>
+          <ItemText>sFWG2_t.Direct_handle_parameter.show_temp,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>\\AT32F415RBT7_WorkBench\../app/FWG2_handle.c\sFWG2_t.general_parameter.touch_set_temp_state</ItemText>
+          <ItemText>sFWG2_t.general_parameter.temp_uint</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>UART5_data</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>change_temp</ItemText>
-        </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>change_temp_f_display</ItemText>
-        </Ww>
-        <Ww>
-          <count>6</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.Direct_handle_parameter.set_temp,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>7</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>change_wind</ItemText>
-        </Ww>
-        <Ww>
-          <count>8</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.setting_temp_flag</ItemText>
-        </Ww>
-        <Ww>
-          <count>9</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.setting_wind_flag</ItemText>
-        </Ww>
-        <Ww>
-          <count>10</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.adjust_key_set</ItemText>
-        </Ww>
-        <Ww>
-          <count>11</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>sFWG2_t.general_parameter.system_run_time_m,0x0A</ItemText>
+          <ItemText>sFWG2_t.Direct_handle_parameter.linear_calibration_temp</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
