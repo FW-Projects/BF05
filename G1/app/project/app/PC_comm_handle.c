@@ -23,7 +23,7 @@ void pc_event_handle(void);
 void send_heartbeat_data(PC_DATA_t * pc, FWG2_Handle * FWG2);
 static int parse_version_string(const char *str, uint8_t *major, uint8_t *minor, uint8_t *patch);
 static void init_version_parse(void);
-
+uint32_t GetMcuInfo(void);
 
 
 
@@ -137,13 +137,17 @@ static void WriteDataToPC(PC_DATA_t * pc,
 
 void pc_event_handle(void)
 {
-    static uint32_t crc_value;
-	static bool first_in = true;
-	if(first_in)
-	{
-	    init_version_parse();
-		first_in = false;
-	}
+    static bool first_in = true;
+	static uint32_t crc_value;
+    static uint32_t uid_value;
+
+    if (first_in)
+    {
+        init_version_parse();
+		uid_value = GetMcuInfo();
+        first_in = false;
+    }
+	
     switch (pc_event)
     {
     case CONNECT_PC_EVENT:
@@ -166,11 +170,10 @@ void pc_event_handle(void)
         pc_data.tx_buff[PC_DATA3_LEN_H] = hw_ver_minor;
         pc_data.tx_buff[PC_DATA3_LEN_L] = hw_ver_patch;
 	
-        pc_data.tx_buff[PC_DATA4_LEN_H] = 0x00;
-        pc_data.tx_buff[PC_DATA4_LEN_L] = 0x00;
-		
-        pc_data.tx_buff[PC_DATA5_LEN_H] = 0x00;
-        pc_data.tx_buff[PC_DATA5_LEN_L] = 0x00;
+        pc_data.tx_buff[PC_DATA4_LEN_H] = ((uid_value >> 24) & 0xff);
+        pc_data.tx_buff[PC_DATA4_LEN_L] = ((uid_value >> 16) & 0xff);
+        pc_data.tx_buff[PC_DATA5_LEN_H] = ((uid_value >> 8) & 0xff);
+        pc_data.tx_buff[PC_DATA5_LEN_L] = (uid_value & 0xff);
 		
         memset(pc_data.check_crc_buff, 0, PC_CRC_BUFF_SIZE);
         convert_data(pc_data.tx_buff, pc_data.check_crc_buff, PC_CMD1, PC_DATA5_LEN_L);
@@ -427,6 +430,8 @@ void send_heartbeat_data(PC_DATA_t * pc, FWG2_Handle * FWG2)
     pc->tx_buff[4]        = LOCAL_DEVECE_ID_1;
     pc->tx_buff[5]        = 0x00;
     pc->tx_buff[6]        = 0x06;
+	
+	
     pc->tx_buff[7]        = (uint8_t)(((sFWG2_t.Direct_handle_parameter.show_temp) >> 8) & 0xff);
     pc->tx_buff[8]        = (uint8_t)(((sFWG2_t.Direct_handle_parameter.show_temp) & 0XFF));
     pc->tx_buff[9]        = (uint8_t)sFWG2_t.Direct_handle_parameter.show_wind;
@@ -500,7 +505,41 @@ static void init_version_parse(void)
     parse_version_string(HARDWARE_VERSTION, &hw_ver_major, &hw_ver_minor, &hw_ver_patch);
 }
 
+#define   STORAGE_INFO       0x1FFFF7E0
+#define   STORAGE_INFO_SRAM
+#define   STORAGE_INFO_FLASH
 
+#define   UNIQUE_ID          0x1FFFF7E8
+
+#define   UNIQUE_ID_0_31     0x1FFFF7E8
+#define   UNIQUE_ID_32_63    0x1FFFF7EC
+#define   UNIQUE_ID_64_95    0x1FFFF7F0
+
+
+struct McuInfo_t
+{
+    uint32_t Size;
+    uint8_t UniqueId[12];
+} McuInfo;
+
+uint8_t UniqueId[12];
+
+uint32_t GetMcuInfo(void)
+{
+    McuInfo.Size = *(uint32_t*)STORAGE_INFO;
+    uint32_t uid = 0;
+
+    for (uint8_t i = 0; i < 12; i++)
+    {
+        McuInfo.UniqueId[i] = *(uint8_t*)(UNIQUE_ID + i);
+    }
+
+    memset(pc_data.check_crc_buff, 0, PC_CRC_BUFF_SIZE);
+    convert_data(McuInfo.UniqueId, pc_data.check_crc_buff, 0, 12);
+    uid = crc_block_calculate(pc_data.check_crc_buff, 3);
+    crc_data_reset();
+    return uid;
+}
 
 
 

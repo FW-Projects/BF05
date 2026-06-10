@@ -2947,7 +2947,8 @@ static uint8_t get_direct_temp_state(void)
 
         last_setting_temp_state = sFWG2_t.general_parameter.setting_temp_flag;
     }
-    else if (sFWG2_t.Direct_handle_parameter.last_set_temp != sFWG2_t.Direct_handle_parameter.set_temp &&
+    else if ((sFWG2_t.Direct_handle_parameter.last_set_temp != sFWG2_t.Direct_handle_parameter.set_temp||
+		      sFWG2_t.Direct_handle_parameter.last_set_temp_f_display != sFWG2_t.Direct_handle_parameter.set_temp_f_display) &&
              sFWG2_t.general_parameter.setting_temp_flag == true)
     {
 		refresh_setting_time--;
@@ -2956,6 +2957,7 @@ static uint8_t get_direct_temp_state(void)
 		    refresh_setting_time = DIRECT_TEMP_REFIRSH_TIME;
 		    show_step = 3;
             sFWG2_t.Direct_handle_parameter.last_set_temp = sFWG2_t.Direct_handle_parameter.set_temp;
+			sFWG2_t.Direct_handle_parameter.last_set_temp_f_display = sFWG2_t.Direct_handle_parameter.set_temp_f_display;
 		}
 		
         

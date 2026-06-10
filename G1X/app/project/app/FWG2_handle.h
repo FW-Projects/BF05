@@ -238,7 +238,7 @@ typedef struct
 {
     uint32_t actual_temp;
 	
-	uint32_t show_temp;
+	int32_t show_temp;
 	
 	uint32_t last_actual_temp;
     uint32_t actual_temp_f_display;
@@ -246,6 +246,7 @@ typedef struct
     uint32_t show_wind;
     uint16_t set_temp;
 	uint16_t last_set_temp;
+	uint16_t last_set_temp_f_display;
     uint16_t set_temp_f_display;
     uint8_t set_wind;
 	uint8_t last_set_wind;

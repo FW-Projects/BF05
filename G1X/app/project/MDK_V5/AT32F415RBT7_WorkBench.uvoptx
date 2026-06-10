@@ -190,12 +190,17 @@
           <WinNumber>1</WinNumber>
           <ItemText>sFWG2_t.Direct_handle_parameter.linear_calibration_temp</ItemText>
         </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>McuInfo.UniqueId</ItemText>
+        </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>\\AT32F415RBT7_WorkBench\../app/FWG2_handle.c\sFWG2_t.Direct_handle_parameter.actual_wind</ItemText>
+          <ItemText>0x1FFFF7E0</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
