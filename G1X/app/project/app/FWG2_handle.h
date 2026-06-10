@@ -297,6 +297,7 @@ typedef struct
     bool reset_fwg2_flag;
     bool relay_open_flag;
     bool countdown_flag;
+	bool ui_updata_flag;
     
 	bool setting_temp_flag;
 	uint8_t setting_temp_time;

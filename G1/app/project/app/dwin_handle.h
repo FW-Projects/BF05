@@ -247,6 +247,10 @@ typedef enum
     CHANNEL4_LONG_PRESS = 0x53,
 
     CHANNEL_STATE = 0x54,
+	
+	RESET_MCU = 0x7B,
+	STARY_UPDATA_UI = 0x7C,
+	
     /* out of page value */
     SHOW_DIRECT_TEMP_COLOUR = 0x6003,
     SHOW_DIRECT_WIND_COLOUR = 0x6063,

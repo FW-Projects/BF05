@@ -216,37 +216,54 @@ int main(void)
   /* add user code begin 4 */
 void iap_task(void)
 {
-    iap_command_handle();
+    if (sFWG2_t.FWG2_STATE == FWG2_WORKING)
+    {
+        iap_command_handle();
+    }
 }
 
 void key_task(void)
 {
-    key_handle();
+    if(sFWG2_t.general_parameter.ui_updata_flag)
+		return;
+    if (sFWG2_t.FWG2_STATE == FWG2_WORKING)
+    {
+        key_handle();
+    }
 }
 
 
 void beep_task()
 {
+    	if(sFWG2_t.general_parameter.ui_updata_flag)
+	{
+	    sbeep.off();
+		return;
+	}
+		
     static uint8_t time = 0;
 
-    if (sFWG2_t.general_parameter.speak_state == SPEAKER_OPEN)
+    if (sFWG2_t.FWG2_STATE == FWG2_WORKING)
     {
-        BeepProc(&sbeep);
-    }
-    else
-    {
-        sbeep.off();
-        sbeep.status = BEEP_OFF;
-    }
-
-    if (sFWG2_t.Direct_handle_error_state != HANDLE_OK)
-    {
-        time++;
-
-        if (time >= 80)
+        if (sFWG2_t.general_parameter.speak_state == SPEAKER_OPEN)
         {
-            time = 0;
-            sbeep.status = BEEP_LONG;
+            BeepProc(&sbeep);
+        }
+        else
+        {
+            sbeep.off();
+            sbeep.status = BEEP_OFF;
+        }
+
+        if (sFWG2_t.Direct_handle_error_state != HANDLE_OK)
+        {
+            time++;
+
+            if (time >= 80)
+            {
+                time = 0;
+                sbeep.status = BEEP_LONG;
+            }
         }
     }
 }
@@ -259,16 +276,33 @@ void dwin_task(void)
 
 void work_task(void) 
 {
-    Direct_handle_switch();
+	if(sFWG2_t.general_parameter.ui_updata_flag)
+		return;
+	if (sFWG2_t.FWG2_STATE == FWG2_WORKING)
+	{
+	    Direct_handle_switch();
+	}
+    
 }
 
 void flash_task(void)
 {
+	if(sFWG2_t.general_parameter.ui_updata_flag)
+		return;
     FlashProc();
 }
 
 void output_task(void)
 {
+	if(sFWG2_t.general_parameter.ui_updata_flag)
+	{
+		/* close relay */
+		gpio_bits_reset(GPIOB, GPIO_PINS_14);
+		/* close fan */
+	    tmr_channel_value_set(TMR9, TMR_SELECT_CHANNEL_2,0);
+		return;
+	}
+	
 	if(sFWG2_t.FWG2_STATE == FWG2_WORKING)
 	{
 		fan_control();
@@ -297,16 +331,22 @@ void record_task(void)
 
 void pc_comm_task(void)
 {
+	if(sFWG2_t.general_parameter.ui_updata_flag)
+		return;
     pc_comm_handle();
 }
 
 void uart4_comm_task(void)
 {
+	if(sFWG2_t.general_parameter.ui_updata_flag)
+		return;
     uart4_comm_handle();
 }
 
 void uart5_comm_task(void)
 {
+	if(sFWG2_t.general_parameter.ui_updata_flag)
+		return;
     uart5_comm_handle();
 }
 

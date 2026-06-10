@@ -285,11 +285,12 @@ void TMR2_GLOBAL_IRQHandler(void)
 			//sFWG2_t.Direct_handle_parameter.error_time = 0;
         }
 
-        if (sFWG2_t.general_parameter.pid_out <= 0)
+        if (sFWG2_t.general_parameter.pid_out <= 0 ||
+			sFWG2_t.general_parameter.ui_updata_flag)
         {
             sFWG2_t.general_parameter.pid_out = 0;
         }
-
+ 
         tmr_channel_value_set(TMR2, TMR_SELECT_CHANNEL_1, (uint32_t)sFWG2_t.general_parameter.pid_out);
         tmr_counter_enable(TMR2, TRUE);
         tmr_flag_clear(TMR2, TMR_OVF_FLAG);
