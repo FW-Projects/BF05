@@ -46,7 +46,7 @@ void FlashProc(void)
     static uint16_t last_direct_set_temp;
     static uint16_t last_direct_set_wind;
     static uint16_t last_direct_set_cold_mode_wind;
-    static uint16_t last_set_direct_calibration_temp;
+    static int16_t  last_set_direct_calibration_temp;
     static uint16_t last_set_quick_work_temp;
     static uint16_t last_set_quick_work_time;
     static uint16_t last_set_countdown_time;
