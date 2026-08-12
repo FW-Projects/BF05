@@ -1,6 +1,6 @@
 Dependencies for Project 'AT32F415RBT7_WorkBench', Target 'AT32F415RBT7_WorkBench': (DO NOT MODIFY !)
 CompilerVersion: 6220000::V6.22::ARMCLANG
-F (..\src\main.c)(0x6A28C8F9)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/main.o -MMD)
+F (..\src\main.c)(0x6A7C29A1)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/main.o -MMD)
 I (..\inc\at32f415_wk_config.h)(0x69CF236D)
 I (..\..\libraries\cmsis\cm4\device_support\at32f415.h)(0x697B243B)
 I (..\..\libraries\cmsis\cm4\core_support\core_cm4.h)(0x697B243B)
@@ -20,7 +20,7 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 I (..\inc\wk_adc.h)(0x69CF236D)
 I (..\inc\wk_crc.h)(0x69CF236D)
 I (..\inc\wk_debug.h)(0x69CF236D)
@@ -37,14 +37,14 @@ I (..\app\output_handle.h)(0x6961FF0A)
 I (..\device\adc.h)(0x6961FF0A)
 I (..\app\beep_handle.h)(0x6961FF0A)
 I (..\device\beep.h)(0x6961FF0A)
-I (..\app\flash_handle.h)(0x696AFDEC)
+I (..\app\flash_handle.h)(0x6A7C244E)
 I (..\device\flash.h)(0x6961FF0A)
 I (..\app\key_handle.h)(0x69CE0AFA)
 I (..\device\key.h)(0x69CE0480)
 I (..\app\dwin_handle.h)(0x6A28CA57)
 I (..\device\at32_Usart.h)(0x6961FF0A)
 I (..\app\work_handle.h)(0x69CE089D)
-I (..\app\PC_comm_handle.h)(0x6A28CABF)
+I (..\app\PC_comm_handle.h)(0x6A7C2A21)
 I (..\app\UART4_comm_handle.h)(0x69748F48)
 I (..\app\UART5_comm_handle.h)(0x6976E536)
 I (..\device\at32_spiflash.h)(0x6961FF0A)
@@ -69,7 +69,7 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\src\at32f415_int.c)(0x6A28C975)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/at32f415_int.o -MMD)
 I (..\inc\at32f415_int.h)(0x69CF236E)
 I (..\..\libraries\cmsis\cm4\device_support\at32f415.h)(0x697B243B)
@@ -93,7 +93,7 @@ I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
 I (..\inc\wk_system.h)(0x69CF236E)
 I (..\device\iap_usart.h)(0x6961FF0A)
 I (..\system\tmt.h)(0x6961FF0A)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 I (..\app\output_handle.h)(0x6961FF0A)
 I (..\device\adc.h)(0x6961FF0A)
 I (..\app\beep_handle.h)(0x6961FF0A)
@@ -141,7 +141,7 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\src\wk_usart.c)(0x69CF236D)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/wk_usart.o -MMD)
 I (..\inc\wk_usart.h)(0x69CF236D)
 I (..\inc\at32f415_wk_config.h)(0x69CF236D)
@@ -163,7 +163,7 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\src\iap.c)(0x6961FF0A)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/iap.o -MMD)
 I (..\inc\iap.h)(0x6961FF0A)
 I (..\..\libraries\cmsis\cm4\device_support\at32f415.h)(0x697B243B)
@@ -206,7 +206,7 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\src\wk_tmr.c)(0x69CF236D)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/wk_tmr.o -MMD)
 I (..\inc\wk_tmr.h)(0x69CF236D)
 I (..\inc\at32f415_wk_config.h)(0x69CF236D)
@@ -228,7 +228,7 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\src\wk_adc.c)(0x69CF236D)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/wk_adc.o -MMD)
 I (..\inc\wk_adc.h)(0x69CF236D)
 I (..\inc\at32f415_wk_config.h)(0x69CF236D)
@@ -250,7 +250,7 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\src\wk_spi.c)(0x69CF236D)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/wk_spi.o -MMD)
 I (..\inc\wk_spi.h)(0x69CF236D)
 I (..\inc\at32f415_wk_config.h)(0x69CF236D)
@@ -272,7 +272,7 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\src\wk_dma.c)(0x69CF236D)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/wk_dma.o -MMD)
 I (..\inc\wk_dma.h)(0x69CF236D)
 I (..\inc\at32f415_wk_config.h)(0x69CF236D)
@@ -294,7 +294,7 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\src\wk_wdt.c)(0x69CF236D)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/wk_wdt.o -MMD)
 I (..\inc\wk_wdt.h)(0x69CF236D)
 I (..\inc\at32f415_wk_config.h)(0x69CF236D)
@@ -316,7 +316,7 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\src\wk_crc.c)(0x69CF236D)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/wk_crc.o -MMD)
 I (..\inc\wk_crc.h)(0x69CF236D)
 I (..\inc\at32f415_wk_config.h)(0x69CF236D)
@@ -338,7 +338,7 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\device\userconfig.h)(0x6961FF0A)()
 F (..\..\libraries\drivers\src\at32f415_crm.c)(0x697B243C)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/at32f415_crm.o -MMD)
 I (..\inc\at32f415_conf.h)(0x69CF236E)
@@ -687,8 +687,8 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-F (..\app\flash_handle.c)(0x6A603855)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/flash_handle.o -MMD)
-I (..\app\flash_handle.h)(0x696AFDEC)
+F (..\app\flash_handle.c)(0x6A7C28C8)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/flash_handle.o -MMD)
+I (..\app\flash_handle.h)(0x6A7C244E)
 I (..\device\flash.h)(0x6961FF0A)
 I (..\..\libraries\cmsis\cm4\device_support\at32f415.h)(0x697B243B)
 I (..\..\libraries\cmsis\cm4\core_support\core_cm4.h)(0x697B243B)
@@ -708,8 +708,8 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
-F (..\app\key_handle.c)(0x6A192FFD)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/key_handle.o -MMD)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
+F (..\app\key_handle.c)(0x6A7C2979)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/key_handle.o -MMD)
 I (..\app\key_handle.h)(0x69CE0AFA)
 I (..\device\key.h)(0x69CE0480)
 I (..\..\libraries\cmsis\cm4\device_support\at32f415.h)(0x697B243B)
@@ -735,7 +735,7 @@ I (..\app\beep_handle.h)(0x6961FF0A)
 I (..\device\beep.h)(0x6961FF0A)
 I (..\app\dwin_handle.h)(0x6A28CA57)
 I (..\device\at32_Usart.h)(0x6961FF0A)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\app\output_handle.c)(0x6961FF0A)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/output_handle.o -MMD)
 I (..\app\output_handle.h)(0x6961FF0A)
 I (..\device\adc.h)(0x6961FF0A)
@@ -759,7 +759,7 @@ I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
 I (..\inc\wk_system.h)(0x69CF236E)
 I (..\app\work_handle.h)(0x69CE089D)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\app\work_handle.c)(0x69CE089D)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/work_handle.o -MMD)
 I (..\app\work_handle.h)(0x69CE089D)
 I (..\..\libraries\cmsis\cm4\device_support\at32f415.h)(0x697B243B)
@@ -780,11 +780,11 @@ I (..\..\libraries\drivers\inc\at32f415_spi.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_tmr.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 I (..\system\PID_operation.h)(0x6961FF0A)
 I (..\app\beep_handle.h)(0x6961FF0A)
 I (..\device\beep.h)(0x6961FF0A)
-F (..\app\dwin_handle.c.c)(0x6A28C9EB)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/dwin_handle.c.o -MMD)
+F (..\app\dwin_handle.c.c)(0x6A7C1F52)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/dwin_handle.c.o -MMD)
 I (..\app\dwin_handle.h)(0x6A28CA57)
 I (..\device\at32_Usart.h)(0x6961FF0A)
 I (..\..\libraries\cmsis\cm4\device_support\at32f415.h)(0x697B243B)
@@ -807,9 +807,9 @@ I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
 I (..\app\beep_handle.h)(0x6961FF0A)
 I (..\device\beep.h)(0x6961FF0A)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\app\PC_comm_handle.c)(0x6A28C433)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/pc_comm_handle.o -MMD)
-I (..\app\PC_comm_handle.h)(0x6A28CABF)
+I (..\app\PC_comm_handle.h)(0x6A7C2A21)
 I (..\..\libraries\cmsis\cm4\device_support\at32f415.h)(0x697B243B)
 I (..\..\libraries\cmsis\cm4\core_support\core_cm4.h)(0x697B243B)
 I (..\..\libraries\cmsis\cm4\device_support\system_at32f415.h)(0x697B243B)
@@ -832,7 +832,7 @@ I (..\device\at32_Usart.h)(0x6961FF0A)
 I (..\inc\iap.h)(0x6961FF0A)
 I (..\device\iap_usart.h)(0x6961FF0A)
 I (..\app\dwin_handle.h)(0x6A28CA57)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 F (..\app\wifi_handle.c)(0x6961FF0A)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/wifi_handle.o -MMD)
 I (..\app\wifi_handle.h)(0x6961FF0A)
 I (..\..\libraries\cmsis\cm4\device_support\at32f415.h)(0x697B243B)
@@ -876,7 +876,7 @@ I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
 I (..\device\at32_Usart.h)(0x6961FF0A)
 I (..\app\dwin_handle.h)(0x6A28CA57)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 I (..\app\beep_handle.h)(0x6961FF0A)
 I (..\device\beep.h)(0x6961FF0A)
 F (..\app\UART5_comm_handle.c)(0x69A0F877)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/uart5_comm_handle.o -MMD)
@@ -901,11 +901,11 @@ I (..\..\libraries\drivers\inc\at32f415_usart.h)(0x697B243C)
 I (..\..\libraries\drivers\inc\at32f415_wdt.h)(0x697B243C)
 I (..\device\at32_Usart.h)(0x6961FF0A)
 I (..\app\dwin_handle.h)(0x6A28CA57)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 I (..\app\beep_handle.h)(0x6961FF0A)
 I (..\device\beep.h)(0x6961FF0A)
-F (..\app\FWG2_handle.c)(0x6961FF0A)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/fwg2_handle.o -MMD)
-I (..\app\FWG2_handle.h)(0x6A28C760)
+F (..\app\FWG2_handle.c)(0x6A7C242C)(-xc -std=gnu11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=none -mfloat-abi=soft -c-fno-rtti -flto -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-4 -Ofast -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../../libraries/drivers/inc -I ../../libraries/cmsis/cm4/core_support -I ../../libraries/cmsis/cm4/device_support -I ../inc -I ../system -I ../app -I ../device-I./RTE/_AT32F415RBT7_WorkBench-I"D:/Work Program/Keil_v5/ARM/Packs/ARM/CMSIS/6.3.0/CMSIS/Core/Include"-I"D:/Work Program/Keil_v5/ARM/Packs/ArteryTek/AT32F415_DFP/2.1.7/Device/Include"-D__UVISION_VERSION="540" -DAT32F415RBT7 -D_RTE_ -DAT32F415RBT7 -DUSE_STDPERIPH_DRIVER-o ./objects/fwg2_handle.o -MMD)
+I (..\app\FWG2_handle.h)(0x6A7C244E)
 I (..\..\libraries\cmsis\cm4\device_support\at32f415.h)(0x697B243B)
 I (..\..\libraries\cmsis\cm4\core_support\core_cm4.h)(0x697B243B)
 I (..\..\libraries\cmsis\cm4\device_support\system_at32f415.h)(0x697B243B)

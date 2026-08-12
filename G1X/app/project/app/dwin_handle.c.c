@@ -3628,7 +3628,7 @@ static uint8_t get_direct_time_state(void)
     static fwg2_page_e last_page = 0;
     static bool last_countdown_flag = false;
     static bool last_quick_mode_flag = false;
-    static uint16_t last_show_time = 0;
+    //static uint16_t last_show_time = 0;
 
     if (last_page != sFWG2_t.general_parameter.fwg2_page)
     {
@@ -3675,26 +3675,43 @@ static uint8_t get_direct_time_state(void)
     }
     else if (sFWG2_t.Direct_handle_work_mode == QUICK_MODE)
     {
-        if (last_show_time != sFWG2_t.Direct_handle_parameter.quick_work_time_display)
+//        if (last_show_time != sFWG2_t.Direct_handle_parameter.quick_work_time_display)
+//        {
+//            show_step = 2;
+//            last_show_time = sFWG2_t.Direct_handle_parameter.quick_work_time_display;
+//        }
+        if (sFWG2_t.Direct_handle_parameter.last_show_time != sFWG2_t.Direct_handle_parameter.quick_work_time_display)
         {
             show_step = 2;
-            last_show_time = sFWG2_t.Direct_handle_parameter.quick_work_time_display;
+            sFWG2_t.Direct_handle_parameter.last_show_time = sFWG2_t.Direct_handle_parameter.quick_work_time_display;
         }
+		
+		
     }
     else if (sFWG2_t.general_parameter.countdown_flag == true)
     {
-        if (last_show_time != sFWG2_t.general_parameter.countdown_time_display)
+//        if (last_show_time != sFWG2_t.general_parameter.countdown_time_display)
+//        {
+//            show_step = 2;
+//            last_show_time = sFWG2_t.general_parameter.countdown_time_display;
+//        }
+		 if (sFWG2_t.Direct_handle_parameter.last_show_time != sFWG2_t.general_parameter.countdown_time_display)
         {
             show_step = 2;
-            last_show_time = sFWG2_t.general_parameter.countdown_time_display;
+            sFWG2_t.Direct_handle_parameter.last_show_time = sFWG2_t.general_parameter.countdown_time_display;
         }
     }
     else if (sFWG2_t.general_parameter.countdown_flag == false)
     {
-        if (last_show_time != sFWG2_t.Direct_handle_parameter.set_time)
+//        if (last_show_time != sFWG2_t.Direct_handle_parameter.set_time)
+//        {
+//            show_step = 4;
+//            last_show_time = sFWG2_t.general_parameter.countdown_time_display;
+//        }
+		if (sFWG2_t.Direct_handle_parameter.last_show_time != sFWG2_t.Direct_handle_parameter.set_time)
         {
             show_step = 4;
-            last_show_time = sFWG2_t.general_parameter.countdown_time_display;
+            sFWG2_t.Direct_handle_parameter.last_show_time = sFWG2_t.general_parameter.countdown_time_display;
         }
     }
 

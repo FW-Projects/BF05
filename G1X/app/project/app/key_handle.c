@@ -106,6 +106,26 @@ void KeyProc(void)
                 sFWG2_t.general_parameter.key_setting_flag = true;
                 sFWG2_t.general_parameter.setting_time = 0;
 
+				if( sFWG2_t.general_parameter.setting_temp_flag == true &&
+				    sFWG2_t.general_parameter.setting_wind_flag == true &&
+					sFWG2_t.general_parameter.fn_key_short_set == S_CHANNEL_SWITCH)
+				   {
+				       goto change_channel;
+				   }
+					else if(sFWG2_t.general_parameter.setting_temp_flag == true &&
+				   sFWG2_t.general_parameter.setting_wind_flag == true &&
+					sFWG2_t.general_parameter.fn_key_short_set == S_QUICK_MODE)
+				   {
+				       goto enter_quick_mode;
+				   }
+				   else if(sFWG2_t.general_parameter.setting_temp_flag == true &&
+				   sFWG2_t.general_parameter.setting_wind_flag == true &&
+					sFWG2_t.general_parameter.fn_key_short_set == S_COUNTDOWN_MODE)
+				   {
+				       goto enter_countdown_mode;
+				   }
+				
+				
                 if (sFWG2_t.general_parameter.setting_temp_flag && channel_switch_flag == false)
                 {
                     if (sFWG2_t.general_parameter.adjust_key_set == SELECT_TEMP)
@@ -140,6 +160,7 @@ void KeyProc(void)
                 }
                 else if (sFWG2_t.general_parameter.fn_key_short_set == S_CHANNEL_SWITCH)
                 {
+					change_channel:
                     if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
                     {
                         channel_switch_flag = true;
@@ -151,6 +172,7 @@ void KeyProc(void)
                 }
                 else if (sFWG2_t.general_parameter.fn_key_short_set == S_QUICK_MODE)
                 {
+					enter_quick_mode:
                     /* enter quick mode */
                     if (sFWG2_t.Direct_handle_work_mode == NORMAL_MODE)
                     {
@@ -170,6 +192,7 @@ void KeyProc(void)
                          (sFWG2_t.general_parameter.fwg2_page == PAGE_MAIN || \
                           sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE))
                 {
+					enter_countdown_mode:
                     /* start countdown  */
                     if (sFWG2_t.general_parameter.countdown_flag == true)
                     {
@@ -922,6 +945,7 @@ static void key_event_handle(void)
         sFWG2_t.general_parameter.countdown_flag = false;
         sFWG2_t.Direct_handle_parameter.last_set_temp = 0;
         sFWG2_t.Direct_handle_parameter.last_set_wind = 0;
+	    sFWG2_t.Direct_handle_parameter.last_show_time = 0;
 
         if (sFWG2_t.general_parameter.ch >= 4)
         {

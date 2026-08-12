@@ -254,6 +254,7 @@ typedef struct
     uint8_t cold_mode_set_wind;
     uint8_t stop_set_wind;
     uint16_t set_time;
+	uint16_t last_show_time;
     uint16_t sleep_time;
     uint16_t error_time;
     handle_state_e last_state;

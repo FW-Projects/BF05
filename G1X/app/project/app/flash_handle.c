@@ -46,10 +46,10 @@ void FlashProc(void)
     static uint16_t last_direct_set_temp;
     static uint16_t last_direct_set_wind;
     static uint16_t last_direct_set_cold_mode_wind;
-    static int16_t last_set_direct_calibration_temp;
+    static int16_t  last_set_direct_calibration_temp;
     static uint16_t last_set_quick_work_temp;
     static uint16_t last_set_quick_work_time;
-    static uint16_t last_set_countdown_time;
+    static uint16_t last_set_time;
     static uint8_t  last_fwg2_work_mode;
     static uint8_t  last_temp_uint;
     static uint8_t  last_speak_state;
@@ -206,7 +206,7 @@ void FlashProc(void)
             last_set_direct_calibration_temp      = sFWG2_t.Direct_handle_parameter.set_calibration_temp;
             last_set_quick_work_temp              = sFWG2_t.Direct_handle_parameter.quick_work_temp;
             last_set_quick_work_time              = sFWG2_t.Direct_handle_parameter.quick_work_time;
-            last_set_countdown_time               = sFWG2_t.general_parameter.countdown_time;
+            last_set_time                         = sFWG2_t.Direct_handle_parameter.set_time;
             last_fwg2_work_mode                   = sFWG2_t.general_parameter.work_mode;
             last_temp_uint                        = sFWG2_t.general_parameter.temp_uint;
             last_speak_state                      = sFWG2_t.general_parameter.speak_state;
@@ -327,7 +327,7 @@ void FlashProc(void)
                 last_set_direct_calibration_temp      != sFWG2_t.Direct_handle_parameter.set_calibration_temp || \
                 last_set_quick_work_temp              != sFWG2_t.Direct_handle_parameter.quick_work_temp || \
                 last_set_quick_work_time              != sFWG2_t.Direct_handle_parameter.quick_work_time || \
-                last_set_countdown_time               != sFWG2_t.general_parameter.countdown_time || \
+                last_set_time                         != sFWG2_t.Direct_handle_parameter.set_time || \
                 last_fwg2_work_mode                   != sFWG2_t.general_parameter.work_mode  || \
                 last_temp_uint                        != sFWG2_t.general_parameter.temp_uint || \
                 last_speak_state                      != sFWG2_t.general_parameter.speak_state || \
@@ -463,7 +463,8 @@ void FlashProc(void)
             flash_halfword_program(A_LAST_DIRECT_SET_CALIBRATION_TEMP, sFWG2_t.Direct_handle_parameter.set_calibration_temp);
             flash_halfword_program(A_LAST_DIRECT_SET_QUICK_TEMP, sFWG2_t.Direct_handle_parameter.quick_work_temp);
             flash_halfword_program(A_LAST_DIRECT_SET_QUICK_TIME, sFWG2_t.Direct_handle_parameter.quick_work_time);
-            flash_halfword_program(A_LAST_SET_COUNTDOWN_TIME, sFWG2_t.general_parameter.countdown_time);
+            //flash_halfword_program(A_LAST_SET_COUNTDOWN_TIME, sFWG2_t.general_parameter.countdown_time);
+			flash_halfword_program(A_LAST_SET_TIME, sFWG2_t.Direct_handle_parameter.set_time);
             flash_halfword_program(A_LAST_FWG2_WORK_MODE, sFWG2_t.general_parameter.work_mode);
             flash_halfword_program(A_LAST_TEMP_UINT, sFWG2_t.general_parameter.temp_uint);
             flash_halfword_program(A_LAST_SPEAK_STATE, sFWG2_t.general_parameter.speak_state);
@@ -579,7 +580,8 @@ void FlashProc(void)
             flash_halfword_program(B_LAST_DIRECT_SET_CALIBRATION_TEMP, sFWG2_t.Direct_handle_parameter.set_calibration_temp);
             flash_halfword_program(B_LAST_DIRECT_SET_QUICK_TEMP, sFWG2_t.Direct_handle_parameter.quick_work_temp);
             flash_halfword_program(B_LAST_DIRECT_SET_QUICK_TIME, sFWG2_t.Direct_handle_parameter.quick_work_time);
-            flash_halfword_program(B_LAST_SET_COUNTDOWN_TIME, sFWG2_t.general_parameter.countdown_time);
+//            flash_halfword_program(B_LAST_SET_COUNTDOWN_TIME, sFWG2_t.general_parameter.countdown_time);
+			flash_halfword_program(B_LAST_SET_TIME, sFWG2_t.Direct_handle_parameter.set_time);
             flash_halfword_program(B_LAST_FWG2_WORK_MODE, sFWG2_t.general_parameter.work_mode);
             flash_halfword_program(B_LAST_TEMP_UINT, sFWG2_t.general_parameter.temp_uint);
             flash_halfword_program(B_LAST_SPEAK_STATE, sFWG2_t.general_parameter.speak_state);
@@ -695,7 +697,7 @@ void FlashProc(void)
         last_set_direct_calibration_temp      = sFWG2_t.Direct_handle_parameter.set_calibration_temp;
         last_set_quick_work_temp              = sFWG2_t.Direct_handle_parameter.quick_work_temp;
         last_set_quick_work_time              = sFWG2_t.Direct_handle_parameter.quick_work_time;
-        last_set_countdown_time               = sFWG2_t.general_parameter.countdown_time;
+        last_set_time               = sFWG2_t.Direct_handle_parameter.set_time;
         last_fwg2_work_mode                   = sFWG2_t.general_parameter.work_mode;
         last_temp_uint                        = sFWG2_t.general_parameter.temp_uint;
         last_speak_state                      = sFWG2_t.general_parameter.speak_state;
@@ -832,7 +834,8 @@ static void get_data_from_a(void)
     sFWG2_t.Direct_handle_parameter.quick_work_temp = flash_wred_halfword(A_LAST_DIRECT_SET_QUICK_TEMP);
     sFWG2_t.Direct_handle_parameter.quick_work_time = flash_wred_halfword(A_LAST_DIRECT_SET_QUICK_TIME);
     sFWG2_t.general_parameter.work_mode            = flash_wred_halfword(A_LAST_FWG2_WORK_MODE);
-    sFWG2_t.general_parameter.countdown_time       = flash_wred_halfword(A_LAST_SET_COUNTDOWN_TIME);
+    //sFWG2_t.general_parameter.countdown_time       = flash_wred_halfword(A_LAST_SET_COUNTDOWN_TIME);
+	sFWG2_t.Direct_handle_parameter.set_time       = flash_wred_halfword(A_LAST_SET_TIME);
     sFWG2_t.general_parameter.temp_uint		       = flash_wred_halfword(A_LAST_TEMP_UINT);
     sFWG2_t.general_parameter.speak_state          = flash_wred_halfword(A_LAST_SPEAK_STATE);
     sFWG2_t.general_parameter.display_lock_state   = flash_wred_halfword(A_LAST_DISPLAY_LOCK_STATE);
@@ -944,7 +947,8 @@ static void get_data_from_b(void)
     sFWG2_t.Direct_handle_parameter.quick_work_temp = flash_wred_halfword(B_LAST_DIRECT_SET_QUICK_TEMP);
     sFWG2_t.Direct_handle_parameter.quick_work_time = flash_wred_halfword(B_LAST_DIRECT_SET_QUICK_TIME);
     sFWG2_t.general_parameter.work_mode            = flash_wred_halfword(B_LAST_FWG2_WORK_MODE);
-    sFWG2_t.general_parameter.countdown_time       = flash_wred_halfword(B_LAST_SET_COUNTDOWN_TIME);
+    //sFWG2_t.general_parameter.countdown_time       = flash_wred_halfword(B_LAST_SET_COUNTDOWN_TIME);
+	sFWG2_t.Direct_handle_parameter.set_time       = flash_wred_halfword(B_LAST_SET_TIME);
     sFWG2_t.general_parameter.temp_uint		       = flash_wred_halfword(B_LAST_TEMP_UINT);
     sFWG2_t.general_parameter.speak_state          = flash_wred_halfword(B_LAST_SPEAK_STATE);
     sFWG2_t.general_parameter.display_lock_state   = flash_wred_halfword(B_LAST_DISPLAY_LOCK_STATE);
@@ -1056,7 +1060,8 @@ static void get_reset_data(void)
     sFWG2_t.Direct_handle_parameter.quick_work_temp = 50;
     sFWG2_t.Direct_handle_parameter.quick_work_time = 30;
     sFWG2_t.general_parameter.work_mode            = NORMAL;
-    sFWG2_t.general_parameter.countdown_time       = 10;
+    //sFWG2_t.general_parameter.countdown_time       = 10;
+	sFWG2_t.Direct_handle_parameter.set_time       = 10;
     sFWG2_t.general_parameter.temp_uint		       = CELSIUS;
     sFWG2_t.general_parameter.speak_state          = SPEAKER_OPEN;
     sFWG2_t.general_parameter.display_lock_state   = UNLOCK;
@@ -1281,11 +1286,17 @@ static void check_all_data(void)
         sFWG2_t.Direct_handle_parameter.set_calibration_temp = 0;
     }
 
-    if (sFWG2_t.general_parameter.countdown_time > MAX_SET_TIME_VAL
-            || sFWG2_t.general_parameter.countdown_time < MIN_SET_TIME_VAL)
-    {
-        sFWG2_t.general_parameter.countdown_time = 10;
-    }
+//    if (sFWG2_t.general_parameter.countdown_time > MAX_SET_TIME_VAL
+//            || sFWG2_t.general_parameter.countdown_time < MIN_SET_TIME_VAL)
+//    {
+//        sFWG2_t.general_parameter.countdown_time = 10;
+//    }
+	     if (sFWG2_t.Direct_handle_parameter.set_time > MAX_SET_TIME_VAL
+             || sFWG2_t.Direct_handle_parameter.set_time < MIN_SET_TIME_VAL)
+     {
+         sFWG2_t.Direct_handle_parameter.set_time = 10;
+     }
+	
 
     if (sFWG2_t.general_parameter.ch1_set_temp > MAX_SET_TEMP_VAL
             || sFWG2_t.general_parameter.ch1_set_temp < MIN_SET_TEMP_VAL)

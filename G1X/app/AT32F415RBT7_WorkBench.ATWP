@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root>
     <WorkBenchVersion>
-        <Version>V1.2.04</Version>
+        <Version>V1.2.03</Version>
     </WorkBenchVersion>
     <MCUInfo>
         <MCUSerials>AT32F415</MCUSerials>
@@ -150,20 +150,20 @@
     </DMA>
     <NVIC>
         <ShowType>1</ShowType>
-        <SysTick_Handler>1;15;0;0;0;1</SysTick_Handler>
-        <FLASH_IRQHandler>0;0;0;0;0;0</FLASH_IRQHandler>
-        <CRM_IRQHandler>0;0;0;0;0;0</CRM_IRQHandler>
-        <DMA1_Channel1_IRQHandler>0;0;0;0;0;0</DMA1_Channel1_IRQHandler>
-        <ADC1_IRQHandler>0;0;0;0;0;0</ADC1_IRQHandler>
-        <TMR1_BRK_TMR9_IRQHandler>0;0;0;0;0;0</TMR1_BRK_TMR9_IRQHandler>
-        <TMR2_GLOBAL_IRQHandler>1;0;0;0;0;1</TMR2_GLOBAL_IRQHandler>
-        <TMR3_GLOBAL_IRQHandler>1;1;0;0;0;1</TMR3_GLOBAL_IRQHandler>
-        <SPI1_IRQHandler>0;0;0;0;0;0</SPI1_IRQHandler>
-        <USART1_IRQHandler>1;1;0;0;0;1</USART1_IRQHandler>
-        <USART2_IRQHandler>1;1;0;0;0;1</USART2_IRQHandler>
-        <USART3_IRQHandler>1;1;0;0;0;1</USART3_IRQHandler>
-        <UART4_IRQHandler>1;1;0;0;0;1</UART4_IRQHandler>
-        <UART5_IRQHandler>1;1;0;0;0;1</UART5_IRQHandler>
+        <SysTick_Handler>1;15;0;0;0</SysTick_Handler>
+        <FLASH_IRQHandler>0;0;0;0;0</FLASH_IRQHandler>
+        <CRM_IRQHandler>0;0;0;0;0</CRM_IRQHandler>
+        <DMA1_Channel1_IRQHandler>0;0;0;0;0</DMA1_Channel1_IRQHandler>
+        <ADC1_IRQHandler>0;0;0;0;0</ADC1_IRQHandler>
+        <TMR1_BRK_TMR9_IRQHandler>0;0;0;0;0</TMR1_BRK_TMR9_IRQHandler>
+        <TMR2_GLOBAL_IRQHandler>1;0;0;0;0</TMR2_GLOBAL_IRQHandler>
+        <TMR3_GLOBAL_IRQHandler>1;1;0;0;0</TMR3_GLOBAL_IRQHandler>
+        <SPI1_IRQHandler>0;0;0;0;0</SPI1_IRQHandler>
+        <USART1_IRQHandler>1;1;0;0;0</USART1_IRQHandler>
+        <USART2_IRQHandler>1;1;0;0;0</USART2_IRQHandler>
+        <USART3_IRQHandler>1;1;0;0;0</USART3_IRQHandler>
+        <UART4_IRQHandler>1;1;0;0;0</UART4_IRQHandler>
+        <UART5_IRQHandler>1;1;0;0;0</UART5_IRQHandler>
     </NVIC>
     <GPIO>
         <Signal SignalName="ADC1_IN10" PinName="PC0">
@@ -262,7 +262,7 @@
     </PINInfo>
     <ProjectInfomation>
         <ProjectName>AT32F415RBT7_WorkBench</ProjectName>
-        <ProjectLocation>D:/Work Area/Code For WorkBench/FWG1/G1X/app</ProjectLocation>
+        <ProjectLocation>D:/Work Area/Code For WorkBench/FWG1/app</ProjectLocation>
         <ToolchainIDE>MDK_V5</ToolchainIDE>
         <ARMCompiler>0</ARMCompiler>
         <BackupCode>true</BackupCode>
@@ -270,31 +270,9 @@
         <NotUsedPinAnalog>true</NotUsedPinAnalog>
         <CodeSplitIP>true</CodeSplitIP>
         <AddNecessaryFileFlag>true</AddNecessaryFileFlag>
-        <DeletePriviousFiles>false</DeletePriviousFiles>
         <MinHeapSize>0x200</MinHeapSize>
         <MinStackSize>0x400</MinStackSize>
         <UseFirmware>true</UseFirmware>
         <PackageVersion>V2.1.8</PackageVersion>
     </ProjectInfomation>
-    <FunctionRankInfo>
-        <RankSub RankNum="1" FixPosFlag="TRUE" FuncName="wk_system_clock_config" InstanceName="CRM" CodeSection="config_system_clock_rtthread" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="2" FixPosFlag="TRUE" FuncName="wk_periph_clock_config" InstanceName="CRM" CodeSection="config periph clock" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="4" FixPosFlag="TRUE" FuncName="wk_debug_config" InstanceName="DEBUG" CodeSection="debug function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="7" FixPosFlag="TRUE" FuncName="wk_nvic_config" InstanceName="NVIC" CodeSection="config nvic" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="8" FixPosFlag="TRUE" FuncName="wk_timebase_init" InstanceName="SYSTEM" CodeSection="config timebase" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="9" FixPosFlag="TRUE" FuncName="wk_gpio_config" InstanceName="GPIO" CodeSection="gpio function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="10" FixPosFlag="FALSE" FuncName="wk_adc1_init" InstanceName="ADC1" CodeSection="adc1 function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="11" FixPosFlag="FALSE" FuncName="wk_dma1_channel1_init" InstanceName="DMA1_Channel1" CodeSection="dma1_channel1_init" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="25" FixPosFlag="FALSE" FuncName="wk_usart1_init" InstanceName="USART1" CodeSection="usart1 function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="26" FixPosFlag="FALSE" FuncName="wk_usart2_init" InstanceName="USART2" CodeSection="usart2 function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="27" FixPosFlag="FALSE" FuncName="wk_usart3_init" InstanceName="USART3" CodeSection="usart3 function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="28" FixPosFlag="FALSE" FuncName="wk_uart4_init" InstanceName="UART4" CodeSection="uart4 function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="29" FixPosFlag="FALSE" FuncName="wk_uart5_init" InstanceName="UART5" CodeSection="uart5 function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="30" FixPosFlag="FALSE" FuncName="wk_spi1_init" InstanceName="SPI1" CodeSection="spi1 function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="42" FixPosFlag="FALSE" FuncName="wk_tmr2_init" InstanceName="TMR2" CodeSection="tmr2 function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="43" FixPosFlag="FALSE" FuncName="wk_tmr3_init" InstanceName="TMR3" CodeSection="tmr3 function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="46" FixPosFlag="FALSE" FuncName="wk_tmr9_init" InstanceName="TMR9" CodeSection="tmr9 function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="51" FixPosFlag="FALSE" FuncName="wk_crc_init" InstanceName="CRC" CodeSection="crc function" MainDoNotCallFlag="FALSE"/>
-        <RankSub RankNum="52" FixPosFlag="FALSE" FuncName="wk_wdt_init" InstanceName="WDT" CodeSection="wdt function" MainDoNotCallFlag="FALSE"/>
-    </FunctionRankInfo>
 </Root>
