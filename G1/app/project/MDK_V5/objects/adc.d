@@ -15,4 +15,5 @@
   ..\..\libraries\drivers\inc\at32f415_spi.h \
   ..\..\libraries\drivers\inc\at32f415_tmr.h \
   ..\..\libraries\drivers\inc\at32f415_usart.h \
-  ..\..\libraries\drivers\inc\at32f415_wdt.h ..\inc\wk_system.h
+  ..\..\libraries\drivers\inc\at32f415_wdt.h ..\inc\wk_system.h \
+  ..\inc\wk_adc.h ..\inc\at32f415_wk_config.h ..\app\FWG2_handle.h

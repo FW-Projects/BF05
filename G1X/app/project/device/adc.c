@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
-
+#include "wk_adc.h"
 /*
 *获得ADC值
 *adc_channel：要获取的通道
@@ -11,16 +11,40 @@
 
 
 
+//u16 get_adcval(adc_channel_select_type adc_channel)
+//{
+//    adc_ordinary_channel_set(ADC1, adc_channel, 1,
+//                             ADC_SAMPLETIME_239_5);                     	//ADC1,ADC通道,序列号1，采样时间为239.5周期
+//    adc_ordinary_software_trigger_enable(ADC1, TRUE);						//使能指定的ADC1的软件转换启动功能
+
+//    while (!adc_flag_get(ADC1, ADC_CCE_FLAG));								//等待转换结束
+
+//    return adc_ordinary_conversion_data_get(ADC1);							//返回最近一次ADC1普通通道的转换结果
+//}
+
+
 u16 get_adcval(adc_channel_select_type adc_channel)
 {
+	volatile static uint16_t error_time = 0; 
+	adc_flag_clear(ADC1, ADC_CCE_FLAG);
     adc_ordinary_channel_set(ADC1, adc_channel, 1,
-                             ADC_SAMPLETIME_239_5);                     	//ADC1,ADC通道,序列号1，采样时间为239.5周期
-    adc_ordinary_software_trigger_enable(ADC1, TRUE);						//使能指定的ADC1的软件转换启动功能
-
-    while (!adc_flag_get(ADC1, ADC_CCE_FLAG));								//等待转换结束
-
-    return adc_ordinary_conversion_data_get(ADC1);							//返回最近一次ADC1普通通道的转换结果
+                             ADC_SAMPLETIME_239_5);	 
+    adc_ordinary_software_trigger_enable(ADC1, TRUE);
+    error_time = 0;	
+    while (!adc_flag_get(ADC1, ADC_CCE_FLAG))
+	{
+	    error_time++;
+		if(error_time >= 300)
+		{
+		    error_time = 0;
+			wk_adc1_init();
+			goto end;
+		} 
+	}
+	end:	
+    return adc_ordinary_conversion_data_get(ADC1);							 
 }
+
 
 /*
 *获取adc平均值
