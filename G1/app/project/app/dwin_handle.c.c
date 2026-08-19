@@ -3228,8 +3228,7 @@ static void show_direct_temp(void)
 			sFWG2_t.Direct_handle_parameter.show_temp = base_temp_c;
 			
 			if(sFWG2_t.Direct_handle_position == IN_POSSITION &&
-               sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN && 
-			   sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE)
+               sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN)
 			{
 			    if (first_run == false)
                 {
@@ -3291,8 +3290,7 @@ static void show_direct_temp(void)
                         sFWG2_t.Direct_handle_parameter.show_temp > sFWG2_t.Direct_handle_parameter.set_temp - LOCK_RANGE)
                 {
 					if(sFWG2_t.Direct_handle_position == IN_POSSITION &&
-               sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN && 
-			   sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE)
+               sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN)
 					return;
 					
                     sFWG2_t.Direct_handle_parameter.show_temp = sFWG2_t.Direct_handle_parameter.set_temp;
@@ -3377,8 +3375,7 @@ static void show_direct_temp(void)
                         sFWG2_t.Direct_handle_parameter.show_temp > sFWG2_t.Direct_handle_parameter.set_temp_f_display - LOCK_RANGE_F)
                 {
 					if(sFWG2_t.Direct_handle_position == IN_POSSITION &&
-               sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN && 
-			   sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE)
+               sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN)
 					return;
 					
                     sFWG2_t.Direct_handle_parameter.show_temp = sFWG2_t.Direct_handle_parameter.set_temp_f_display;
@@ -4736,6 +4733,13 @@ static void show_curve(void)
     float direct_base_temp_c = 0;
     uint16_t direct_temp_curve = 0;
 
+	static uint8_t reduce_temp = 50;
+    static uint8_t reduce_time = 0;
+    static bool first_run = true;
+    static uint8_t check_first_run_time = 0;
+	
+	
+	
     if (sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
     {
         switch (state)
@@ -4746,17 +4750,89 @@ static void show_curve(void)
                                  sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
                                  sFWG2_t.Direct_handle_parameter.set_calibration_temp;
 
-            // 如果开启增强模式，减去增强温度
-            if (sFWG2_t.general_parameter.enhance_state == ENHANCE_OPEN)
-            {
-                direct_base_temp_c -= ENHANCE_TEMP;
-            }
+//            // 如果开启增强模式，减去增强温度
+//            if (sFWG2_t.general_parameter.enhance_state == ENHANCE_OPEN)
+//            {
+//                direct_base_temp_c -= ENHANCE_TEMP;
+//            }
 
+
+		/* enhance function was disenabled */
+        if (sFWG2_t.general_parameter.enhance_state == ENHANCE_CLOSE)
+        {
+            direct_temp_curve = direct_base_temp_c;
+        }
+        /* enhance function was enabled */
+        else if (sFWG2_t.general_parameter.enhance_state == ENHANCE_OPEN)
+        {
+			direct_base_temp_c -= ENHANCE_TEMP;
 			if(direct_base_temp_c<=100)
 			  direct_base_temp_c = 100;
             direct_temp_curve = direct_base_temp_c;
 			
-			 
+ 
+           if(sFWG2_t.Direct_handle_position == IN_POSSITION &&
+               sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN)
+            {
+#if 1
+                if (first_run == false)
+                {
+                    direct_temp_curve = sFWG2_t.Direct_handle_parameter.actual_temp - reduce_temp;
+                }
+                else
+                {
+                    direct_temp_curve = sFWG2_t.Direct_handle_parameter.actual_temp;
+                }
+
+                if (sFWG2_t.general_parameter.fwg2_page == PAGE_DIRECT_CURVE)
+                {
+                    if (++reduce_time > 50)
+                    {
+                        reduce_time = 0;
+
+                        if (reduce_temp>=3)
+                        {
+                            reduce_temp-=3;
+                        }
+						else
+							reduce_temp = 0;
+                    }
+                }
+
+#endif
+            }
+            else
+            {
+                check_first_run_time++;
+
+                if (check_first_run_time > 10)
+                {
+                    first_run = false;
+                }
+
+                reduce_time = 0;
+                reduce_temp = 50;
+            }
+        }
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 				 
             /* send cyclone handle's temp curve */
             direct_temp_buff[12] = direct_temp_curve >> 8;
