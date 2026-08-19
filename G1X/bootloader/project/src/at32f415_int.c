@@ -40,7 +40,7 @@
 #define LOCAL_DEVICE_ID_1  0x01
 #define LOCAL_DEVICE_ID_2  0x01
 
-#define SOFTWARE_VERSTION "V1.4.4"
+#define SOFTWARE_VERSTION "V1.4.5"
 #define HARDWARE_VERSTION "V1.0.0"
 /* add user code end private typedef */
 

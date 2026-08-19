@@ -3042,6 +3042,12 @@ static void show_direct_temp(void)
     static uint8_t show_step = 0;
     static uint16_t show_set_temp;
 
+	static uint8_t reduce_temp = 50;
+    static uint8_t reduce_time = 0;
+    static bool first_run = true;
+    static uint8_t check_first_run_time = 0;
+	
+	
     switch (show_step)
     {
     case 0:
@@ -3214,11 +3220,60 @@ static void show_direct_temp(void)
         // 摄氏温度处理
         if (sFWG2_t.general_parameter.temp_uint == CELSIUS)
         {
-            sFWG2_t.Direct_handle_parameter.show_temp = (sFWG2_t.Direct_handle_position == IN_POSSITION &&
-                sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN && sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE)
-                ? sFWG2_t.Direct_handle_parameter.actual_temp
-                : base_temp_c;
+//            sFWG2_t.Direct_handle_parameter.show_temp = (sFWG2_t.Direct_handle_position == IN_POSSITION &&
+//                sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN && sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE)
+//                ? (sFWG2_t.Direct_handle_parameter.actual_temp - reduce_temp)
+//                : base_temp_c;
 
+			sFWG2_t.Direct_handle_parameter.show_temp = base_temp_c;
+			
+			if(sFWG2_t.Direct_handle_position == IN_POSSITION &&
+               sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN && 
+			   sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE)
+			{
+			    if (first_run == false)
+                {
+                    sFWG2_t.Direct_handle_parameter.show_temp = sFWG2_t.Direct_handle_parameter.actual_temp - reduce_temp;
+                }
+                else
+                {
+                    sFWG2_t.Direct_handle_parameter.show_temp = sFWG2_t.Direct_handle_parameter.actual_temp;
+                }
+				
+				if (++reduce_time > (sFWG2_t.Direct_handle_parameter.set_temp * 0.2))
+                    {
+                        reduce_time = 0;
+
+                        if (reduce_temp >= 2)
+                        {
+                            reduce_temp -= 2;
+                        }
+                        else
+                        {
+                            reduce_temp = 0;
+							//sbeep.status = BEEP_LONG;
+                        }
+                    }
+			}
+			else
+			{
+			    check_first_run_time++;
+
+                if (check_first_run_time > 10)
+                {
+                    first_run = false;
+                }
+
+                reduce_time = 0;
+                reduce_temp = 50;
+			}
+			
+			
+			
+			
+				
+				
+				
             if (sFWG2_t.general_parameter.work_mode == CODE)
             {
                 sFWG2_t.Direct_handle_parameter.show_temp = base_temp_c;
@@ -3235,16 +3290,74 @@ static void show_direct_temp(void)
                         sFWG2_t.Direct_handle_parameter.show_temp < sFWG2_t.Direct_handle_parameter.set_temp + LOCK_RANGE &&
                         sFWG2_t.Direct_handle_parameter.show_temp > sFWG2_t.Direct_handle_parameter.set_temp - LOCK_RANGE)
                 {
+					if(sFWG2_t.Direct_handle_position == IN_POSSITION &&
+               sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN && 
+			   sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE)
+					return;
+					
                     sFWG2_t.Direct_handle_parameter.show_temp = sFWG2_t.Direct_handle_parameter.set_temp;
                 }
         }
         // 华氏温度处理
         else if (sFWG2_t.general_parameter.temp_uint == FAHRENHEIT)
         {
-            sFWG2_t.Direct_handle_parameter.show_temp = (sFWG2_t.Direct_handle_position == IN_POSSITION &&
-                sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN)
-                ? sFWG2_t.Direct_handle_parameter.actual_temp * 9 / 5 + 32
-                : base_temp_c * 9 / 5 + 32;
+//            sFWG2_t.Direct_handle_parameter.show_temp = (sFWG2_t.Direct_handle_position == IN_POSSITION &&
+//                sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN)
+//                ? sFWG2_t.Direct_handle_parameter.actual_temp * 9 / 5 + 32
+//                : base_temp_c * 9 / 5 + 32;
+			
+			
+			
+			
+			sFWG2_t.Direct_handle_parameter.show_temp = base_temp_c* 9 / 5 + 32;
+			
+			
+			if(sFWG2_t.Direct_handle_position == IN_POSSITION &&
+               sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN && 
+			   sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE)
+			{
+			    if (first_run == false)
+                {
+                    sFWG2_t.Direct_handle_parameter.show_temp = sFWG2_t.Direct_handle_parameter.actual_temp * 9 / 5 +
+                                             32 - reduce_temp;
+                }
+                else
+                {
+                    sFWG2_t.Direct_handle_parameter.show_temp = sFWG2_t.Direct_handle_parameter.actual_temp* 9 / 5 +
+                                             32;
+                }
+				
+				if (++reduce_time > (sFWG2_t.Direct_handle_parameter.set_temp * 0.1))
+                    {
+                        reduce_time = 0;
+
+                        if (reduce_temp >= 6)
+                        {
+                            reduce_temp -= 6;
+                        }
+                        else
+                        {
+                            reduce_temp = 0;
+							//sbeep.status = BEEP_LONG;
+                        }
+                    }
+			}
+			else
+			{
+			    check_first_run_time++;
+
+                if (check_first_run_time > 10)
+                {
+                    first_run = false;
+                }
+
+                reduce_time = 0;
+                reduce_temp = 90;
+			}
+			
+
+			
+			
             int mcu_temp_f = sFWG2_t.general_parameter.mcu_temp * 9 / 5 + 32;
 
             if (sFWG2_t.general_parameter.work_mode == CODE)
@@ -3263,6 +3376,11 @@ static void show_direct_temp(void)
                         sFWG2_t.Direct_handle_parameter.show_temp < sFWG2_t.Direct_handle_parameter.set_temp_f_display + LOCK_RANGE_F &&
                         sFWG2_t.Direct_handle_parameter.show_temp > sFWG2_t.Direct_handle_parameter.set_temp_f_display - LOCK_RANGE_F)
                 {
+					if(sFWG2_t.Direct_handle_position == IN_POSSITION &&
+               sFWG2_t.general_parameter.fwg2_sleep_state == SLEEP_OPEN && 
+			   sFWG2_t.Direct_handle_work_mode != COLD_WIND_MODE)
+					return;
+					
                     sFWG2_t.Direct_handle_parameter.show_temp = sFWG2_t.Direct_handle_parameter.set_temp_f_display;
                 }
         }
@@ -4634,7 +4752,12 @@ static void show_curve(void)
                 direct_base_temp_c -= ENHANCE_TEMP;
             }
 
+			if(direct_base_temp_c<=100)
+			  direct_base_temp_c = 100;
             direct_temp_curve = direct_base_temp_c;
+			
+			 
+				 
             /* send cyclone handle's temp curve */
             direct_temp_buff[12] = direct_temp_curve >> 8;
             direct_temp_buff[13] = direct_temp_curve;
@@ -4673,7 +4796,11 @@ static void show_curve(void)
             direct_base_temp_c = sFWG2_t.Direct_handle_parameter.actual_temp +
                                  sFWG2_t.Direct_handle_parameter.linear_calibration_temp -
                                  sFWG2_t.Direct_handle_parameter.set_calibration_temp;
-            direct_temp_curve = direct_base_temp_c;
+        
+       if(direct_base_temp_c<=100)
+			  direct_base_temp_c = 100;		
+		
+		direct_temp_curve = direct_base_temp_c;
             /* send cyclone handle's temp curve */
             direct_temp_buff[12] = direct_temp_curve >> 8;
             direct_temp_buff[13] = direct_temp_curve;
